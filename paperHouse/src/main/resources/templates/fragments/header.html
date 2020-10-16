@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <header class="main-header" th:fragment="headerFragment">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="inner-wrap">
+            <h1 class="logo">
+              <a href="/main">
+                <img src="/static/asset/logo-Text-black.png" alt="logo" />
+              </a>
+            </h1>
+            <ul class="header-menu">
+              <li><a href="/main">투데이</a></li>
+              <li><a href="/search">검색</a></li>
+              <li><a href="/myLibrary">내 서재</a></li>
+              <li><a href="/myPage">마이페이지</a></li>
+            </ul>
+            <div class="utils">
+              <a class="alert" href="#">
+                <span class="iconify" data-icon="codicon:bell" data-inline="false"></span>
+              </a>
+              <a class="logout" onclick="document.getElementById('logout').submit();">로그아웃</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</html>

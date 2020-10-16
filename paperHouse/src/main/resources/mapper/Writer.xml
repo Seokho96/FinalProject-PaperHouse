@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.bit.paperhouse.dao.WriterRepository">
+
+<insert id="addWriterApply" parameterType="com.bit.paperhouse.dto.WriterDto">
+	INSERT INTO WRITER(USER_SEQ,WRITER_SEQ,WRITER_NAME,INTRO,FILE_ORIGINAL,FILE_SYSTEM,STATUS,HISTORY,PROFILE_FILE_ORIGINAL,PROFILE_FILE_SYSTEM,PUBLIC_RELATIONS)
+	VALUES(#{userSeq},5,#{writerName},#{intro},#{fileOriginalName},#{fileSystem},0,#{history},#{profileFileOriginalName},#{profileFileSystem},#{publicRelations})
+</insert>
+
+
+<select id="getWriterDetail" parameterType="java.lang.Integer" resultType="com.bit.paperhouse.dto.WriterDto">
+	SELECT *
+	FROM WRITER
+	WHERE WRITER_SEQ = #{writerSeq}
+</select>
+
+
+</mapper>

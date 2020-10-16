@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head th:replace="fragments/config :: configFragment"></head>
+  <body>
+    <main class="join-page member-page">
+      <div class="inner-wrap">
+        <div class="logo-wrap">
+          <a href="/"><img src="/static/asset/logo-Text-white.png" alt="" /></a>
+        </div>
+        <!-- 회원가입 폼 -->
+        <div class="login-wrap">
+          <form action="" id="regiFrm">
+            <input type="email" name="email" placeholder="이메일" id="email" value="" />
+            <button type="button" id="emailPost">인증</button>
+            <div id="checkView">
+              <input type="email" id="num" name="num" placeholder="인증번호" />&nbsp;<button type="button" id="numCheck">인증번호 확인</button>
+              <p id="numTimeCheck" style="color: yellow; font-size: 5px"></p>
+            </div>
+            <input type="password" name="pwd" id="pwd" placeholder="비밀번호" />
+            <div id="ptext" style="color: #ffa931; font-size: 7px"></div>
+            <input type="password" name="passwordChk" id="pwdCheck" placeholder="비밀번호 확인" />
+            <div id="ptext2" style="color: #ffa931; font-size: 7px"></div>
+            <button type="submit" id="regi">이메일로 가입하기</button>
+          </form>
+        </div>
+        <!-- 소셜 로그인 -->
+        <div class="sns-wrap clearfix">
+          <a class="snsBtn kakao" href="#" onclick="window.open('/oauth2/authorization/kakao','카카오 로그인','width=430,height=500,location=no,status=no,scrollbars=yes')">
+            <img data-v-4174ad9d="" src="https://d3udu241ivsax2.cloudfront.net/v3/images/login/kakao-icon.9c9940291430ca6ad83b9ae1f3cc81a8.svg" alt="카카오로 로그인" />
+          </a>
+          <a class="snsBtn naver" href="#" onclick="window.open('/oauth2/authorization/naver','네이버 로그인','width=550,height=750,location=no,status=no,scrollbars=yes')">
+            <img data-v-4174ad9d="" src="https://d3udu241ivsax2.cloudfront.net/v3/images/login/naver-icon.7128d171ea0b01233bb4b32a2b5ad260.svg" alt="네이버로 로그인" />
+          </a>
+          <a class="snsBtn facebook" href="#" onclick="window.open('/oauth2/authorization/facebook','Facebook 로그인','width=550,height=550,location=no,status=no,scrollbars=yes')">
+            <img data-v-4174ad9d="" src="https://d3udu241ivsax2.cloudfront.net/v3/images/login/facebook-icon.f3e1fcc7af9f4cac5be2179a846417f8.svg" alt="페이스북으로 로그인" />
+          </a>
+          <a class="snsBtn google" href="#" onclick="window.open('/oauth2/authorization/google','Google 로그인','width=550,height=600,location=no,status=no,scrollbars=yes')">
+            <img alt="" src="/static/asset/googleLogin.png" width="40px" height="40px" />
+          </a>
+        </div>
+        <div class="else-wrap">
+          <a class="btn line" sec:authorize="isAnonymous()" th:href="@{/user/login}">이미 회원이신가요 ?</a>
+        </div>
+      </div>
+    </main>
+    <!-- security 보안 관련 토큰 전송(로그인 없이 post전송 시 필요) -->
+    <script type="application/javascript" th:inline="javascript">
+      $(function () {
+        var csrfToken = /*[[${_csrf.token}]]*/ null;
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+        $(document).ajaxSend(function (e, xhr, options) {
+          xhr.setRequestHeader(csrfHeader, csrfToken);
+        });
+      });
+    </script>
+    <script>
+      let email = "";
+      let check = false;
+
+      // 인증번호 관련 view 숨김
+      $(document).ready(function () {
+        $("#checkView").hide();
+      });
+
+      //이메일 인증
+      $("#emailPost").click(function () {
+        email = $("#email").val();
+
+        let exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+
+        if (exptext.test(email) == false || email == "") {
+          swal("", "이메일 형식이 올바르지 않습니다.", "error");
+
+          $("#email").focus();
+        } else {
+          $.ajax({
+            type: "GET",
+            url: "/searchPw",
+            data: { email: email },
+            success: function (str) {
+              if (str == "ALREADY") {
+                swal("이메일 중복", "이미 등록된 사용자입니다", "error");
+              } else {
+                swal("인증번호", "인증번호가 성공적으로 발송되었습니다", "success");
+                $("#checkView").show();
+                countdown();
+                var date = new Date();
+                date.setTime(date.getTime() + 3 * 60 * 1000);
+                $.cookie(email, str, { expires: date, path: "/" });
+              }
+            },
+            error: function () {
+              swal("", "오류: 관리자에게 문의하세요", "error");
+            },
+          });
+        }
+      });
+
+      //인증 번호 확인
+      $("#numCheck").click(function () {
+        let num = $("#num").val();
+        let r_num = $.cookie(email);
+
+        if (num != r_num) {
+          swal("", "인증번호가 다릅니다", "error");
+        } else {
+          swal("이메일 확인 되었습니다").then(function () {
+            $("#email").attr("readonly", "readonly");
+            check = true;
+            $("#checkView").hide();
+          });
+        }
+      });
+
+      // 회원가입 완료
+      $("#regi").click(function () {
+        var frm = $("#regiFrm").serialize();
+        if (check == false) {
+          swal("", "이메일 인증을 해주세요", "error");
+        } else {
+          console.log("ajax");
+          $.ajax({
+            url: "/user/join",
+            type: "post",
+            data: frm,
+            success: function () {
+              swal("회원가입에 성공했습니다").then(function () {
+                location.href = "/main";
+              });
+            },
+            error: function () {
+              swal("", "error", "error");
+            },
+          });
+          console.log("ajax done");
+        }
+      });
+
+      // 인증번호 인증시간
+      function countdown() {
+        if (countdown.expiredTime == null) {
+          countdown.expiredTime = new Date().getTime() + 1000 * 60 * 5; //5분
+        }
+        countdown.remainSeconds = parseInt((countdown.expiredTime - new Date().getTime()) / 1000);
+        if (countdown.remainSeconds < 0) {
+          $("#numTimeCheck").css("color", "red");
+          $("#numTimeCheck").text("인증시간 초과");
+        } else {
+          $("#numTimeCheck").text("남은시간 " + parseInt(countdown.remainSeconds / 60) + ":" + new String(countdown.remainSeconds % 60).padStart(2, "0"));
+          setTimeout(countdown, 1000);
+        }
+      }
+
+      // 실시간 비밀번호 유효성 체크
+      document.getElementById("pwd").onkeyup = function () {
+        var msg = "",
+          val = this.value;
+
+        val_Check = document.getElementById("pwdCheck").value;
+        let num = val.search(/[0-9]/g);
+        let eng = val.search(/[a-z]/gi);
+        let spe = val.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+        if (val.length < 8 || val.length > 20) {
+          msg = "비밀번호는 8자리이상 20자리 이내로 입력해주세요";
+        } else if (val.search(/\s/) != -1) {
+          msg = "비밀번호는 공백 없이 입력해주세요.";
+        } else if (num < 0 || eng < 0 || spe < 0) {
+          msg = "비밀번호에 영문,숫자, 특수문자를 혼합하여 입력해주세요.";
+        }
+
+        document.getElementById("ptext").textContent = msg;
+      };
+      document.getElementById("pwdCheck").onkeyup = function () {
+        var msg = "",
+          val = this.value;
+        val_Check = document.getElementById("pwd").value;
+        if (val != val_Check) {
+          msg = "비밀번호가 다릅니다. 다시 한번 확인해주세요";
+        }
+
+        document.getElementById("ptext2").textContent = msg;
+      };
+
+      //새로고침 시 경고창
+      document.onkeydown = capturekey;
+      document.onkeypress = capturekey;
+      document.onkeyup = capturekey;
+
+      function capturekey(e) {
+        e = e;
+        //debugger
+        if (e.code == "F5") {
+          if (confirm("찾고 있는 페이지에서 사용자가 입력한 정보를 사용했습니다. 해당 페이지로 돌아가면 기존 작업을 반복할 수 있습니다. 계속하시겠습니까?")) {
+            location.href = "/user/login";
+          } else {
+            //avoid from refresh
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

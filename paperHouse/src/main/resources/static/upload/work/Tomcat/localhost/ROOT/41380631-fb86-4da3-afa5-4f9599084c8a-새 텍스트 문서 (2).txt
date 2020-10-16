@@ -1,0 +1,11 @@
+function chk() {
+	$("input.apply").each(function () {
+		if(($(this).val().replace(/ /g, "") == ""){
+			alert($(this).siblings("div").text() + " 항목을 입력해주세요 !");
+	        $(this).focus();
+	        return false;
+		}else{
+			alert("성공");
+	    	document.form.submit();
+		}
+	}

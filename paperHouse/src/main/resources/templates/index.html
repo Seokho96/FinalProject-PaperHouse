@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head th:replace="fragments/config :: configFragment"></head>
+  <body class="landing">
+    <!-- header -->
+    <header class="index-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="logo"><img src="/static/asset/P.H-logo.png" /></div>
+            <div class="util btns">
+              <a class="btn line" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+              <a sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/user/info}">내정보</a>
+              <a class="btn color" href="#">"종이의 집" 제작자들</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- main -->
+    <main>
+      <section class="section01">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="desc-wrap">
+                <div class="desc01">
+                  나만의<br />
+                  작가들을<br />
+                  만나보세요
+                </div>
+                <div class="desc02">
+                  <span class="purple">"알려지지 않은 이야기"</span>들을<br />
+                  만나볼까요?
+                </div>
+              </div>
+              <div class="img-wrap clearfix">
+                <img src="/static/asset/mainicon.svg" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section02">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="shelfs">
+                <div class="text">
+                  아직 알려지지 않은<br />
+                  <span class="purple">작가들과 먼저</span><br />
+                  만나보세요
+                </div>
+                <div class="shelf01 clearfix">
+                  <img src="/static/asset/shelf1.svg" alt="" />
+                </div>
+                <div class="shelf02 clearfix">
+                  <img src="/static/asset/shelf2.svg" alt="" />
+                </div>
+                <div class="shelf03 clearfix">
+                  <img src="/static/asset/shelf3.svg" alt="" />
+                </div>
+              </div>
+              <div class="writers clearfix">
+                <div class="first-row clearfix">
+                  <div class="w-grid">
+                    <div class="thumb"></div>
+                    <div class="desc">작가설명란 더미더미</div>
+                    <div class="name">작가이름</div>
+                  </div>
+                  <div class="w-grid">
+                    <div class="thumb"></div>
+                    <div class="desc">작가설명란 더미더미</div>
+                    <div class="name">작가이름</div>
+                  </div>
+                  <div class="w-grid">
+                    <div class="thumb"></div>
+                    <div class="desc">작가설명란 더미더미</div>
+                    <div class="name">작가이름</div>
+                  </div>
+                  <div class="w-grid">
+                    <div class="thumb"></div>
+                    <div class="desc">작가설명란 더미더미</div>
+                    <div class="name">작가이름</div>
+                  </div>
+                  <div class="w-grid">
+                    <div class="thumb"></div>
+                    <div class="desc">작가설명란 더미더미</div>
+                    <div class="name">작가이름</div>
+                  </div>
+                </div>
+                <div class="second-row clearfix">
+                  <div class="w-grid">
+                    <div class="thumb"></div>
+                    <div class="desc">작가설명란 더미더미</div>
+                    <div class="name">작가이름</div>
+                  </div>
+                  <div class="w-grid">
+                    <div class="thumb"></div>
+                    <div class="desc">작가설명란 더미더미</div>
+                    <div class="name">작가이름</div>
+                  </div>
+                  <div class="w-grid">
+                    <div class="thumb"></div>
+                    <div class="desc">작가설명란 더미더미</div>
+                    <div class="name">작가이름</div>
+                  </div>
+                  <div class="w-grid">
+                    <div class="thumb"></div>
+                    <div class="desc">작가설명란 더미더미</div>
+                    <div class="name">작가이름</div>
+                  </div>
+                  <div class="w-grid">
+                    <div class="thumb"></div>
+                    <div class="desc">작가설명란 더미더미</div>
+                    <div class="name">작가이름</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section03">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="desc-wrap">
+                <div class="desc desc01">
+                  내가 고른 작가를<br />
+                  구독하고
+                </div>
+                <div class="desc desc02">조금 더 가까워져 보세요</div>
+              </div>
+              <div class="img-wrap clearfix">
+                <img src="/static/asset/books.png" alt="" />
+              </div>
+              <a class="meet" href="#">작가 만나러가기</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+  <script>
+    $(window).on("beforeunload", function () {
+      $(window).scrollTop(0);
+    });
+  </script>
+  <script src="/static/js/index.js"></script>
+</html>

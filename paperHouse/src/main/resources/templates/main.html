@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html
+  lang="ko"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
+>
+  <main class="main main-common" layout:fragment="content">
+    <form id="logout" action="/user/logout" method="POST">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}" />
+    </form>
+    <div class="main-banner">
+      <div id="bg-wrap"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="outer-wrap">
+              <div class="banner-wrap">
+                <div class="banner">
+                  <div class="banner-title">`11111111111111`</div>
+                  <div class="banner-desc">`1`1`1`1`1`1`1`1`</div>
+                </div>
+                <div class="banner">
+                  <div class="banner-title">`222222222222222222222`</div>
+                  <div class="banner-desc">`2`22`2`2`2`2`2`2</div>
+                </div>
+                <div class="banner">
+                  <div class="banner-title">`3333333333333333333333`</div>
+                  <div class="banner-desc">`3`3`33``3`33`3</div>
+                </div>
+                <div class="banner">
+                  <div class="banner-title">`44444444444444444`</div>
+                  <div class="banner-desc">`4`44`4`4`4`4`4</div>
+                </div>
+                <div class="banner">
+                  <div class="banner-title">`55555555555555555`</div>
+                  <div class="banner-desc">`5`555`5`5`5</div>
+                </div>
+                <div class="banner">
+                  <div class="banner-title">`6666666666666666`</div>
+                  <div class="banner-desc">6``66``6`6`6`6`</div>
+                </div>
+                <div class="banner">
+                  <div class="banner-title">`7777777777777777`</div>
+                  <div class="banner-desc">`7`777`77``7`77</div>
+                </div>
+              </div>
+              <div class="banner-arrows"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="main-section today-writer">
+              <div class="section-title">오늘의 작가</div>
+              <div class="section-body writer-grid clearfix">
+                <div class="grid-wrap left clearfix">
+                  <div class="writer-pic">프로필사진</div>
+                  <div class="writer-info-wrap">
+                    <div class="writer-name">작가이름</div>
+                    <div class="writer-birth">작가 정보</div>
+                  </div>
+                </div>
+                <div class="right">
+                  <div class="grid-wrap right-up">
+                    <div class="writer-desc">작가 설명입니당.</div>
+                  </div>
+                  <div class="grid-wrap right-down">
+                    <div class="writer-recommend">
+                      <div class="recommender-id">"추천자 아이디"</div>
+                      <div class="recommender-comment">추천자 추천글내용</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="main-section monthly-recommend">
+              <div class="section-title">이번 달 추천 작가</div>
+              <div class="section-body">
+                <div class="weekly-grid">
+                  <div class="grid-wrap">
+                    <div class="writer-photo">
+                      <div class="filter"></div>
+                      <img src="/static/asset/d.jpg" alt="" />
+                    </div>
+                    <div class="writer-desc">한국인이 가장 사랑하는 작가</div>
+                    <div class="writer-name">베르나르 베르베르</div>
+                  </div>
+                  <div class="grid-wrap">
+                    <div class="writer-photo">
+                      <div class="filter"></div>
+                      <img src="/static/asset/d.jpg" alt="" />
+                    </div>
+                    <div class="writer-desc">한국인이 가장 사랑하는 작가</div>
+                    <div class="writer-name">베르나르 베르베르</div>
+                  </div>
+                  <div class="grid-wrap">
+                    <div class="writer-photo">
+                      <div class="filter"></div>
+                      <img src="/static/asset/d.jpg" alt="" />
+                    </div>
+                    <div class="writer-desc">한국인이 가장 사랑하는 작가</div>
+                    <div class="writer-name">베르나르 베르베르</div>
+                  </div>
+                  <div class="grid-wrap">
+                    <div class="writer-photo">
+                      <div class="filter"></div>
+                      <img src="/static/asset/d.jpg" alt="" />
+                    </div>
+                    <div class="writer-desc">한국인이 가장 사랑하는 작가</div>
+                    <div class="writer-name">베르나르 베르베르</div>
+                  </div>
+                  <div class="grid-wrap">
+                    <div class="writer-photo">
+                      <div class="filter"></div>
+                      <img src="/static/asset/d.jpg" alt="" />
+                    </div>
+                    <div class="writer-desc">한국인이 가장 사랑하는 작가</div>
+                    <div class="writer-name">베르나르 베르베르</div>
+                  </div>
+                  <div class="grid-wrap">
+                    <div class="writer-photo">
+                      <div class="filter"></div>
+                      <img src="/static/asset/d.jpg" alt="" />
+                    </div>
+                    <div class="writer-desc">한국인이 가장 사랑하는 작가</div>
+                    <div class="writer-name">베르나르 베르베르</div>
+                  </div>
+                  <div class="grid-wrap">
+                    <div class="writer-photo">
+                      <div class="filter"></div>
+                      <img src="/static/asset/d.jpg" alt="" />
+                    </div>
+                    <div class="writer-desc">한국인이 가장 사랑하는 작가</div>
+                    <div class="writer-name">베르나르 베르베르</div>
+                  </div>
+                </div>
+              </div>
+              <div class="section-body">
+                <div class="site-desc">
+                  <div class="inner">
+                    <img src="/static/asset/site-desc-icon.png" alt="" />
+                    <div class="title">처음본 이야기</div>
+                    <div class="desc">세상에 처음 선보이는 작가분들의 이야기를 만나보세요</div>
+                  </div>
+                  <div class="box-wrap">
+                    <div class="box1"></div>
+                    <div class="box2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="main-section recommend-article">
+              <div class="section-title">취향별 추천글</div>
+              <ul class="section-tap-wrap clearfix">
+                <li class="tab active">카테고리1</li>
+                <li class="tab">카테고리2</li>
+                <li class="tab">카테고리3</li>
+                <li class="tab">카테고리4</li>
+                <li class="tab">카테고리5</li>
+              </ul>
+              <div class="section-body">
+                <div class="article-wrap">
+                  <div class="inner first clearfix">
+                    <div class="articles">
+                      <div class="article-thumb">
+                        <img src="/static/asset/a.jpg" alt="article thumb" />
+                      </div>
+                      <div class="article-title">article title</div>
+                    </div>
+                    <div class="articles">
+                      <div class="article-thumb">
+                        <img src="/static/asset/a.jpg" alt="article thumb" />
+                      </div>
+                      <div class="article-title">article title</div>
+                    </div>
+                    <div class="articles">
+                      <div class="article-thumb">
+                        <img src="/static/asset/a.jpg" alt="article thumb" />
+                      </div>
+                      <div class="article-title">article title</div>
+                    </div>
+                  </div>
+                  <div class="inner second clearfix">
+                    <div class="articles">
+                      <div class="article-thumb">
+                        <img src="/static/asset/a.jpg" alt="article thumb" />
+                      </div>
+                      <div class="article-title">article title</div>
+                    </div>
+                    <div class="articles">
+                      <div class="article-thumb">
+                        <img src="/static/asset/a.jpg" alt="article thumb" />
+                      </div>
+                      <div class="article-title">article title</div>
+                    </div>
+                    <div class="articles">
+                      <div class="article-thumb">
+                        <img src="/static/asset/a.jpg" alt="article thumb" />
+                      </div>
+                      <div class="article-title">article title</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="main-section today-sentence">
+              <div class="section-title">오늘의 문장</div>
+              <div class="section-body">
+                <div class="random-img">
+                  <img src="https://source.unsplash.com/category/experimental/1600x900" alt="" />
+                  <div class="random-text">
+                    <p class="quote quote-top"></p>
+                    <p class="text">우리의 눈은 내부를 비추는 거울이 되어버렸다.</p>
+                    <p class="quote quote-bottom"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <th:block layout:fragment="script">
+    <script>
+      const colors = new Array(
+        (color01 = new Array([213, 223, 233], [217, 207, 228])),
+        (color02 = new Array([217, 207, 228], [233, 213, 228])),
+        (color03 = new Array([233, 213, 228], [221, 228, 207])),
+        (color04 = new Array([221, 228, 207], [235, 219, 209])),
+        (color05 = new Array([235, 219, 209], [222, 202, 210])),
+        (color06 = new Array([222, 202, 210], [221, 216, 231])),
+        (color07 = new Array([221, 216, 231], [237, 233, 194]))
+      );
+      function bannerBg() {
+        $(".banner-wrap").on("init", function (event, slick, currentSlide, nextSlide) {
+          slick.$slides.each(function (e) {
+            // bg div create
+            var div = document.createElement("div");
+            div.classList.add("gradient" + e);
+            var bgWrap = document.getElementById("bg-wrap");
+            div.style.background = "linear-gradient(90deg, rgb(" + colors[e][0] + ") 0%, rgb(" + colors[e][1] + ") 100%)";
+            bgWrap.appendChild(div);
+          });
+          // bg slide init
+          $("#bg-wrap").slick({
+            arrows: false,
+            dots: false,
+            touchMove: false,
+            draggable: false,
+          });
+        });
+      }
+      $(document).ready(function () {
+        // main banner
+        bannerBg();
+        $(".banner-wrap").slick({
+          dots: false,
+          appendArrows: $(".banner-arrows"),
+          prevArrow: '<div class="arrow prev-arrow"><span class="iconify" data-icon="bi:chevron-left" data-inline="false"></span></div>',
+          nextArrow: '<div class="arrow next-arrow"><span class="iconify" data-icon="bi:chevron-right" data-inline="false"></span></div>',
+        });
+        $(".main .main-banner .banner-arrows .next-arrow").on("click", function () {
+          $("#bg-wrap").slick("slickNext");
+        });
+        $(".main .main-banner .banner-arrows .prev-arrow").on("click", function () {
+          $("#bg-wrap").slick("slickPrev");
+        });
+
+        // weekly recommend
+        // grid photo size
+        $(".main .main-section.monthly-recommend .weekly-grid").on("init", function (event, slick) {
+          $(".main .main-section.monthly-recommend .weekly-grid .writer-photo").css("height", slick.$slides[0].clientWidth + "px");
+          slick.$slides.each(function (e) {
+            $(this).find(".filter")[0].style.backgroundColor = "rgba(" + colors[e][0] + ", 0.3)";
+          });
+        });
+        // grid slick
+        $(".main .main-section.monthly-recommend .weekly-grid").slick({
+          infinite: false,
+          arrows: false,
+          dots: false,
+          slidesToShow: 4,
+        });
+      });
+    </script>
+  </th:block>
+</html>

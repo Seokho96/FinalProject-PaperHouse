@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<title>Mypage</title>
+</head>
+<body>
+
+<p align="center" th:text="${nickname} + '님 반갑습니다.'"></p>
+
+<table border="1" style="margin-left: auto; margin-right: auto;">
+	<tr th:each="list : ${map}">
+	<td th:if="${list.value}>'0'" th:text="${list.key} + '작가님의 남은 구독일 수는 ' + ${list.value} + '일입니다.'"></td>
+		<!-- <td th:unless="${list.value}<'0'" th:text="${list.key} + '작가님의 구독이 끝났습니다.'"></td> -->
+	</tr>
+</table>
+
+<br>
+
+<table border="1" style="margin-left: auto; margin-right: auto;">
+	<col width="200">
+	<thead>
+		<tr>
+			<th>기본설정</th>
+		<tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><a th:if="${status} == '1'" th:href="@{'article/write'}">글쓰기</a></td>
+		<tr>
+		<tr>
+			<td><a th:href="@{'mypage/mypageInfo'}">내정보관리</a></td>
+		<tr>
+		<tr>
+			<td><a th:href="@{'writer/application?userSeq='+${userSeq}}">작가 신청하기</a></td>
+		</tr>
+		<tr>
+			<td><a th:href="@{writer/detail?writerSeq=5}">작가 디테일(확인용!!)</a></td>
+		</tr>
+	</tbody>
+</table>
+
+<br><br>
+
+<table border="1" style="margin-left: auto; margin-right: auto;">
+	<col width="200">
+	<thead>
+		<tr>
+			<th>서비스 안내</th>
+		<tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><a th:href="@{'notice'}">공지사항</a></td>
+		<tr>
+		<tr>
+			<td><a th:href="@{'qna'}">1:1문의</a></td>
+		</tr>
+	</tbody>
+</table>
+
+
+<br>
+
+<form action="/user/logout" method="get" style="margin: 0 auto; width:80px;">
+<button>로그아웃</button>
+</form>
+</body>
+</html>

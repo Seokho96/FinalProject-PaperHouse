@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<body>
+
+	<div align="center">
+		<h1>
+			<span sec:authentication="principal.NICKNAME"></span>님 의 서재
+		</h1>
+		<table>
+			<col width="200px">
+			<col width="200px">
+			<tr>
+				<td>구독 작가: <span th:text="${subScribe}"></span></td>
+				<td>팔로우 작가 : <span th:text="${followed}"></span></td>
+			</tr>
+		</table>
+		<button type="button" id="subBtn">구독중</button>
+		<button type="button" id="folBtn">팔로우</button>
+		<div style="border: 1px solid;" id="divlibs">
+			<th:block th:each='sub:${listSubscribe}'>
+				<div style='display: inline-block;'>
+					<table border='1'>
+						<tr>
+							<td colspan='2'><img alt='이미지 없음' th:src='#{sub.file_system}'></td>
+						</tr>
+						<tr>
+							<th>작가명</th>
+							<td th:text='${sub.writerName}'></td>
+						</tr>
+						<tr>
+							<th>구독 만료일</th>
+							<td th:text='${sub.endDate}'></td>
+						</tr>
+
+					</table>
+				</div>
+			</th:block>
+		</div>
+		<div style="border: 1px solid; display: none;" id="divlibf">
+			<th:block th:each='fol:${listFollow}'>
+				<div style='display: inline-block;'>
+					<table border='1'>
+						<tr>
+							<td colspan='2'><img alt='이미지 없음' th:src='#{fol.file_system}'></td>
+						</tr>
+						<tr>
+							<th>작가명</th>
+							<td th:text='${fol.writerName}'></td>
+						</tr>
+						<tr>
+							<th>작가 소개</th>
+							<td th:text='${fol.intro}'></td>
+						</tr>
+
+					</table>
+				</div>
+			</th:block>
+		</div>
+	</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#subBtn").click(function(){
+		$("#divlibf").hide();
+		$("#divlibs").show();
+	});
+	$("#folBtn").click(function(){
+		$("#divlibs").hide();
+		$("#divlibf").show();
+	});
+});
+
+</script>
+</body>
+</html>

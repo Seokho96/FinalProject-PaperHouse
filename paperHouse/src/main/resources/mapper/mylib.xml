@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.paperhouse.dao.MyLibarayRepository">
+
+	<select id="getSubscribeW" parameterType="Integer" resultType="com.bit.paperhouse.dto.WriterDto">
+		SELECT u.WRITER_SEQ, to_char(END_DATE, 'yyyy-mm-dd')AS END_DATE, u.START_DATE, u.STATUS, w.WRITER_NAME,  w.INTRO, w.FILE_SYSTEM
+		FROM USER_SUBSCRIBE u , WRITER w
+		WHERE u.WRITER_SEQ = w.WRITER_SEQ AND u.USER_SEQ = #{user_seq}
+		ORDER BY u.END_DATE ASC
+	</select>
+	
+	<select id="getFollow" parameterType="Integer" resultType="String">
+		SELECT FOLLOWER
+		FROM USER_FOLLOW
+		WHERE USER_SEQ = #{user_seq}
+	</select>
+	
+	<select id="tmpGetWriter" parameterType="Integer" resultType="com.bit.paperhouse.dto.WriterDto">
+		SELECT *
+		FROM WRITER
+		WHERE WRITER_SEQ = #{writerSeq}
+	
+	</select>
+
+
+</mapper>

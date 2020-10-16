@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<main class="myLibrary-page main-common" layout:fragment="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="userInfo">
+          <h1><span sec:authentication="principal.NICKNAME"></span>의 서재</h1>
+          <h2 sec:authentication="principal.EMAIL"></h2>
+          <div class="subandfollow clearfix">
+            <div class="sub">
+              구독&nbsp;<span th:text="${subScribe}"></span>명
+            </div>
+            <div class="follow">
+              팔로우&nbsp;<span th:text="${followed}"></span>명
+            </div>
+          </div>
+          <div class="notice">
+            <a href="/search">지금 바로 <span>숨겨진 작가</span>를 찾아보세요 !</a>
+            <a href="/main">처음 시작하신다면 다른분들이 <span>추천하는 작가</span>를 둘러보세요 !</a>
+          </div>
+        </div>
+        <div class="writerList">
+          <!-- buttonWrap -->
+          <ul class="btnWrap clearfix">
+            <li class="btn allWriter active" id="allBtn">구독/팔로우한 작가</li>
+            <li class="btn subscribeWriter" id="subBtn">구독중인 작가</li>
+            <li class="btn followWriter" id="folBtn">팔로우한 작가</li>
+          </ul>
+          <!-- allWriterList -->
+          <!--  -->
+          <!-- list 새로 불러와야할듯 -->
+
+          <!-- subscribeWriterList -->
+          <th:block th:each='sub:${listSubscribe}'>
+            <div id="subscribeWriterList" class="listWrap">
+              <div class="list">
+                <div class="writerImg">
+                  <img alt='writerImg' th:src='#{sub.file_system}' />
+                </div>
+                <div class="writerName" th:text='${sub.writerName}'></div>
+                <div class="endSubDate" th:text='${sub.endDate}'></div>
+              </div>
+            </div>
+          </th:block>
+          <!-- followWriterList -->
+          <th:block th:each='sub:${listFollow}'>
+            <div id="followWriterList" class="listWrap">
+              <div class="list">
+                <div class="writerImg">
+                  <img alt='writerImg' th:src='#{fol.file_system}'>
+                </div>
+                <div class="writerName" th:text='${fol.writerName}'></div>
+                <div class="writerIntro" th:text='${fol.intro}'></div>
+              </div>
+            </div>
+          </th:block>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<th:block layout:fragment="script">
+  <script>
+    $(document).ready(function () {
+      $("#subBtn").click(function () {
+        $("#divlibf").hide();
+        $("#divlibs").show();
+      });
+      $("#folBtn").click(function () {
+        $("#divlibs").hide();
+        $("#divlibf").show();
+      });
+    });
+  </script>
+</th:block>
+
+</html>

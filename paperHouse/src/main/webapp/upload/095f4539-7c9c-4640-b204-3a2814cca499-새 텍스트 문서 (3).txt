@@ -1,0 +1,2 @@
+ tomcat: 
+    basedir: src/main/resources/static/upload

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.paperhouse.dao.UserRepository">
+
+
+<select id="regi" parameterType="com.bit.paperhouse.dto.UserDto">
+  INSERT INTO MEMBER(USER_SEQ, EMAIL, PWD, NICKNAME, AUTHORITY, ENABLED)
+  VALUES(USER_SEQ.NEXTVAL, #{email}, #{pwd}, #{nickname}, #{authority}, 0)
+</select> 
+
+<select id="findByid" resultType="com.bit.paperhouse.model.CustomSecurityDetails">
+   SELECT *
+   FROM MEMBER
+   WHERE EMAIL = #{username}
+</select>
+
+ <select id="findByEmail" parameterType="java.lang.String" resultType="com.bit.paperhouse.dto.UserDto">
+   SELECT *
+   FROM MEMBER
+   WHERE EMAIL = #{email}
+</select>
+
+<select id="resetPassword" parameterType="com.bit.paperhouse.dto.UserDto">
+  UPDATE MEMBER
+  SET PWD = #{pwd}
+  WHERE EMAIL = #{email}
+</select> 
+
+
+
+</mapper>

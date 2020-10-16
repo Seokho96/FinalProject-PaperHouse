@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.bit.paperhouse.dao.MyPageRepository">
+
+<select id="getWriterNames"  parameterType="java.lang.Integer" resultType="com.bit.paperhouse.dto.WriterDto">
+SELECT W.WRITER_NAME AS WRITERNAME,U.END_DATE AS ENDDATE
+FROM USER_SUBSCRIBE U INNER JOIN WRITER W ON U.USER_SEQ =W.USER_SEQ AND U.WRITER_SEQ=W.WRITER_SEQ
+WHERE U.USER_SEQ=#{userSeq}
+</select>
+
+<select id="selectStatus" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+SELECT STATUS
+FROM MEMBER M INNER JOIN WRITER W ON M.USER_SEQ=W.USER_SEQ
+WHERE M.USER_SEQ=#{userSeq}
+</select>
+
+
+
+</mapper>

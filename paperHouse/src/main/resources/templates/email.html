@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+    <meta
+      id="_csrf_header"
+      name="_csrf_header"
+      th:content="${_csrf.headerName}"
+    />
+    <title>Insert title here</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="http://lab.alexcican.com/set_cookies/cookie.js"
+      type="text/javascript"
+    ></script>
+  </head>
+  <body>
+    <div align="center">
+      <form action="" method="get">
+        <h2>회원가입</h2>
+
+        <div>
+          <input
+            type="text"
+            id="email"
+            name="username"
+            placeholder="이메일주소"
+            required="required"
+          />&nbsp;<button type="button" id="emailPost">이메일인증</button>
+          <div id="emailtext" style="color: #ffa931; font-size: 7px"></div>
+        </div>
+
+        <div id="checkView">
+          <br />
+          <input
+            type="email"
+            id="num"
+            name="num"
+            placeholder="인증번호"
+          />&nbsp;<button type="button" id="numCheck">인증번호 확인</button>
+        </div>
+        <br />
+        <div style="margin-right: 85px">
+          <input
+            type="password"
+            id="pwd"
+            name="password"
+            placeholder="비밀번호"
+            required="required"
+          /><br />
+          <div id="ptext" style="color: #ffa931; font-size: 7px"></div>
+          <br />
+          <input
+            type="password"
+            id="pwdCheck"
+            placeholder="비밀번호확인"
+            required="required"
+          /><br />
+          <div id="ptext2" style="color: #ff847c; font-size: 7px"></div>
+        </div>
+        <br />
+        <div>
+          <button type="button" id="regi">회원가입</button>
+        </div>
+        <input
+          type="hidden"
+          th:name="${_csrf.parameterName}"
+          th:value="${_csrf.token}"
+        />
+      </form>
+    </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+      var token = $("meta[name='_csrf']").attr("content");
+      var header = $("meta[name='_csrf_header']").attr("content");
+      $(function () {
+        $(document).ajaxSend(function (e, xhr, options) {
+          xhr.setRequestHeader(header, token);
+        });
+      });
+
+      let email = "";
+      let check = true;
+      $(document).ready(function () {
+        $("#checkView").hide();
+      });
+
+      $("#emailPost").click(function () {
+        email = $("#email").val();
+
+        let exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+
+        if (exptext.test(email) == false || email == "") {
+          swal("", "이메일형식이 올바르지 않습니다.", "error");
+
+          $("#email").focus();
+        } else {
+          $.ajax({
+            type: "GET",
+            url: "/searchPw",
+            data: { email: email },
+            success: function (str) {
+              swal("", "인증번호가 성공적으로 발송되었습니다", "success");
+              $("#checkView").show();
+              var date = new Date();
+              date.setTime(date.getTime() + 3 * 60 * 1000);
+              $.cookie(email, str, { expires: date, path: "/" });
+            },
+            error: function () {
+              swal("", "오류: 관리자에게 문의하세요", "error");
+            },
+          });
+        }
+      });
+
+      $("#numCheck").click(function () {
+        let num = $("#num").val();
+        let r_num = $.cookie(email);
+
+        if (num != r_num) {
+          swal("", "인증번호가 다릅니다", "error");
+        } else {
+          swal("이메일 확인 되었습니다").then(function () {
+            $("#email").attr("readonly", "readonly");
+            check = true;
+            $("#checkView").hide();
+          });
+        }
+      });
+
+      $("#regi").click(function () {
+        if (check == false) {
+          swal("", "이메일 인증을 해주세요", "error");
+        } else {
+          console.log("ajax");
+          $.ajax({
+            url: "/user/join/result",
+            type: "post",
+            data: { email: "drexpp01@gmail.com", pwd: "12" },
+            success: function () {
+              swal("회원가입에 성공했습니다").then(function () {
+                location.href = "/user/login";
+              });
+            },
+            error: function () {
+              swal("", "error", "error");
+            },
+          });
+          console.log("ajax done");
+          /*
+    		
+    		*/
+        }
+      });
+
+      /* document.getElementById('pwd').onkeyup = function() {
+       
+    	var msg = '',   val = this.value;
+     
+    	 val_Check = document.getElementById('pwdCheck').value;
+    	 let num = val.search(/[0-9]/g);   let eng = val.search(/[a-z]/ig);
+    	 let spe = val.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+    	 
+        if( val.length < 8 || val.length > 20){
+        	msg = '비밀번호는 8자리이상 20자리 이내로 입력해주세요'
+        }else if(val.search(/\s/) != -1){
+        	msg ="비밀번호는 공백 없이 입력해주세요.";}
+        else if(num < 0 || eng < 0 || spe < 0 ){
+    		 msg ="비밀번호에 영문,숫자, 특수문자를 혼합하여 입력해주세요.";     }	
+        
+        document.getElementById('ptext').textContent = msg; 
+    }
+    document.getElementById('pwdCheck').onkeyup = function() {
+    	var msg = '',
+    	val = this.value;
+    	val_Check = document.getElementById('pwd').value;
+    	if(val != val_Check){
+    		 msg ="비밀번호가 다릅니다. 다시 한번 확인해주세요"; }
+    	
+    	document.getElementById('ptext2').textContent = msg;
+    } */
+    </script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+
+바탕화면 git clone (주소)
+
+git branch
+fatal: not a git repository (or any of the parent directories): .git
+글 확인
+
+cd (디렉토리 이름)
+
+vim README.md
+
+i = 끼워넣기
+
+wq
+
+
+git checkout (머지를 위한 브랜치)
+
+git merge (나의 브랜치)
+
+
+git branch -r (원격 브랜치 확인)
+
+
+#주의사항
+나의 브랜치로 되어있는지 확인하기
