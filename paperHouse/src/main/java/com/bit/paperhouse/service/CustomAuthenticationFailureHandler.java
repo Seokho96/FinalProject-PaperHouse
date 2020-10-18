@@ -32,7 +32,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		}
 	
 		else if(exception instanceof DisabledException) {
-			errorMessage = "계정이 비활성화 되었습니다. 관리자에게 문의하세요.";
+			errorMessage = "이메일 인증이 필요합니다. 가입하실 때 입력하신 이메일을 확인해주세요";
 		}
 		
 		else if(exception instanceof CredentialsExpiredException) {

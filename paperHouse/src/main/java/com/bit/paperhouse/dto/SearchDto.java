@@ -15,7 +15,8 @@ public class SearchDto implements Serializable {
 	private String searchWord;
 	private String searchSort;
 	private String sort;
-	private int nowPage;
+	private int wNowPage;
+	private int cNowPage;
 	private int start;
 	private int end;
 }

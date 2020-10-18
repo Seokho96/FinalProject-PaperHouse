@@ -11,12 +11,22 @@ FROM USER_SUBSCRIBE U INNER JOIN WRITER W ON U.USER_SEQ =W.USER_SEQ AND U.WRITER
 WHERE U.USER_SEQ=#{userSeq}
 </select>
 
-<select id="selectStatus" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-SELECT STATUS
+<select id="selectStatus" parameterType="java.lang.Integer" resultType="java.lang.String">
+SELECT W.STATUS AS STATUS
 FROM MEMBER M INNER JOIN WRITER W ON M.USER_SEQ=W.USER_SEQ
 WHERE M.USER_SEQ=#{userSeq}
 </select>
 
+<select id="selectWriterSeq" parameterType="java.lang.Integer" resultType="java.lang.String">
+SELECT W.WRITER_SEQ AS WRITERSEQ
+FROM MEMBER M INNER JOIN WRITER W ON M.USER_SEQ=W.USER_SEQ
+WHERE M.USER_SEQ=#{userSeq}
+</select>
 
+<select id="getNickName" parameterType="java.lang.String" resultType="java.lang.String">
+SELECT NICKNAME
+FROM MEMBER
+WHERE NICKNAME=#{nickname}
+</select>
 
 </mapper>

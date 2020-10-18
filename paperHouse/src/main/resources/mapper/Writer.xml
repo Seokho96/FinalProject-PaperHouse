@@ -17,5 +17,16 @@
 	WHERE WRITER_SEQ = #{writerSeq}
 </select>
 
+<select id="getSubCount" parameterType="java.lang.Integer" resultType="java.lang.Integer"> 
+	SELECT COUNT(USER_SEQ)
+	FROM USER_SUBSCRIBE
+	WHERE WRITER_SEQ = #{writerSeq}
+</select>
+
+<select id="getWriterlist" resultType="com.bit.paperhouse.dto.WriterDto"> 
+	SELECT *
+	FROM WRITER
+	WHERE STATUS = 1
+</select>
 
 </mapper>

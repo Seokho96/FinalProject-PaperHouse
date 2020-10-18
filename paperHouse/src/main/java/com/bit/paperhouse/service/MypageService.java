@@ -19,8 +19,19 @@ public class MypageService {
 		return list;
 	}
 
-	public int selectStatus(int userSeq) {
-		int status = dao.selectStatus(userSeq);
+	public String selectStatus(int userSeq) {
+		String status = dao.selectStatus(userSeq);
 		return status;
 	}
+	
+	public String selectWriterSeq(int userSeq) {
+		String writerSeq = dao.selectStatus(userSeq);
+		return writerSeq;
+	}
+	
+	public String getNickName(String nickname) {
+		String nick = dao.getNickName(nickname);
+		return nick;
+	}
+	
 }

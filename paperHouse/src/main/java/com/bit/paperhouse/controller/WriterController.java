@@ -72,7 +72,7 @@ public class WriterController {
 		System.out.println(dto);
 		service.addWriterApply(dto);
 		
-		return "redirect:/mypage";
+		return "redirect:/myPage";
 	}
 	
 	@GetMapping("/writer/detail")
@@ -82,6 +82,7 @@ public class WriterController {
 		CustomSecurityDetails user = (CustomSecurityDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String nickname = user.getNICKNAME();
 		int userSeq = user.getUSERSEQ();
+		String email = user.getEMAIL();
 		
 		//작가상세페이지 data 조회
 		WriterDto dto = service.getWriterDetail(writerSeq);
@@ -108,6 +109,7 @@ public class WriterController {
 		
 		model.addAttribute("nickname", nickname);	
 		model.addAttribute("userSeq", userSeq);
+		model.addAttribute("email", email);
 		model.addAttribute("img", encodedUrl);	
 		model.addAttribute("list", dto);	
 		

@@ -14,7 +14,7 @@ public class PaymentDto implements Serializable {
 	private int paySeq;
 	private int userSeq;
 	private int writerSeq;
-	private String approvalNumber;
+	private int approvalNumber;
 	private String paymentMethod;
 	private String paymentDetail;
 	private String paymentDate;

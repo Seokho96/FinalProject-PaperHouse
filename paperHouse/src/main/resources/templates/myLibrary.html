@@ -25,17 +25,12 @@
         <div class="writerList">
           <!-- buttonWrap -->
           <ul class="btnWrap clearfix">
-            <li class="btn allWriter active" id="allBtn">구독/팔로우한 작가</li>
-            <li class="btn subscribeWriter" id="subBtn">구독중인 작가</li>
+            <li class="btn subscribeWriter active" id="subBtn">구독중인 작가</li>
             <li class="btn followWriter" id="folBtn">팔로우한 작가</li>
           </ul>
-          <!-- allWriterList -->
-          <!--  -->
-          <!-- list 새로 불러와야할듯 -->
-
           <!-- subscribeWriterList -->
-          <th:block th:each='sub:${listSubscribe}'>
-            <div id="subscribeWriterList" class="listWrap">
+          <div id="subscribeWriterList" class="listWrap clearfix">
+            <th:block th:each='sub:${listSubscribe}'>
               <div class="list">
                 <div class="writerImg">
                   <img alt='writerImg' th:src='#{sub.file_system}' />
@@ -43,10 +38,10 @@
                 <div class="writerName" th:text='${sub.writerName}'></div>
                 <div class="endSubDate" th:text='${sub.endDate}'></div>
               </div>
+            </th:block>
             </div>
-          </th:block>
           <!-- followWriterList -->
-          <th:block th:each='sub:${listFollow}'>
+          <th:block th:each='fol:${listFollow}'>
             <div id="followWriterList" class="listWrap">
               <div class="list">
                 <div class="writerImg">
@@ -66,12 +61,12 @@
   <script>
     $(document).ready(function () {
       $("#subBtn").click(function () {
-        $("#divlibf").hide();
-        $("#divlibs").show();
+        $("#followWriterList").hide();
+        $("#subscribeWriterList").show();
       });
       $("#folBtn").click(function () {
-        $("#divlibs").hide();
-        $("#divlibf").show();
+        $("#subscribeWriterList").hide();
+        $("#followWriterList").show();
       });
     });
   </script>

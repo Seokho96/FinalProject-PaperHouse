@@ -1,16 +1,23 @@
 package com.bit.paperhouse.service;
 
+import java.security.Key;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bit.paperhouse.dao.UserRepository;
+import com.bit.paperhouse.dto.ArticleDto;
 import com.bit.paperhouse.dto.UserDto;
+
+import oracle.security.pki.Cipher;
 
 
 @Service
@@ -24,18 +31,11 @@ public class UserService {
 	PasswordEncoder bCryptPasswordEncoder;
 
 
-	// 일반 회원가입
-	public void regi( UserDto dto ) {
+	// 이메일 인증 후 처리
+	public void regi( UserDto dto ) throws Exception {
 		System.out.print("UserService reig()");
-		String rPwd = dto.getPwd();
-		String securityPwd = bCryptPasswordEncoder.encode(rPwd);
-		dto.setAuthority("ROLE_USER");
-		dto.setPwd(securityPwd);
-		
-		String nickname = nickname();
-	
-		dto.setNickname(nickname);
-		 dao.regi(dto);
+			  
+		 dao.emailCheckAf(dto);
 	}
 	
 	// 소셜서비스를 이용한 화원가입
@@ -47,12 +47,27 @@ public class UserService {
 		String securityPwd = bCryptPasswordEncoder.encode(rPwd);
 		dto.setAuthority("ROLE_USER");
 		dto.setPwd(securityPwd);
-		
+		dto.setEnabled(0);
 		String nickname = nickname();
 	
 		dto.setNickname(nickname);
 		 dao.regi(dto);
 	
+	}
+	
+	//이메일 인증 전 회원가입
+	public void nonEmailRegi( UserDto dto ) {
+		System.out.print("UserService nonEmailRegi()");
+		String rPwd = dto.getPwd();
+		String securityPwd = bCryptPasswordEncoder.encode(rPwd);
+		dto.setAuthority("ROLE_USER");
+		dto.setPwd(securityPwd);
+		dto.setEnabled(1);
+		
+		String nickname = nickname();
+	
+		dto.setNickname(nickname);
+		 dao.regi(dto);
 	}
 	
 	// 소셜로그인 시 체크
@@ -70,6 +85,24 @@ public class UserService {
 		
 		dao.resetPassword(dto);
 	}
+	
+	public List<ArticleDto> getArticleList(String category){
+		
+		List<ArticleDto> list = dao.getArticleList(category);
+		
+		return list;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	// 닉네임 생성기
 	public String nickname() {
@@ -97,6 +130,42 @@ public class UserService {
         return nickname;
 		
 	}
+	
+	/*
+	인증번호 암호화 수정중
+	
+	public Key getAESKey() throws Exception {
+	    String iv;
+	    Key keySpec;
+
+	    String key = "1234567890123456";
+	    iv = key.substring(0, 16);
+	    byte[] keyBytes = new byte[16];
+	    byte[] b = key.getBytes("UTF-8");
+
+	    int len = b.length;
+	    if (len > keyBytes.length) {
+	       len = keyBytes.length;
+	    }
+
+	    System.arraycopy(b, 0, keyBytes, 0, len);
+	    keySpec = new SecretKeySpec(keyBytes, "AES");
+
+	    return keySpec;
+	}
+
+
+	// 복호화
+	public String decAES(String enStr) throws Exception {
+	    Key keySpec = getAESKey();
+	    Cipher c = Cipher.getInstance("DESede");
+	    c.init(Cipher.DECRYPT_MODE, keySpec);
+	    byte[] byteStr = Base64.decodeBase64(enStr.getBytes("UTF-8"));
+	    String decStr = new String(c.doFinal(byteStr), "UTF-8");
+
+	    return decStr;
+	}
+	*/
 
 
 }

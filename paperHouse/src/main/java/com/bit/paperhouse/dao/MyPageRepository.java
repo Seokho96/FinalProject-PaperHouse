@@ -12,6 +12,8 @@ import com.bit.paperhouse.dto.WriterDto;
 public interface MyPageRepository {
 	
     public List<WriterDto> getWriterNames(int userSeq);
-    public int selectStatus(int userSeq);
+    public String selectStatus(int userSeq);
+    public String selectWriterSeq(int userSeq);
+    public String getNickName(String nickname);
  
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        <h2 align="center"> 공지사항 작성</h2>
+<form name="noticeForm" id="noticeForm" method="post" th:action="@{'notice/writeEnd'}" >
+
+    <table class="list_table" style="width:85%;">
+        <colgroup>
+            <col style="width:200px;" />
+            <col style="width:auto;" />
+        </colgroup>
+
+        <tbody>
+        <tr>
+            <th>제목</th>
+            <td style="text-align: left">
+                <input th:text="${''}" name="title" size="60" placeholder="제목을 입력하세요"/>
+            </td>
+        </tr>
+        <tr>
+            <th>내용</th>
+            <td style="text-align: left">
+                <textarea  rows="10" cols="50" name='cont' id="cont" placeholder="내용을 입력하세요"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="height:50px; text-align:center;">
+
+                <input type="submit" value="글쓰기">
+
+            </td>
+        </tr>
+        <tr>
+            <td> <input type="file"> </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+</form>
+
+
+</body>
+</html>

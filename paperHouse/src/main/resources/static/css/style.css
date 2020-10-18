@@ -76,6 +76,7 @@ header.main-header .utils .alert {
   margin-right: 10px;
 }
 header.main-header .utils .logout {
+  cursor: pointer;
   width: 80px;
   border-radius: 5px;
   color: #fff;
@@ -936,28 +937,50 @@ footer .copyright {
   line-height: 36px;
   transition: all 0.35s ease;
 }
+.myLibrary-page .writerList .btnWrap .btn:first-child {
+  margin-right: 16px;
+}
 .myLibrary-page .writerList .btnWrap .btn.active {
   color: #111;
   box-shadow: inset 0px -3px #111;
   font-weight: 700;
 }
-.myLibrary-page .writerList .btnWrap .allWriter {
-}
+
 .myLibrary-page .writerList .btnWrap .subscribeWriter {
 }
 .myLibrary-page .writerList .btnWrap .followWriter {
 }
 .myLibrary-page .writerList .listWrap {
+  margin: 32px 0;
 }
 .myLibrary-page .writerList .listWrap .list {
+  float: left;
+  width: 20%;
+  padding: 0 8px;
+  margin-bottom: 16px;
 }
 .myLibrary-page .writerList .listWrap .list .writerImg {
+  min-height: 218px;
+  margin-bottom: 8px;
 }
 .myLibrary-page .writerList .listWrap .list .writerImg img {
+  width: 100%;
+  display: block;
 }
 .myLibrary-page .writerList .listWrap .list .writerName {
+  color: #000;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  margin-bottom: 4px;
 }
 .myLibrary-page .writerList .listWrap .list .endSubDate {
+  color: #777;
+  font-size: 14px;
+  line-height: 16px;
 }
 .myLibrary-page .writerList .listWrap .list .writerIntro {
+  color: #777;
+  font-size: 14px;
+  line-height: 16px;
 }

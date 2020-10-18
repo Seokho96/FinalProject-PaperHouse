@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<th:form name="noticeList" id="noticeList" >
+    <div class="toggle">
+        <div th:if="${notice} == null">
+            <tr>
+                <td> 작성된 글이 없습니다</td>
+            </tr>
+        </div>
+        <div th:each="list : ${notice}">
+           <tr >
+               <td th:if="${list.del == 0}">
+               <td> <input</td>
+                                           <span th:field="${list.noticeSeq}">
+                   <input id="titleClick" th:value="${list.title}" onclick="cont()">
+                   <span id="cont" th:type="hidden" th:text="${list.cont}">   </span>
+                                         </span>
+                </td>
+
+
+              <td th:if="${list.del == 1}">
+                   ********** 관리자에 의해 글이 삭제 되었습니다 **********
+              </td>
+            </tr>
+            </tr>
+
+           </tr>
+       </div>
+   </div>
+<!--    <p  onclick="document.getElementById('hiddenContent02').style.display=(document.getElementById('hiddenContent02').style.display=='block') ? 'none' : 'block';" th:text="${list.title}">[공지] 밀리 신규 뷰어 정식오픈</p>-->
+<!--    <p id="hiddenContent02" class="example01" style="display: none;" th:value="${list.cont}">내용 </p>-->
+
+
+    </table>
+
+    <a th:href="@{'noticeWrite'}">글작성</a>
+    <a th:href="@{'notice/delete?noticeSeq='+${noticeSeq}}" id="noticeDelete">글삭제</a>
+    </div>
+</th:form>
+</body>
+
+<script type="text/javascript">
+
+    function cont() {
+        $.ajax({
+            url:"/notice/ajax",     // 맵핑 주소
+            type:'get',             //맵핑 방식
+            data:{ cont:"0" },
+            success:function(data){
+
+                alert(data);
+
+                if(data == "1"){
+                    $("#titleClick").find("#cont").show();
+
+                }
+                else{
+                    $("#titleClick").find("#cont").hide();
+                }
+            }
+        })
+    }
+
+
+</script>
+</html>

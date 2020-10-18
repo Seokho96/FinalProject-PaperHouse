@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<head th:replace="fragments/config :: configFragment"></head>
 </head>
 <body>
 <div align="center">
@@ -28,7 +28,10 @@
 <button type="button" id="applyBtn">작가 등록</button>
 </div>
 </body>
+
+<th:block layout:fragment="script">
 <script type="text/javascript">
+
 $(document).ready(function(){
 	$("#checkb").click(function(){
 		if( $("#checkb").is(':checked') ){
@@ -48,7 +51,7 @@ $(document).ready(function(){
 			    alert("삭제할 대상을 선택하세요.");
 			    return false;
 		  }else{
-			  if(confirm("정보를 삭제 하시겠습니까?")){
+			  if(confirm("정보를 등록 하시겠습니까?")){
 				  $.ajax({
 					 url:'/applyWriter',
 					 type:'get',
@@ -68,9 +71,9 @@ $(document).ready(function(){
 				  });
 			  }
 		  }
-		
 	});
 });
-
 </script>
+</th:block>
+
 </html>

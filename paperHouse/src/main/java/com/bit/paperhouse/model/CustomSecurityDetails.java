@@ -76,6 +76,10 @@ public class CustomSecurityDetails implements Serializable, UserDetails, OAuth2U
 	@Override
 	public boolean isEnabled() {
 		
+	if(ENABLED == 1) {
+		
+		return false;
+	}
 		return true;
 	}
 

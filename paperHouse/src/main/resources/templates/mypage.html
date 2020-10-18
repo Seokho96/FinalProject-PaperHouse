@@ -8,13 +8,6 @@
 
 <p align="center" th:text="${nickname} + '님 반갑습니다.'"></p>
 
-<table border="1" style="margin-left: auto; margin-right: auto;">
-	<tr th:each="list : ${map}">
-	<td th:if="${list.value}>'0'" th:text="${list.key} + '작가님의 남은 구독일 수는 ' + ${list.value} + '일입니다.'"></td>
-		<!-- <td th:unless="${list.value}<'0'" th:text="${list.key} + '작가님의 구독이 끝났습니다.'"></td> -->
-	</tr>
-</table>
-
 <br>
 
 <table border="1" style="margin-left: auto; margin-right: auto;">
@@ -26,16 +19,16 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td><a th:if="${status} == '1'" th:href="@{'article/write'}">글쓰기</a></td>
+			<td><a th:if="${status}== '1'" th:href="@{'article/write?writerSeq=' + ${writer}}">글쓰기</a></td>
 		<tr>
 		<tr>
-			<td><a th:href="@{'mypage/mypageInfo'}">내정보관리</a></td>
+			<td><a th:href="@{'myPage/mypageInfo'}">내정보관리</a></td>
 		<tr>
 		<tr>
-			<td><a th:href="@{'writer/application?userSeq='+${userSeq}}">작가 신청하기</a></td>
+			<td><a th:if="${status} != '1'" th:href="@{'writer/application?userSeq=' + ${userSeq}}">작가 신청하기</a></td>
 		</tr>
 		<tr>
-			<td><a th:href="@{writer/detail?writerSeq=5}">작가 디테일(확인용!!)</a></td>
+			<td><a th:href="@{writer/detail?writerSeq=5}">작가 디테일(확인용!! 나중에 없어짐니다.)</a></td>
 		</tr>
 	</tbody>
 </table>

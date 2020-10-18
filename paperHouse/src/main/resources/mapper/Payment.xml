@@ -7,11 +7,10 @@
 
 <insert id="infoPayment" parameterType="com.bit.paperhouse.dto.PaymentDto">
 	INSERT INTO PAYMENT(PAY_SEQ, USER_SEQ, WRITER_SEQ, APPROVAL_NUMBER, PAYMENT_METHOD, PAYMENT_DETAIL, PAYMENT_DATE)
-	VALUES(PAYMENT_SEQ.NEXTVAL, {userSeq}, {writerSeq}, #{approvalNumber}, #{paymentMethod}, #{paymentDetail}, TO_DATE(SYSDATE, 'YYYY-MM-DD'))
+	VALUES(PAYMENT_SEQ.NEXTVAL, #{userSeq}, #{writerSeq}, #{approvalNumber}, #{paymentMethod}, #{paymentDetail}, TO_DATE(SYSDATE, 'YYYY-MM-DD'))
 </insert>
-
 <insert id="insertSubscribe" parameterType="com.bit.paperhouse.dto.UserSubscribeDto">
-	INSERT INTO USER_SUBSCRIBE
+	INSERT INTO USER_SUBSCRIBE(USER_SEQ,WRITER_SEQ,START_DATE,END_DATE,STATUS )
 	VALUES(#{userSeq},#{writerSeq},TO_DATE(SYSDATE,'YYYY/MM/DD'),TO_DATE(SYSDATE,'YYYY/MM/DD')+30, 1)
 </insert>
 

@@ -10,7 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bit.paperhouse.dto.UserSubscribeDto;
 import com.bit.paperhouse.dto.WriterDto;
 import com.bit.paperhouse.model.CustomSecurityDetails;
 import com.bit.paperhouse.service.MypageService;
@@ -27,35 +31,49 @@ public class MyPageController {
 	MypageService service;
 	
 	//mypage 메인
-	@GetMapping("/mypage")
+	@GetMapping("/myPage")
 	public String mypage(Model model) {
 		CustomSecurityDetails user = (CustomSecurityDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String nickname = user.getNICKNAME();
 		int userSeq = user.getUSERSEQ();
 		
 		//DB NAME,DATE 조회
-		List<WriterDto> getNamesAndDates = service.getWriterNames(userSeq);
-		
-		//독자,작가 구분
-		int status = service.selectStatus(userSeq);
-		
-		System.out.println("리스트:" + getNamesAndDates.toString());
+		//List<WriterDto> getNamesAndDates = service.getWriterNames(userSeq);
 		
 		//남은 구독일 수 조회하는 함수
-		HashMap<String, Integer> map = UtilEx.getSubscribes(getNamesAndDates);
+		//HashMap<String, Integer> map = UtilEx.getSubscribes(getNamesAndDates);
+	
+		//독자,작가 구분
+		String status = service.selectStatus(userSeq);
+		String writer = service.selectWriterSeq(userSeq);
+		
+		
+		System.out.println("스테이터스: " + status);
+		System.out.println("라이터: " + writer);
+		
 		
 		model.addAttribute("status",status);
-		model.addAttribute("map",map);
+		model.addAttribute("writer",writer);
 		model.addAttribute("userSeq",userSeq);
 		model.addAttribute("nickname",nickname);
 		
-        return "mypage";
+        return "myPage";
+    }
+	
+	//작가 글 쓰기
+	@GetMapping("/article/write")
+	public String ariticleWrite() {
+        return "articleWrite";
     }
 	
 	//내 정보 관리
-	@GetMapping("/mypage/mypageInfo")
-	public String mypageInfo() {
-        return "mypageInfo";
+	@GetMapping("/myPage/mypageInfo")
+	public String mypageInfo(Model model) {
+		CustomSecurityDetails user = (CustomSecurityDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		int userSeq = user.getUSERSEQ();
+		
+		model.addAttribute(userSeq);
+        return "myPageInfo";
     }
 	
 	//작가 신청하기
@@ -81,5 +99,25 @@ public class MyPageController {
 	public String logout() {
         return "logout";
     }
+	
+	
+	@ResponseBody
+	@PostMapping("/mypage/getNickName")
+	public String getNickName(String nickname) {
+		
+		String getnick = service.getNickName(nickname);
+		String ajax = "";
+		
+		if(getnick == null) {
+			ajax = "";
+			
+			return ajax;
+		}
+		else {
+			ajax = "find";
+			
+			return ajax;
+		}
+	}
 	
 }

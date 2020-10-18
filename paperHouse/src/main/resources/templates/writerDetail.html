@@ -10,13 +10,16 @@
 
 <input type="hidden" id="nickname" th:value="${nickname}"/>
 <input type="hidden" id="userSeq" th:value="${userSeq}"/>
+<input type="hidden" id="email" th:value="${email}"/>
 <input type="hidden" id="writerSeq" th:value="${param.writerSeq}"/> 
 
 <h1>작가 이미지</h1>
 
+<p>업로드 예정</p>
 
  <br>
 
+<h3>작가이름</h3>
 <h1 th:text="${list.writerName}"></h1>
   <div>
   <button>좋아요</button>
@@ -36,10 +39,10 @@
  
 <table border="1">
 <tr>
-	<th>구독중인 사람</th><th>좋아요 개수</th><th>작가가 쓴 글</th>
+	<th>구독중인 사람</th><th>리뷰 수</th><th>작가가 쓴 글</th>
 </tr>
 <tr>
-	<td>select user_subcribe</td><td>select follow</td><td>select article</td>
+	<td>select user_subcribe</td><td>select Review</td><td>select article</td>
 </tr>
 </table> 
 
@@ -61,9 +64,9 @@
 <script type="text/javascript">
 
 let id=$("#nickname").val();
-console.log(id);
 let userSeq=$("#userSeq").val();
 let writerSeq=$("#writerSeq").val();
+let email=$("#email").val();
 
 $("#purchase").click(function(){
 	IMP.init('imp61961074');
@@ -72,30 +75,25 @@ $("#purchase").click(function(){
 	    pg : 'imp61961074', // version 1.1.0부터 지원.
 	    pay_method : 'card',
 	    merchant_uid : 'merchant_' + new Date().getTime(),
-	    name : '주문명:종이의집 작가구독',
-	    amount : 110, //판매 가격
-	    buyer_email : id + '@naver.com',
+	    name : '주문명:종이의집 작가구독서비스 30일',
+	    amount : 9900, //판매 가격
+	    buyer_email : email,
 	    buyer_name : id,
 	    buyer_tel : '010-1234-5678'
 	}, function(rsp) {
 	    if ( rsp.success ) {
-	       /*  var msg = '결제가 완료되었습니다.';
-	        msg += '  카드 승인번호 : ' + rsp.apply_num;
-	        msg += '  결제 수단: ' + rsp.pay_method;
-	        msg += '  결제 금액 : ' + rsp.paid_amount;
-	        msg += '  고유ID : ' + rsp.imp_uid;
-	        msg += '  상점 거래ID : ' + rsp.merchant_uid; */
 	     
 	        let data = {
-	        	"user_seq":user_seq,
-	        	"write_seq":write_seq,
-	        	"approval_number":rsp.apply_num,
-	        	"payment_method":rsp.pay_method,
-	        	"payment_detail":rsp.paid_amount
+	        	"userSeq":userSeq,
+	        	"writerSeq":writerSeq,
+	        	"approvalNumber":rsp.apply_num,
+	        	"paymentMethod":rsp.pay_method,
+	        	"paymentDetail":rsp.paid_amount
 	        };
 	        $.ajax({
-	        	url:"cash",
-	        	type:"post",
+	        	url:"/pay",
+	        	type:"get",
+	        	contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	        	datatye:'json',
 	        	data:data,
 	        	async:true,	
@@ -103,28 +101,28 @@ $("#purchase").click(function(){
 	    			alert( resp );
 	    			
 	    			$.ajax({
-	    				url:"sub",
-	    				type:"post",
-	    				datatye:'json',
+	    				url:"/sub",
+	    				type:"get",
+	    				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+	    				datatype:'json',
 	    				data:data,
 	    				async:true,	
 	    				success:function( resp ){
 	    					alert( resp );
 	    				},
 	    				error:function(){
-	    					alert('error');
+	    					alert('구독error');
 	    				}
 	    			});
 	    		},
 	    		error:function(){
-	    			alert('error');
+	    			alert('결제error');
 	    		}
 	        });
 	    } else {
 	        var msg = '결제에 실패하였습니다.';
 	        msg += '에러내용 : ' + rsp.error_msg;
 	    }
-	    //alert(msg);
 	});
 });
 </script>

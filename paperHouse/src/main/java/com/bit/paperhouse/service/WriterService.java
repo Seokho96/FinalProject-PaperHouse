@@ -1,5 +1,7 @@
 package com.bit.paperhouse.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,11 @@ public class WriterService {
 	public WriterDto getWriterDetail(int writerSeq) {
 		WriterDto dto = dao.getWriterDetail(writerSeq);
 		return dto;
+	}
+	
+	public List<WriterDto> getWriterlist() {
+		List<WriterDto> list =  dao.getWriterlist();
+		return list;
 	}
 	
 }

@@ -5,7 +5,7 @@
 
 <select id="regi" parameterType="com.bit.paperhouse.dto.UserDto">
   INSERT INTO MEMBER(USER_SEQ, EMAIL, PWD, NICKNAME, AUTHORITY, ENABLED)
-  VALUES(USER_SEQ.NEXTVAL, #{email}, #{pwd}, #{nickname}, #{authority}, 0)
+  VALUES(USER_SEQ.NEXTVAL, #{email}, #{pwd}, #{nickname}, #{authority}, #{enabled})
 </select> 
 
 <select id="findByid" resultType="com.bit.paperhouse.model.CustomSecurityDetails">
@@ -24,6 +24,12 @@
   UPDATE MEMBER
   SET PWD = #{pwd}
   WHERE EMAIL = #{email}
+</select> 
+
+<select id="emailCheckAf" parameterType="com.bit.paperhouse.dto.UserDto">
+  UPDATE MEMBER
+  SET ENABLED = 0, EMAIL = #{email}
+  WHERE EMAIL = #{pwd}
 </select> 
 
 
