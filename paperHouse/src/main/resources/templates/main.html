@@ -88,11 +88,11 @@
                 <div class="weekly-grid">
              
                   <th:block th:each="writer, i:${writerList}">                        
-                  <th:block th:unless="${i == 0 || i == 1 || i == 2 || i == 3}">
+                  <th:block th:if="${i.index < 4}">
                   <div class="grid-wrap">
                     <div class="writer-photo">
                       <div class="filter"></div>
-                      <img src="/static/asset/d.jpg" alt="" />
+                      <img src="/static/asset/c.jpg" alt="" />
                     </div>
                     <div class="writer-desc" >한국인이 가장 사랑하는 작가</div>
                     <div class="writer-name" th:text="${writer.writerName}"></div>
@@ -100,16 +100,6 @@
                   </th:block>                          
                </th:block> 
                
-             <!--    <th:block th:each="num:${#numbers.sequence(0,3)}">
-                  <div class="grid-wrap">
-                    <div class="writer-photo">
-                      <div class="filter"></div>
-                      <img src="/static/asset/d.jpg" alt="" />
-                    </div>
-                    <div class="writer-desc" >한국인이 가장 사랑하는 작가</div>
-                    <div class="writer-name">둘리</div>
-                  </div>
-               </th:block> -->
    
                 </div>
               </div>
@@ -130,12 +120,12 @@
 
             <div class="main-section recommend-article">
               <div class="section-title">취향별 추천글</div>
-              <ul class="section-tap-wrap clearfix" id="category">
-                <li class="tab active" onclick="articleWrap('소설')">소설</li>
-                <li class="tab" onclick="articleWrap('에세이')">에세이</li>
-                <li class="tab" >카테고리3</li>
-                <li class="tab">카테고리4</li>
-                <li class="tab">카테고리5</li>
+              <ul class="section-tap-wrap clearfix">
+                <li class="tab active" onclick="articleWrap('소설', '#tab1')" id="tab1">소설</li>
+                <li class="tab" onclick="articleWrap('에세이','#tab2')" id="tab2">에세이</li>
+                <li class="tab" onclick="articleWrap('시','#tab3')" id="tab3">시</li>
+                <li class="tab" id="tab4">카테고리4</li>
+                <li class="tab" id="tab5">카테고리5</li>
               </ul>
               <div class="section-body">
                 <div class="article-wrap" id="articleWrap">
@@ -144,7 +134,7 @@
                       <th:block th:if="${i.index < 3}"> 
                     <div class="articles">
                       <div class="article-thumb">
-                        <img src="/static/asset/a.jpg" alt="article thumb" />
+                        <img src="/static/asset/cc.jpg" alt="article thumb" />
                       </div>
                       <div class="article-title" th:text="${articleList.title}"></div>
                     </div>
@@ -157,7 +147,7 @@
                  <th:block th:if="${i.index > 2 && i.index < 6}">                  
                     <div class="articles">
                       <div class="article-thumb">
-                        <img src="/static/asset/a.jpg" alt="article thumb" />
+                        <img src="/static/asset/cc.jpg" alt="article thumb" />
                       </div>
                       <div class="article-title" th:text="${articleList.title}"></div>
                     </div>
@@ -186,8 +176,22 @@
         </div>
       </div>
     </div>
-      <script>      
-    function articleWrap(categorys){
+      <script>  
+      
+  //취향별 추천글    
+    function articleWrap(categorys, tab){
+    /* 	$(".tab active").attr("class","tab"); */
+    if(tab == "#tab1"){
+    	$("#tab2").attr("class","tab");$("#tab3").attr("class","tab");$("#tab4").attr("class","tab");$("#tab5").attr("class","tab");
+    }else if(tab == "#tab2"){
+    	$("#tab1").attr("class","tab");$("#tab3").attr("class","tab");$("#tab4").attr("class","tab");$("#tab5").attr("class","tab");
+    }else if(tab == "#tab3"){
+    	$("#tab1").attr("class","tab");$("#tab2").attr("class","tab");$("#tab4").attr("class","tab");$("#tab5").attr("class","tab");
+    }else if(tab == "#tab4"){
+    	$("#tab1").attr("class","tab");$("#tab2").attr("class","tab");$("#tab3").attr("class","tab");$("#tab5").attr("class","tab");
+    }else if(tab == "#tab5"){
+    	$("#tab1").attr("class","tab");$("#tab2").attr("class","tab");$("#tab3").attr("class","tab");$("#tab4").attr("class","tab");
+    }
       	let category = categorys;
       	  $.ajax({
     			url:"/main/articleWrap",
@@ -195,20 +199,21 @@
     			 data:{"category":category},
     			success:function( data ){
     		let firstWrap = "<div class='inner first clearfix'>";
+    		
     		let secondWrap = "</div><div class='inner second clearfix'>";
     		
     		$.each(data,function(index, item) {
     			if(index < 3){
     				firstWrap += "<div class='articles'>"
                              + "<div class='article-thumb'>"
-                             +"<img src='/static/asset/a.jpg' alt='article thumb' />"
+                             +"<img src='/static/asset/cc.jpg' alt='article thumb' />"
                              + "</div>"
                              + "<div class='article-title'>"+ item.title +"</div>"
                              + "</div>";
     			}else if(index >= 3 && index < 6){
     				secondWrap += "<div class='articles'>"
                                  + "<div class='article-thumb'>"
-                                 + "<img src='/static/asset/a.jpg' alt='article thumb' />"
+                                 + "<img src='/static/asset/cc.jpg' alt='article thumb' />"
                                  + "</div>"
                                  + "<div class='article-title'>"+ item.title +"</div>"
                                  + "</div>"
@@ -217,6 +222,8 @@
     		});
     		let articleWrap = firstWrap + secondWrap + "</div>";
     		  $("#articleWrap").html(articleWrap);
+    		 
+    		  $(tab).attr("class","tab active");
     	         
   	},
     			error:function(){

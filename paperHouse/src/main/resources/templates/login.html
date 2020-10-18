@@ -63,7 +63,8 @@
         e = e;
 
         if (e.code == "F5") {
-          if (confirm("찾고 있는 페이지에서 사용자가 입력한 정보를 사용했습니다. 해당 페이지로 돌아가면 기존 작업을 반복할 수 있습니다. 계속하시겠습니까?")) {
+        	let result = confirm("찾고 있는 페이지에서 사용자가 입력한 정보를 사용했습니다. 해당 페이지로 돌아가면 기존 작업을 반복할 수 있습니다. 계속하시겠습니까?");
+          if (result) {
             location.href = "/user/login";
           } else {
             e.preventDefault();

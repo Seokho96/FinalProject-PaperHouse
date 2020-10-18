@@ -28,7 +28,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		
 	
 		if(exception instanceof BadCredentialsException || exception instanceof InternalAuthenticationServiceException) {
-			errorMessage = "아이디나 비밀번호가 맞지 않습니다. 다시 확인해 주십시오.";
+			errorMessage = "이메일 인증을 하지 않았거나 아이디 또는 비밀번호가 맞지 않습니다. 다시 확인해 주십시오.";
 		}
 	
 		else if(exception instanceof DisabledException) {

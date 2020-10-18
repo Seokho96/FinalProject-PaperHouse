@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,8 +43,7 @@ public class TestController {
     }
     
     // 메인 페이지
-    //@Secured("ROLE_USER")
-    
+  //  @Secured("ROLE_USER")    
     @GetMapping("/main")
     public String main(Model model) {
     	System.out.println("main()");
@@ -59,22 +59,14 @@ public class TestController {
         List<ArticleDto> articleList = userSvc.getArticleList(category);
         model.addAttribute("articleList", articleList); 
         
-        for(int  i = 0; i< articleList.size(); i++ ){
-        	ArticleDto article = new ArticleDto();
-        	article = articleList.get(i);
-        	System.out.println(article.getCategorys());
-        }
         return "/main";
     }
     
     @GetMapping("/main/articleWrap")
     public @ResponseBody List<ArticleDto> article(String category) {
-    	System.out.println("main()");
     	
-    	  List<ArticleDto> articleList = userSvc.getArticleList(category);
-        	//model.addAttribute("writerList", writerList);  	
-           // String todaySentence = todaySentence();
-          //model.addAttribute("todaySentence", todaySentence);
+    	List<ArticleDto> articleList = userSvc.getArticleList(category);
+        
         return articleList;
     }
     
