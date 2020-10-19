@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bit.paperhouse.dao.MyPageRepository;
+import com.bit.paperhouse.dto.UserDto;
 import com.bit.paperhouse.dto.WriterDto;
 
 @Service
@@ -25,13 +26,17 @@ public class MypageService {
 	}
 	
 	public String selectWriterSeq(int userSeq) {
-		String writerSeq = dao.selectStatus(userSeq);
+		String writerSeq = dao.selectWriterSeq(userSeq);
 		return writerSeq;
 	}
 	
 	public String getNickName(String nickname) {
 		String nick = dao.getNickName(nickname);
 		return nick;
+	}
+	
+	public void updateNickName(UserDto dto) {
+		dao.updateNickName(dto);
 	}
 	
 }

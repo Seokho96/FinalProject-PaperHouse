@@ -1,0 +1,9 @@
+public static List<Integer> getFollowed(String follow) {
+		String followed[] = follow.split("-");
+		List<Integer> list = new ArrayList<Integer>();
+		for (int i = 0; i < followed.length; i++) {
+			int f = Integer.parseInt(followed[i]);
+			list.add(f);
+		}
+		return list;
+	}

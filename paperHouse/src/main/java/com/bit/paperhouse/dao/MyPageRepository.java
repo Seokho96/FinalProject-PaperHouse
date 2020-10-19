@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import com.bit.paperhouse.dto.UserDto;
 import com.bit.paperhouse.dto.WriterDto;
 
 @Mapper
@@ -15,5 +16,7 @@ public interface MyPageRepository {
     public String selectStatus(int userSeq);
     public String selectWriterSeq(int userSeq);
     public String getNickName(String nickname);
- 
+    public void updateNickName(UserDto dto);
+    
+   
 }

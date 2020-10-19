@@ -37,6 +37,7 @@
                 </div>
                 <div class="writerName" th:text='${sub.writerName}'></div>
                 <div class="endSubDate" th:text='${sub.endDate}'></div>
+                <div class="endSubDate" th:text='${sub.endCount}'></div>
               </div>
             </th:block>
             </div>
@@ -60,6 +61,7 @@
 <th:block layout:fragment="script">
   <script>
     $(document).ready(function () {
+    	$("#followWriterList").hide();
       $("#subBtn").click(function () {
         $("#followWriterList").hide();
         $("#subscribeWriterList").show();

@@ -19,4 +19,5 @@ public class SearchDto implements Serializable {
 	private int cNowPage;
 	private int start;
 	private int end;
+	private String categorySort;
 }

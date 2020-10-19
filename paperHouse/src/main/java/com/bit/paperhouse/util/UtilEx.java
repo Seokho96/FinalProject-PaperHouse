@@ -105,8 +105,6 @@ public class UtilEx {
 		UUID uuid = UUID.randomUUID();
 	    String saveName = uuid + "-" + file.getOriginalFilename();
 	    
-	    //절대 경로
-	    //String UPLOAD_PATH = "C:\\Users\\bxoo\\Desktop\\bit-final-project\\paperHouse\\src\\main\\resources\\static\\upload";
 	   
 	    System.out.println("업로드패쓰 : " + path);
 	    
@@ -124,4 +122,36 @@ public class UtilEx {
 	    
 	    return saveName;
 	}
+	
+	public static String unFollow(String followList, String unfollow) {
+		System.out.println("unFollow method Start");
+		
+		String followed[] = followList.split("-");
+		String setFollowDB = "";
+		
+		List<String> list = new ArrayList<String>();
+		for (int i = 0; i < followed.length; i++) {
+			String f = followed[i];
+			list.add(f + "-");
+		}
+		
+		System.out.println("디비에서 뽑은 리스트: " + list.toString());
+		
+		for (int i = 0; i < list.size(); i++) {
+			list.remove(unfollow + "-");
+		}
+		
+		System.out.println("시퀀스 삭제한 리스트: " + list.toString());
+		
+		for (int i = 0; i < list.size(); i++) {
+			setFollowDB += list.get(i);
+		}
+		
+		System.out.println("디비 입력 값 : " + setFollowDB);
+		
+		System.out.println("unFollow method End");
+		
+		return setFollowDB;
+	}
+	
 }

@@ -1,62 +1,56 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-<meta charset="UTF-8">
-<title>Mypage</title>
-</head>
-<body>
-
-<p align="center" th:text="${nickname} + '님 반갑습니다.'"></p>
-
-<br>
-
-<table border="1" style="margin-left: auto; margin-right: auto;">
-	<col width="200">
-	<thead>
-		<tr>
-			<th>기본설정</th>
-		<tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td><a th:if="${status}== '1'" th:href="@{'article/write?writerSeq=' + ${writer}}">글쓰기</a></td>
-		<tr>
-		<tr>
-			<td><a th:href="@{'myPage/mypageInfo'}">내정보관리</a></td>
-		<tr>
-		<tr>
-			<td><a th:if="${status} != '1'" th:href="@{'writer/application?userSeq=' + ${userSeq}}">작가 신청하기</a></td>
-		</tr>
-		<tr>
-			<td><a th:href="@{writer/detail?writerSeq=5}">작가 디테일(확인용!! 나중에 없어짐니다.)</a></td>
-		</tr>
-	</tbody>
-</table>
-
-<br><br>
-
-<table border="1" style="margin-left: auto; margin-right: auto;">
-	<col width="200">
-	<thead>
-		<tr>
-			<th>서비스 안내</th>
-		<tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td><a th:href="@{'notice'}">공지사항</a></td>
-		<tr>
-		<tr>
-			<td><a th:href="@{'qna'}">1:1문의</a></td>
-		</tr>
-	</tbody>
-</table>
-
-
-<br>
-
-<form action="/user/logout" method="get" style="margin: 0 auto; width:80px;">
-<button>로그아웃</button>
-</form>
-</body>
+<html
+  lang="ko"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
+>
+  <main class="myPage main-common" layout:fragment="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="inner-wrap">
+            <p th:text="${nickname}" class="nickName"></p>
+            <div class="subBox" onclick="location.href = 'myLibrary'">
+              <p class="mainTxt">작가분들을 구독해보세요</p>
+              <p class="subTxt">처음만나는 색다른 글들을 찾아보아요</p>
+              <span class="goSubList">구독 보기<span class="iconify" data-icon="bytesize:chevron-right" data-inline="false"></span></span>
+            </div>
+            <div class="settingWrap">
+              <div class="defaultSetting settings">
+                <div class="wrapName">계정 설정</div>
+                <ul class="wrapList">
+                  <li class="list"><a th:href="@{'myPage/mypageInfo'}">내정보관리</a></li>
+                  <li class="list"><a th:if="${status}== '1'" th:href="@{'article/write?writerSeq=' + ${writer}}">글쓰기</a></li>
+                  <li class="list"><a th:if="${status} != '1'" th:href="@{'writer/application?userSeq=' + ${userSeq}}">작가 신청하기</a></li>
+                  <li class="list"></li>
+                </ul>
+              </div>
+              <div class="serviceManage settings">
+                <div class="wrapName">서비스 안내</div>
+                <ul class="wrapList">
+                  <li class="list"><a th:href="@{'notice'}">공지사항</a></li>
+                  <li class="list"><a th:href="@{'qna'}">1:1문의</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <th:block layout:fragment="script">
+    <script>
+      $(document).ready(function () {
+        var headerHeight = $("header").outerHeight();
+        var footerHeight = $("footer").outerHeight();
+        console.log(headerHeight);
+        console.log(footerHeight);
+        $(".myPage").css("min-height", "calc(100vh - " + (headerHeight + footerHeight) + "px)");
+        console.log($(".myPage"));
+      });
+    </script>
+  </th:block>
 </html>

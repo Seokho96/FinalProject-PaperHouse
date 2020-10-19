@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.bit.paperhouse.dao.ArticleRepository">
+
+<select id="getArticleAllList" resultType="com.bit.paperhouse.dto.ArticleDto">
+	SELECT *
+	FROM ARTICLE
+</select>
+
+<insert id="insertArticle" parameterType="com.bit.paperhouse.dto.ArticleDto">
+	INSERT INTO ARTICLE(WRITER_SEQ,ARTICLE_SEQ,TITLE,CONT,UPLOAD_DATE,VIEWCOUNT,LIKES,CATEGORYS,FILE_ORIGINAL,FILE_SYSTEM)
+	VALUES(#{writerSeq},ARTICLE_SEQ.NEXTVAL,#{title},#{cont},TO_CHAR(SYSDATE, 'YYYY-MM-DD'),0,0,#{categorys},'test','test')
+</insert>
+
+
+<select id="getWriterinfo" parameterType="int" resultType="com.bit.paperhouse.dto.WriterDto">
+	SELECT W.WRITER_NAME AS WRITERNAME, W.USER_SEQ AS USERSEQ, W.WRITER_SEQ AS WRITERSEQ
+	FROM WRITER W INNER JOIN ARTICLE A ON W.WRITER_SEQ=A.WRITER_SEQ
+	WHERE A.ARTICLE_SEQ = #{articleSeq}
+</select>
+
+<select id="getArticleDetail" parameterType="int" resultType="com.bit.paperhouse.dto.ArticleDto">
+	SELECT WRITER_SEQ,ARTICLE_SEQ,TITLE,CONT,UPLOAD_DATE,VIEWCOUNT,LIKES,CATEGORYS,FILE_ORIGINAL,FILE_SYSTEM
+	FROM ARTICLE
+	WHERE ARTICLE_SEQ = #{articleSeq}
+</select>
+
+<update id="updateViewCount" parameterType="int">
+	UPDATE ARTICLE
+	SET VIEWCOUNT = VIEWCOUNT + 1
+	WHERE ARTICLE_SEQ = #{articleSeq}
+</update>
+
+<delete id="deleteArticle" parameterType="int">
+	DELETE ARTICLE
+	WHERE ARTICLE_SEQ = #{articleSeq}
+</delete>
+
+
+
+</mapper>

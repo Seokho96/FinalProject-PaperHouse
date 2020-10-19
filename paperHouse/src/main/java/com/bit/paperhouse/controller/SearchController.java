@@ -46,7 +46,7 @@ public class SearchController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/getSearchWlist", method = RequestMethod.GET)
-	public List<WriterDto> getSearchList(SearchDto searchDto) {
+	public Map<String, Object> getSearchList(SearchDto searchDto) {
 		if(searchDto.getSearchSort() == null || searchDto.getSort() == null) {
 			searchDto.setSearchSort("WRITER_NAME");
 			searchDto.setSort("ASC");
@@ -59,8 +59,8 @@ public class SearchController {
 		searchDto.setStart(start);
 		searchDto.setEnd(end);
 		
-		List<WriterDto> list = searchService.getSearchWriter(searchDto);
-		return list;
+		Map<String, Object> map = searchService.getSearchWriter(searchDto);
+		return map;
 	}
 	
 	@ResponseBody

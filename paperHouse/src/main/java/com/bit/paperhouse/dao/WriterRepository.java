@@ -14,4 +14,8 @@ public interface WriterRepository {
 	public void addWriterApply(WriterDto dto);
 	public WriterDto getWriterDetail(int writerSeq);
 	public List<WriterDto> getWriterlist();
+	public int getArticleAllSubCount(int writerSeq);
+	public int getWriterAllSubCount(int writerSeq);
+	public String selectWriterApply(int userSeq);
+	
 }

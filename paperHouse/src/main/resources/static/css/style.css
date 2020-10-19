@@ -42,7 +42,7 @@ header.main-header .logo a {
 header.main-header .logo a img {
   width: 100%;
 }
-header.main-header .header-menu {
+header.main-header .headerMenu {
   float: left;
 }
 header.main-header .header-menu li {
@@ -365,6 +365,9 @@ footer .copyright {
 }
 .main-common .writer-desc {
   color: #6f6f6f;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 /* main */
 .main-common {
@@ -490,6 +493,9 @@ footer .copyright {
 }
 .main .main-section.today-writer .writer-grid .right-down .writer-recommend .recommender-comment {
   font-family: "Noto Serif KR";
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 /* monthly-recommend */
 .main .main-section.monthly-recommend {
@@ -517,6 +523,9 @@ footer .copyright {
   filter: grayscale(1);
 }
 .main .main-section.monthly-recommend .weekly-grid .writer-desc {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   margin-top: 12px;
 }
 .main .main-section.monthly-recommend .weekly-grid .writer-name {
@@ -609,9 +618,22 @@ footer .copyright {
   margin-top: -16px;
 }
 .main .main-section.recommend-article .article-wrap .articles {
+  margin-top: 40px;
   float: left;
   width: calc(100% / 3);
   padding: 0 8px;
+}
+.main .main-section.recommend-article .article-wrap .articles:nth-child(-n + 4) {
+  margin-top: 40px;
+}
+.main .main-section.recommend-article .article-wrap .articles:nth-child(2) {
+  margin-top: 16px;
+}
+.main .main-section.recommend-article .article-wrap .articles:nth-child(n + 4) {
+  margin-top: 16px;
+}
+.main .main-section.recommend-article .article-wrap .articles:nth-child(5) {
+  margin-top: -16px;
 }
 .main .main-section.recommend-article .article-wrap .articles .article-thumb {
   position: relative;
@@ -983,4 +1005,223 @@ footer .copyright {
   color: #777;
   font-size: 14px;
   line-height: 16px;
+}
+
+/* myPage */
+.myPage {
+}
+.myPage .inner-wrap {
+  max-width: 800px;
+  margin: 36px auto;
+}
+.myPage .nickName {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 26px;
+}
+.myPage .subBox {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 2px;
+  padding: 16px 12px 16px 16px;
+  margin-top: 8px;
+  cursor: pointer;
+  position: relative;
+}
+.myPage .subBox p {
+}
+.myPage .subBox .mainTxt {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.myPage .subBox .subTxt {
+  color: #666;
+  font-size: 14px;
+  line-height: 18px;
+}
+.myPage .subBox .goSubList {
+  font-size: 12px;
+  color: #999;
+  border: 1px solid #ddd;
+  border-radius: 100px;
+  padding: 3px 19px 3px 10px;
+  font-weight: 400;
+  position: absolute;
+  top: 16px;
+  right: 12px;
+}
+.myPage .subBox .goSubList svg {
+  font-size: 10px;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%) !important;
+}
+.myPage .settingWrap {
+  padding-top: 24px;
+}
+.myPage .settingWrap .settings {
+}
+.myPage .settingWrap .settings .wrapName {
+  color: #999;
+  font-weight: 700;
+  font-size: 13px;
+  background: #eff1f5;
+  height: 32px;
+  line-height: 32px;
+  padding-left: 16px;
+}
+.myPage .settingWrap .settings .wrapList {
+}
+.myPage .settingWrap .settings .wrapList .list {
+}
+.myPage .settingWrap .settings .wrapList .list a {
+  display: block;
+  height: 48px;
+  line-height: 48px;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+  padding-left: 16px;
+  color: #242424;
+  position: relative;
+}
+.myPage .settingWrap .settings .wrapList .list a:before {
+  color: #242424;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  content: "";
+  background: url("https://api.iconify.design/bytesize:chevron-right.svg") no-repeat center center / contain;
+  width: 24px;
+  height: 24px;
+  background-position: center center;
+  background-size: auto;
+  background-repeat: no-repeat;
+}
+
+/* responsive */
+@media all and (max-width: 1023px) {
+  .main .main-section.monthly-recommend .site-desc {
+    height: 200px;
+  }
+
+  .main .main-section.today-writer .writer-grid .left {
+    float: none;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 15px;
+    justify-content: center;
+  }
+  .main .main-section.today-writer .writer-grid .right {
+    float: none;
+    width: 100%;
+  }
+  .main .main-section.today-writer .writer-grid .right-down {
+    min-height: unset;
+  }
+  .main .main-section.today-writer .writer-grid .grid-wrap {
+    padding: 18px;
+  }
+}
+
+@media all and (max-width: 768px) {
+  .main-common {
+    padding-top: 40px;
+  }
+  header.main-header {
+    height: 40px;
+  }
+  header.main-header .logo {
+    width: 50px;
+    padding-top: 5px;
+    margin-right: 0;
+    height: auto;
+  }
+  header.main-header .utils {
+    margin-top: 5px;
+  }
+  header.main-header .header-menu li {
+    padding: 0 10px;
+  }
+  header.main-header .header-menu li a {
+    line-height: 40px;
+    font-size: 16px;
+  }
+  header.main-header .utils {
+    margin-top: 0;
+    height: 40px;
+  }
+  header.main-header .utils a {
+    line-height: 40px;
+  }
+  header.main-header .utils .alert {
+    vertical-align: -9px;
+  }
+  header.main-header .utils .logout {
+    width: 30px;
+    font-size: 0;
+    background: url("https://api.iconify.design/carbon:logout.svg") no-repeat center center / 80%;
+  }
+  .main .main-banner .banner-wrap .banner {
+    padding: 0 25px;
+    padding-top: 25px;
+  }
+  .main .main-banner .banner-wrap .banner .banner-title {
+    font-size: 20px;
+    padding-bottom: 5px;
+  }
+  .main .main-banner .banner-wrap .banner .banner-desc {
+    font-size: 14px;
+  }
+  .main .main-banner,
+  .main .main-banner .outer-wrap,
+  .main .main-banner .banner-wrap .banner {
+    height: 200px;
+  }
+  .main .main-section {
+    padding: 20px 0;
+  }
+  .main .main-section.recommend-article .article-wrap .articles {
+    width: calc(100% / 2);
+    margin-top: 16px !important;
+  }
+  .main .main-section.today-sentence .random-img {
+    height: 150px;
+  }
+  .main .main-section.today-sentence .random-img .random-text {
+    min-height: unset;
+    width: 180px;
+    height: 120px;
+  }
+  .main .main-section.today-sentence .random-img .random-text .text {
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .main .main-section.today-sentence .random-img .random-text .quote-top {
+    left: 5px;
+    top: 5px;
+  }
+  .main .main-section.today-sentence .random-img .random-text .quote-bottom {
+    right: 5px;
+    bottom: 5px;
+  }
+}
+@media all and (max-width: 600px) {
+  .mobileScroll {
+    overflow: auto;
+  }
+  .main .main-section.recommend-article .section-tap-wrap {
+    overflow: scroll;
+    min-width: 500px;
+  }
+}
+@media all and (max-width: 425px) {
+  .main .main-section.monthly-recommend .site-desc .box-wrap {
+    display: none;
+  }
+  .main .main-section.recommend-article .article-wrap .articles {
+    width: 100%;
+  }
 }

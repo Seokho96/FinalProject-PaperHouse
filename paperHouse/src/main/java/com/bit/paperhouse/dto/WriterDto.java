@@ -26,9 +26,11 @@ public class WriterDto implements Serializable {
 	private String fileSystem;
 	private String publicRelations;
 	private int status;
+	private String wdate;
 	
 	//user subscribe dto 대신 writerDto 사용
 	private String startDate;
 	private String endDate;
+	private int endCount;
 	
 }

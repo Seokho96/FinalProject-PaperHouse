@@ -8,10 +8,6 @@
   layout:decorator="layout/layout"
 >
   <main class="main main-common" layout:fragment="content">
-    <form id="logout" action="/user/logout" method="POST">
-      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-      <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}" />
-    </form>
     <div class="main-banner">
       <div id="bg-wrap"></div>
       <div class="container">
@@ -196,7 +192,7 @@
       	  $.ajax({
     			url:"/main/articleWrap",
     			type:"get",
-    			 data:{"category":category},
+    			data:{"category":category},
     			success:function( data ){
     		let firstWrap = "<div class='inner first clearfix'>";
     		
@@ -304,6 +300,26 @@
           arrows: false,
           dots: false,
           slidesToShow: 4,
+          responsive: [
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 3,
+              },
+            },
+            {
+              breakpoint: 769,
+              settings: {
+                slidesToShow: 2,
+              },
+            },
+            {
+              breakpoint: 600,
+              settings: {
+                slidesToShow: 1,
+              },
+            },
+          ],
         });
       });
 

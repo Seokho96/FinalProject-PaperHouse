@@ -29,4 +29,10 @@ FROM MEMBER
 WHERE NICKNAME=#{nickname}
 </select>
 
+<select id="updateNickName" parameterType="com.bit.paperhouse.dto.UserDto">
+UPDATE MEMBER
+SET NICKNAME = #{nickname}
+WHERE USER_SEQ= #{userSeq}
+</select>
+
 </mapper>

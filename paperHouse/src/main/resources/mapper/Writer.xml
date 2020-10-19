@@ -6,9 +6,9 @@
 <mapper namespace="com.bit.paperhouse.dao.WriterRepository">
 
 <insert id="addWriterApply" parameterType="com.bit.paperhouse.dto.WriterDto">
-	INSERT INTO WRITER(USER_SEQ,WRITER_SEQ,WRITER_NAME,INTRO,FILE_ORIGINAL,FILE_SYSTEM,STATUS,HISTORY,PROFILE_FILE_ORIGINAL,PROFILE_FILE_SYSTEM,PUBLIC_RELATIONS)
-	VALUES(#{userSeq},5,#{writerName},#{intro},#{fileOriginalName},#{fileSystem},0,#{history},#{profileFileOriginalName},#{profileFileSystem},#{publicRelations})
-</insert>
+	INSERT INTO WRITER(USER_SEQ,WRITER_SEQ,WRITER_NAME,INTRO,FILE_ORIGINAL,FILE_SYSTEM,STATUS,HISTORY,PROFILE_FILE_ORIGINAL,PROFILE_FILE_SYSTEM,PUBLIC_RELATIONS,WDATE)
+	VALUES(#{userSeq},WRITER_SEQ.NEXTVAL,#{writerName},#{intro},#{fileOriginal},#{fileSystem},0,#{history},#{profileFileOriginal},#{profileFileSystem},#{publicRelations},SYSDATE)
+</insert>	
 
 
 <select id="getWriterDetail" parameterType="java.lang.Integer" resultType="com.bit.paperhouse.dto.WriterDto">
@@ -17,16 +17,28 @@
 	WHERE WRITER_SEQ = #{writerSeq}
 </select>
 
-<select id="getSubCount" parameterType="java.lang.Integer" resultType="java.lang.Integer"> 
-	SELECT COUNT(USER_SEQ)
-	FROM USER_SUBSCRIBE
-	WHERE WRITER_SEQ = #{writerSeq}
-</select>
-
 <select id="getWriterlist" resultType="com.bit.paperhouse.dto.WriterDto"> 
 	SELECT *
 	FROM WRITER
 	WHERE STATUS = 1
 </select>
+
+<select id="getWriterAllSubCount" resultType="java.lang.Integer">
+	SELECT COUNT(USER_SEQ)
+	FROM USER_SUBSCRIBE
+	WHERE WRITER_SEQ = #{writerSeq}
+</select>
+
+<select id="getArticleAllSubCount" resultType="java.lang.Integer">
+	SELECT COUNT(WRITER_SEQ)
+	FROM ARTICLE
+	WHERE WRITER_SEQ = #{writerSeq}
+</select>
+
+<select id="selectWriterApply" parameterType="java.lang.Integer" resultType="java.lang.String">
+	SELECT USER_SEQ
+	FROM WRITER
+	WHERE USER_SEQ=#{userSeq}
+</select>	
 
 </mapper>

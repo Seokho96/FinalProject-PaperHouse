@@ -30,4 +30,19 @@ public class WriterService {
 		return list;
 	}
 	
+	public int getArticleAllSubCount(int writerSeq) {
+		int count = dao.getArticleAllSubCount(writerSeq);
+		return count;
+	}
+	
+	public int getWriterAllSubCount(int writerSeq) {
+		int count = dao.getWriterAllSubCount(writerSeq);
+		return count;
+	}
+	
+	public String selectWriterApply(int userSeq) {
+		String seq = dao.selectWriterApply(userSeq);
+		return seq;
+	}
+	
 }

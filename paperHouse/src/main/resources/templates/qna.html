@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:form id="qna" name="qna">
+        <table>
+
+            <col width="200">  <col width="100"> <col width="70"> <col width="70">
+        <tbody>
+            <tr >
+                <th style="text-align: center">제목</th><th style="text-align: center">답변상태</th><th style="text-align: center">작성자</th><th style="text-align: center">작성일</th>
+            </tr>
+
+            <tr th:if="${not #lists.isEmpty(qna)}" th:each="row: ${qna}">
+                <td align="center">
+                        <a th:href="@{/qna/detail(idx=${row.qnaSeq})}" th:text="${row.title}" ></a>
+                </td>
+                <td th:text="${row.status}"></td>
+                <td th:text="${row.userSeq}"></td>
+                <td th:text="${row.qdate}"></td>
+            </tr>
+            <tr th:unless="${not #lists.isEmpty(qna)}">
+                <td colspan="4"> 작성한 글이 없습니다.</td>
+            </tr>
+
+        </tbody>
+
+
+        </table>
+    <input th:type="hidden" name="pageNumber" id="pageNumber" th:value="${not #lists.isEmpty(pageNumber)?0:pageNumber }">
+
+    <input th:type="hidden" name="recordCountPerPage" id="recordCountPerPage" th:value="${not #lists.isEmpty(recordCountPerPage)?0:recordCountPerPage }">
+            <div id="paging">
+                <th:include page="">
+
+                </th:include>
+            </div>
+    <br>
+    <form th:action="@{'/qna/choice'}" method="get" >
+
+        <div align="center" class="search-wrap">
+            <select   name="choice" style="border-radius: 0.3em; height:2em; line-height: 2em; padding:0 0.2em ">
+                <option value="sel">선택</option>
+                <option value="title">제목</option>
+                <option value="writer">작성자</option>
+                <option value="content">내용</option>
+            </select>
+
+
+            <input type="text"   name="searchWord" style="border-radius: 0.3em;  padding: 0 0.9em; height:2em; line-height: 2em; border: 1px solid gray;"  value="">
+
+            <input type="submit" style="background-color: #fee134; color:white; border-radius: 0.3em; border: none;height:2em; line-height: 2em; padding:0 0.9em;"  value="검색">
+        </div>
+    </form>
+
+    <a th:href="@{'/qna/write'}">문의하기</a>
+</th:form>
+
+
+
+</body>
+</html>

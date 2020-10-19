@@ -6,6 +6,7 @@
 SELECT *
 FROM ARTICLE
 WHERE CATEGORYS = #{category}
+ORDER BY UPLOAD_DATE DESC
 </select>
 
 

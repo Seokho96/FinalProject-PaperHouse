@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-</head>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head th:replace="fragments/config :: configFragment"></head>
 <body>
 
 <input type="hidden" id="nickname" th:value="${nickname}"/>
@@ -13,43 +13,42 @@
 <input type="hidden" id="email" th:value="${email}"/>
 <input type="hidden" id="writerSeq" th:value="${param.writerSeq}"/> 
 
-<h1>작가 이미지</h1>
+<h1>작가 이미지 (임시)</h1>
+<img id="profile-image" border="1" src="/static/profile/profiledefault.png"/>
+<img id="profile-image" border="1" src="/upload/ca467837-0089-4b4a-815f-0729a2d2debf-test-profile.png"/>
 
-<p>업로드 예정</p>
-
- <br>
+<br>
 
 <h3>작가이름</h3>
-<h1 th:text="${list.writerName}"></h1>
-  <div>
-  <button>좋아요</button>
-  </div>
-  
+<input type="text" id="writerName" th:value="${list.writerName}" readonly="readonly"> 
+
+<br>
  
- <h3>작가 이력</h3>
- 
-  <br>
- <input type="text" th:value="${list.history}"> 
- 
- <br><br>
- 
- <h3>작가 소개</h3>
- <input type="text" th:value="${list.intro}"> 
- <br><br>
+<h3>작가 이력</h3>
+
+<input type="text" id="history" th:value="${list.history}" readonly="readonly"> 
+
+<br><br>
+
+<h3>작가 소개</h3>
+<input type="text" th:value="${list.intro}" readonly="readonly"> 
+<br><br>
  
 <table border="1">
 <tr>
-	<th>구독중인 사람</th><th>리뷰 수</th><th>작가가 쓴 글</th>
+	<th>구독중인 사람의 수</th><th>리뷰 수</th><th>작가가 쓴 글</th>
 </tr>
 <tr>
-	<td>select user_subcribe</td><td>select Review</td><td>select article</td>
+	<td th:text="${writerCount}"></td><td>select Review</td><td th:text="${articleCount}"></td>
 </tr>
+
+
 </table> 
 
 <br><br>
  
  <h3>작가 pr</h3>
- <textarea rows="20" cols="40"></textarea>
+ <textarea rows="20" cols="40" readonly="readonly"></textarea>
  
  <h3>작가가쓴 글</h3>
  
@@ -59,9 +58,25 @@
 
 <button id="purchase">결제하기</button>
 
+<br><br>
+
+<button onclick="location.href = '/search'">검색으로 돌아가기</button>
+
+
+<script type="application/javascript" th:inline="javascript">
+  $(function () {
+    var csrfToken = /*[[${_csrf.token}]]*/ null;
+    var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+    $(document).ajaxSend(function (e, xhr, options) {
+      xhr.setRequestHeader(csrfHeader, csrfToken);
+    });
+  });
+</script>	
 
 <!--결제 -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script type="text/javascript">
+
 
 let id=$("#nickname").val();
 let userSeq=$("#userSeq").val();
@@ -92,23 +107,22 @@ $("#purchase").click(function(){
 	        };
 	        $.ajax({
 	        	url:"/pay",
-	        	type:"get",
+	        	type:"post",
 	        	contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	        	datatye:'json',
 	        	data:data,
 	        	async:true,	
 	    		success:function( resp ){
-	    			alert( resp );
 	    			
 	    			$.ajax({
 	    				url:"/sub",
-	    				type:"get",
+	    				type:"post",
 	    				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	    				datatype:'json',
 	    				data:data,
 	    				async:true,	
 	    				success:function( resp ){
-	    					alert( resp );
+	    					swal("good!","결제가 완료되었습니다!","success")
 	    				},
 	    				error:function(){
 	    					alert('구독error');

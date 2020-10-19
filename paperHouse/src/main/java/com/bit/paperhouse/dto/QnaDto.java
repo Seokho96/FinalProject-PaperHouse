@@ -18,5 +18,19 @@ public class QnaDto implements Serializable {
 	private String fileOriginal;
 	private String fileSystem;
 	private String reply;
+	private String qdate;
 	private int status;
+
+
+	//검색 과 페이징을 위한 변수들
+	private String choice;
+	private String searchWord;
+
+	// paging
+	private int pageNumber = 0;	// 현재 페이지
+	private int recordCountPerPage = 10;	// 표현할 페이지의 글수
+
+	private int start = 1;
+	private int end = 10;
+
 }

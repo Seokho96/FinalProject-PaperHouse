@@ -19,7 +19,15 @@ public class MyLibarayService {
 	MyLibarayRepository myLibaray;
 	
 	public List<WriterDto> getSubscribeW(int user_seq) {
-		return myLibaray.getSubscribeW(user_seq);
+		List<WriterDto>list = myLibaray.getSubscribeW(user_seq);
+		List<WriterDto> slist = new ArrayList<WriterDto>();
+		for (WriterDto w : list) {
+			String endDate = w.getEndDate();
+			int endCount = UtilEx.Onelastcount(endDate);
+			w.setEndCount(endCount);
+			slist.add(w);
+		}
+		return slist;
 	}
 	
 	public List<WriterDto> getFollow(int user_seq) {

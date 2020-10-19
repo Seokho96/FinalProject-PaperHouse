@@ -1,0 +1,44 @@
+남은 리스트
+파일
+아티클 업데이트
+좋아요 
+리뷰
+
+
+물어볼꺼
+병인씨 - UtilEx.getFollowed 사용여부!!
+
+WRITER 
+
+
+
+좋아요 SELECT -> INSERT -> DELETE
+좋아요 안함 SELECT -> DELETE
+
+협의할꺼
+ARTICLE_SEQ
+USER_SEQ
+LIKES
+
+
+
+좋아요 테이블
+리뷰 테이블
+
+
+리뷰 테이블은 만들어야함. -> FK ARTICLE_SEQ
+
+ARTICLE_SEQ
+USER_SEQ
+NICKNAME
+CONT
+REVIEW_DATE
+
+
+
+
+디버깅 아이디
+test test
+유저 시퀀스 4 , 라이터 시퀀스 3
+http://localhost:8888/article/detail?articleSeq=22
+

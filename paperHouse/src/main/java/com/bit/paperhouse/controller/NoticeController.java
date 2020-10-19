@@ -18,7 +18,7 @@ public class NoticeController {
     NoticeService service;
 
 
-        @GetMapping("/notice/main")
+        @GetMapping("/notice")
     public String notice(Model model){
             List<NoticeDto>  list = service.allList();
             model.addAttribute("notice" ,list);

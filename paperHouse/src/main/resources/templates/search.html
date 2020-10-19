@@ -87,9 +87,9 @@
     let sort_select = "<select onchange='articleSort()' id='artSort'>"
      	+"<option value='viewCount'>조회수 순</option>"
      	+"<option value='upload_date'>등록일 순</option>"
-     	+"<option value='poem'>시</option>"
-     	+"<option value='novel'>소설</option>"
-     	+"<option value='essay'>에세이</option>"
+     	+"<option value='시'>시</option>"
+     	+"<option value='소설'>소설</option>"
+     	+"<option value='에세이'>에세이</option>"
      	+"</select>";
     $(document).ready(function () {
       $("#write-more").click(function () {
@@ -106,8 +106,17 @@
     	  np = Number(np) + 1;
     	  $("input[name=cNowPage]").val(np);
       	let formData = $("#searchForm").serialize();
-      
-      	searchCont(formData,ct);
+      	let sel = $("#artSort").val();
+      if(sel == null || sel == ""){
+    	  searchCont(formData);
+      }else if(sel == "upload_date"){
+    	  sortingC("UPLOAD_DATE","DESC",ct);
+      }else if(sel =="viewCount" ){
+    	  sortingC("VIEWCOUNT","DESC",ct);	
+      }else{
+    	  sortingC("VIEWCOUNT","DESC",sel);
+      }
+    	  
       	
       });
 
@@ -125,23 +134,18 @@
     	           	$(".article-title").text("검색 결과와 관련된 글");
     	           	$(".article-title select-wrap").empty();
     	          	$(".article-title").after(sort_select);
-    	           	$(".writer-grid").empty();
+    	          	$(".writer-grid").empty();
+    	          	$(".article-grid").empty();
     	            searchWriter(formData);
-    	            $(".article-grid").empty();
-    	           	searchCont(formData,ct);
-    	           	if($(".writer").length%6 == 0){
-    	          		$("#write-more").hide();
-    	          	}
-    	           	if($(".article").length%7 == 0){
-    	          		$("#article-more").hide();
-    	          	}
+    	           	searchCont(formData);
+    	           
     	    	}else{
     	    		$(".best-writer").hide();
     	    		$(".article-title").text("검색 결과");
     	    		$(".best-article select").remove();
     	    		$(".article-title").after(sort_select);
     	    		$(".article-grid").empty();
-    	    		searchCont(formData,ct);
+    	    		searchCont(formData);
     	    		
     	    	}
     	  }
@@ -152,36 +156,47 @@
    	
     function articleSort(){
     	let sel = $("#artSort").val();
-   		let formData = $("#searchForm").serialize();
-   		$(".article-grid").empty();
+    	$("input[name=cNowPage]").val(0);
    		if(sel == "viewCount"){
    			sortingC("VIEWCOUNT","DESC",ct);
+   			$(".article-grid").empty();
    		}else if(sel == "upload_date"){
    			sortingC("UPLOAD_DATE","DESC",ct);	
+   			$(".article-grid").empty();
    		}else{
    			sortingC("VIEWCOUNT","DESC",sel);
+   			$(".article-grid").empty();
    		}
     }
     
 
     function sortingC(st,s,ct){
+    	
     	$("#searchButton").after("<input type='hidden' name='searchSort' value='"+st+"'><input type='hidden' name='sort' value='"+s+"'>");
-    	$("input[name=cNowPage]").val(0);
+    	
+    	if(ct != ""){
+    		$("#searchButton").after("<input type='hidden' name='categorySort' value='"+ct+"'>");	
+    	}
     	let formData = $("#searchForm").serialize();
-    	searchCont(formData,ct);
+    	
+    	searchCont(formData);
     	$("input[name=searchSort]").remove();
     	$("input[name=sort]").remove();
+    	$("input[name=categorySort]").remove();
     }
     function searchWriter(formData) {
       $.ajax({
         url: "/getSearchWlist",
         type: "get",
+        dataType: "json",
         data: formData,
         success: function (data) {
          
           let addlist = "";
-          if(data != ""){
-          $.each(data, function (i, ser) {
+          let list = data.list;
+          let more = data.more;
+          
+          $.each(list, function (i, ser) {
         	  addlist += "<div class='writer'>"
                   + "<div class='writer-photo'>"
                   + "<a href='#' onclick='writerDetail(" + ser.writerSeq + ")'>"
@@ -190,11 +205,13 @@
                   + "<div class='writer-name'>" + ser.writerName + "</div></div>";
           });
           $(".writer-grid").append(addlist);
-          $("#article-more").show();
-         }else{
-        	 alert("더 이상 결과가 없습니다");
-        	 $("#write-more").hide();
-         }
+          
+          if(more == true){
+		  	$("#write-more").show();
+		  }else{
+		  	$("#write-more").hide();
+		  }
+          
         },
         error: function () {
           alert("error");
@@ -202,7 +219,7 @@
       });
     }
 
-    function searchCont(formData, ct){
+    function searchCont(formData){
     	$.ajax({
     		url:"/getSearchClist",
     		type:"get",
@@ -210,36 +227,31 @@
     		data: formData,
     		success:function(data){
     			let addlist = "";
-    			let list;
-    	 		if(ct =='poem'){
-    	 			list = data.poem;
-    	 		}else if(ct == 'novel'){
-    	 			list = data.novel;
-    	 		}else if(ct == 'essay'){
-    	 			list = data.essay;
-    	 		}else{
-    	 			list = data.list;
-    	 		}
-    	 		if(list != ""){
+    			let list = data.list;
+    	 		let more = data.more;
     	 		
-    	 			$.each(list, function(i,ser){
-    	 				addlist += "<div class='article'>"
-    	 	                  + "<div class='article-photo'>"
-    	 	                  + "<a href='#' onclick='writerDetail(" + ser.writerSeq + ")'>"
-    	 	                  + "<img src='/static/asset/a.jpg' alt='' /></a></div>"
-    	 	                  + "<div class='article-name'>" + ser.title + "</div>"
-    	 	                  + "<div class='article-desc'>조회수  " + ser.viewCount + "</div>"
-    	 	                  + "<div class='article-desc'>등록일  " + ser.uploadDate + "</div>"
-    	 	                  + "<div class='article-desc'>" + ser.categorys + "</div>"
-    	 	                  + "</div>";
-    					
-    				});
-    				$(".article-grid").append(addlist); 
-    				$("#article-more").show();
-    	 		}else{
-    	 			 alert("더 이상 결과가 없습니다");
-    	 			$("#article-more").hide();
-    	 		}
+   	 			$.each(list, function(i,ser){
+   	 				addlist += "<div class='article'>"
+   	 	                  + "<div class='article-photo'>"
+   	 	                  + "<a href='#' onclick='writerDetail(" + ser.writerSeq + ")'>"
+   	 	                  + "<img src='/static/asset/a.jpg' alt='' /></a></div>"
+   	 	                  + "<div class='article-name'>" + ser.title + "</div>"
+   	 	                  + "<div class='article-desc'>조회수  " + ser.viewCount + "</div>"
+   	 	                  + "<div class='article-desc'>등록일  " + ser.uploadDate + "</div>"
+   	 	                  + "<div class='article-desc'>" + ser.categorys + "</div>"
+   	 	                  + "</div>";
+   					
+   				});
+   				$(".article-grid").append(addlist); 
+   				
+   				if(more == true){
+   					$("#article-more").show();
+   				}else{
+   					$("#article-more").hide();
+   					if(list==""){
+   						alert("더 이상 결과가 없습니다");
+   					}
+   				}
     	 			
     		},
     		error:function(){

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.bit.paperhouse.dao.UserFollowRepository">
+<select id="selectFollow" parameterType="int" resultType="String">
+	SELECT FOLLOWER
+	FROM USER_FOLLOW
+	WHERE USER_SEQ = #{userSeq}
+</select>
+
+<insert id="insertFollow" parameterType="com.bit.paperhouse.dto.UserFollowDto">
+	INSERT INTO USER_FOLLOW
+	VALUES(#{userSeq},#{follower})
+</insert>
+
+<update id="updateFollow" parameterType="com.bit.paperhouse.dto.UserFollowDto">
+	UPDATE USER_FOLLOW
+	SET FOLLOWER = #{follower}
+	WHERE USER_SEQ = #{userSeq}
+</update>
+</mapper>
+

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bit.paperhouse.dto.UserDto;
 import com.bit.paperhouse.dto.UserSubscribeDto;
 import com.bit.paperhouse.dto.WriterDto;
 import com.bit.paperhouse.model.CustomSecurityDetails;
@@ -63,6 +64,7 @@ public class MyPageController {
 	//작가 글 쓰기
 	@GetMapping("/article/write")
 	public String ariticleWrite() {
+		
         return "articleWrite";
     }
 	
@@ -72,7 +74,8 @@ public class MyPageController {
 		CustomSecurityDetails user = (CustomSecurityDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		int userSeq = user.getUSERSEQ();
 		
-		model.addAttribute(userSeq);
+		model.addAttribute("userSeq",userSeq);
+		
         return "myPageInfo";
     }
 	
@@ -81,19 +84,7 @@ public class MyPageController {
 	public String writerRegi() {
         return "writerApplication";
     }
-	
-	//공지사항
-	@GetMapping("/notice")
-	public String notice() {
-        return "notice";
-    }
-	
-	//1:1문의
-	@GetMapping("/qna")
-	public String qna() {
-        return "qna";
-    }
-	
+
 	//로그아웃
 	@PostMapping("/user/logout")
 	public String logout() {
@@ -118,6 +109,17 @@ public class MyPageController {
 			
 			return ajax;
 		}
+	}
+	
+	@ResponseBody
+	@PostMapping("/mypage/updateNickName")
+	public String updateNickName(UserDto dto) {
+		System.out.println(dto);
+		
+		service.updateNickName(dto);
+		String ajax = "ok";
+			
+			return ajax;
 	}
 	
 }
