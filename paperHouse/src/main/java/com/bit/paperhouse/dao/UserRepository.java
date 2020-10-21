@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.bit.paperhouse.dto.ArticleDto;
 import com.bit.paperhouse.dto.UserDto;
+import com.bit.paperhouse.dto.WriterDto;
 import com.bit.paperhouse.model.CustomSecurityDetails;
 
 
@@ -25,5 +26,7 @@ public interface UserRepository {
 	public void emailCheckAf( UserDto dto );
 	
 	public List<ArticleDto> getArticleList(String category);
+	
+	public WriterDto getTodayWriter();
 
 }

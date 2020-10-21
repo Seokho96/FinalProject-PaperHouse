@@ -90,5 +90,25 @@
 
 </insert>
 
+<select id="qnaDetail" resultType="com.bit.paperhouse.dto.QnaDto" parameterType="int">
+    SELECT
+    *
+    FROM QNA
+    WHERE QNA_SEQ= #{qnaSeq}
 
+
+</select>
+
+<select id="qnaUpdate" resultType="com.bit.paperhouse.dto.QnaDto" parameterType="int">
+    SELECT
+    *
+    FROM QNA
+    WHERE QNA_SEQ= #{qnaSeq}
+</select>
+
+<update id="qnaUpdateAf" parameterType="com.bit.paperhouse.dto.QnaDto">
+    UPDATE QNA
+    SET
+
+</update>
 </mapper>

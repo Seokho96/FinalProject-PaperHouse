@@ -8,7 +8,118 @@
   <head th:replace="fragments/config :: configFragment"></head>
 <body>
 
-<h1>여기는 소설 업데이트 창임니다..</h1>
+<form th:action="@{/article/updateAf}" id="form" method="POST" enctype="multipart/form-data">
+<input type="hidden" class="apply" id="articleSeq" name="articleSeq" th:value="${param.articleSeq}"> 
+
+<select id="categorys" name="categorys">
+	<option>소설</option>
+	<option>에세이</option>
+	<option>시</option>
+</select>
+
+<br><br>
+
+<input type="text" id="title" name="title" placeholder="제목을 작성해주세요." th:value="${list.title}">
+
+<br><br>
+
+<input type="file" id="file" name="file" onchange="validateimg(this)">
+
+<br><br>
+
+<textarea id="cont" name="cont" rows="20" cols="50" placeholder="내용을 작성해주세요." th:value="${list.cont}"></textarea>
+
+<br><br>
+
+<input type="submit" id="submitbtn" value="수정하기">
+
+</form>
+
+<br><br>
+
+<button onclick="location.href = '/myPage'">목록으로 돌아가기</button>
+
+<script type="application/javascript" th:inline="javascript">
+  $(function () {
+    var csrfToken = /*[[${_csrf.token}]]*/ null;
+    var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+    $(document).ajaxSend(function (e, xhr, options) {
+      xhr.setRequestHeader(csrfHeader, csrfToken);
+    });
+  });
+</script>
+
+<script type="text/javascript">
+function validateimg(ctrl) { 
+    var fileUpload = ctrl;
+    var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(.jpg|.png|.gif)$");
+    if (regex.test(fileUpload.value.toLowerCase())) {
+        if (typeof (fileUpload.files) != "undefined") {
+            var reader = new FileReader();
+            reader.readAsDataURL(fileUpload.files[0]);
+            reader.onload = function (e) {
+                var image = new Image();
+                image.src = e.target.result;
+                image.onload = function () {
+                    var height = this.height;
+                    var width = this.width;
+                    if (height != 600 && width != 400) {
+                    	swal("","책 표지의 사이즈는 400 x 600px입니다.","error");
+                        return false;
+                    }else{
+                    	swal("good!","이미지가 정상적으로 업로드 되었습니다.","success");
+                        $("#profile-image").attr("src", e.target.result);
+                        return true;
+                    }
+                };
+            }
+        } else {
+        	swal("","이 브라우저는 HTML5를 지원하지 않습니다.","error");
+            return false;
+        }
+    } else {
+    	swal("","올바른 파일(jpg/.png/.gif)을 선택해주세요.","error");
+        return false;
+    }
+}
+
+
+$(document).ready(function(){
+	
+	$("#submitbtn").click(function (e) { 
+		e.preventDefault();
+		
+		if($("#title").val().trim() == ""){
+			$("#title").val("");
+			$("#title").focus();
+			 swal("","제목을 입력 해주세요.","error");
+			 return false;
+		} else if($("#file").val().trim() == "") {
+			$("#file").val("");
+			$("#file").focus();
+			 swal("","책 표지를 업로드 해주세요.","error");
+			 return false;
+		} else if($("#cont").val().trim() == "") {
+			$("#cont").val("");
+			$("#cont").focus();
+			 swal("","내용을 작성 해주세요.","error");
+			 return false;
+		} else {
+			swal({
+			    title: "good!",
+			    text: "수정이 완료되었습니다!",
+			    type: "success"
+			}).then(function() {
+				$("#form").submit();
+			});
+		}
+	});
+});
+</script>
+
+
+
+
 
 </body>
 </html>

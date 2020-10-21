@@ -7,13 +7,12 @@
 >
   <head th:replace="fragments/config :: configFragment"></head>
 <body>
-<input type="hidden" class="apply" id="writerSeq" name="writerSeq" th:value="${param.writerSeq}"> 
+
 
 <br><br>
 
-
-<form action="/article/writeAf" id="form" method="POST">
-
+<form th:action="@{/article/writeAf}" id="form" method="POST" enctype="multipart/form-data">
+<input type="hidden" class="apply" id="writerSeq" name="writerSeq" th:value="${param.writerSeq}"> 
 <select id="categorys" name="categorys">
 	<option>소설</option>
 	<option>에세이</option>
@@ -108,25 +107,12 @@ $(document).ready(function(){
 			 swal("","내용을 작성 해주세요.","error");
 			 return false;
 		} else {
-			$.ajax({
-				url:"/article/writeAf",
-				type:"post",
-				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-				data:{writerSeq:$("#writerSeq").val(), categorys:$("#categorys").val(), title:$("#title").val(), cont:$("#cont").val()},
-				success:function( msg ){
-					if(msg == 'ok'){
-						swal({
-						    title: "good!",
-						    text: "글 작성이 완료되었습니다!",
-						    type: "success"
-						}).then(function() {
-						    window.location = "/myPage";
-						});
-					}
-				},
-				error:function(){
-					alert("error");
-				}			
+			swal({
+			    title: "good!",
+			    text: "작가 신청이 완료되었습니다!",
+			    type: "success"
+			}).then(function() {
+				$("#form").submit();
 			});
 		}
 	});

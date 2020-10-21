@@ -9,6 +9,12 @@ WHERE CATEGORYS = #{category}
 ORDER BY UPLOAD_DATE DESC
 </select>
 
-
+<select id="getTodayWriter" resultType="com.bit.paperhouse.dto.WriterDto">
+SELECT *
+FROM WRITER
+WHERE STATUS = 1
+AND ROWNUM = 1 
+ORDER BY WRITER_SEQ DESC
+</select>
 
 </mapper>

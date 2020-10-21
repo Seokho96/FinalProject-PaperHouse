@@ -46,7 +46,7 @@ public class UtilEx {
 		
 		
 		Calendar cal1 = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("yy-MM-dd");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
         	cal1.setTime(df.parse(lastdate));
@@ -64,7 +64,7 @@ public class UtilEx {
 		
         lastcount = cal1.get(Calendar.DATE);
         
-        if(lastcount == 30) {
+        if(lastcount == 0) {
         	lastcount = -1;
         }
         

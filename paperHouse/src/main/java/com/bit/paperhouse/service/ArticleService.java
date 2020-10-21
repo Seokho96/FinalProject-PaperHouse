@@ -44,6 +44,14 @@ public class ArticleService {
 		dao.deleteArticle(articleSeq);
 	}
 	
+	public String selectLikeInfo(int articleSeq) {
+		String likes = dao.selectLikeInfo(articleSeq);
+		return likes;
+	}
+	
+	public void updateArticle(ArticleDto dto) {
+		dao.updateArticle(dto);
+	}
 	
 	
 }

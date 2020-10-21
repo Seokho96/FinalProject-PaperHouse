@@ -36,23 +36,27 @@
                   <img alt='writerImg' th:src='#{sub.file_system}' />
                 </div>
                 <div class="writerName" th:text='${sub.writerName}'></div>
-                <div class="endSubDate" th:text='${sub.endDate}'></div>
-                <div class="endSubDate" th:text='${sub.endCount}'></div>
+                <div class="endSubDate" th:text='|구독 만료일: ${sub.endDate}|'></div>
+                <div class="endSubDate" th:text='|남은 구독일: ${sub.endCount}일|'></div>
+                 
               </div>
             </th:block>
             </div>
           <!-- followWriterList -->
-          <th:block th:each='fol:${listFollow}'>
+          
             <div id="followWriterList" class="listWrap">
+            <th:block th:each='fol:${listFollow}'>
               <div class="list">
                 <div class="writerImg">
                   <img alt='writerImg' th:src='#{fol.file_system}'>
                 </div>
                 <div class="writerName" th:text='${fol.writerName}'></div>
                 <div class="writerIntro" th:text='${fol.intro}'></div>
+                
               </div>
+                 </th:block>
             </div>
-          </th:block>
+       
         </div>
       </div>
     </div>

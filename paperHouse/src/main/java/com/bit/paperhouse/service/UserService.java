@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bit.paperhouse.dao.UserRepository;
 import com.bit.paperhouse.dto.ArticleDto;
 import com.bit.paperhouse.dto.UserDto;
+import com.bit.paperhouse.dto.WriterDto;
 
 import oracle.security.pki.Cipher;
 
@@ -94,7 +95,13 @@ public class UserService {
 	}
 	
 	
-	
+	public WriterDto getTodayWriter() {
+		
+		WriterDto dto = dao.getTodayWriter();
+		
+		return dto;
+		
+	}
 	
 	
 	

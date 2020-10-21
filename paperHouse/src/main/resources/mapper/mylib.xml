@@ -3,7 +3,7 @@
 <mapper namespace="com.bit.paperhouse.dao.MyLibarayRepository">
 
 	<select id="getSubscribeW" parameterType="Integer" resultType="com.bit.paperhouse.dto.WriterDto">
-		SELECT u.WRITER_SEQ, to_char(END_DATE, 'yyyy-mm-dd')AS END_DATE, u.START_DATE, u.STATUS, w.WRITER_NAME,  w.INTRO, w.FILE_SYSTEM
+		SELECT u.WRITER_SEQ, TO_CHAR(u.END_DATE, 'yyyy-mm-dd')AS END_DATE, u.START_DATE, u.STATUS, w.WRITER_NAME,  w.INTRO, w.FILE_SYSTEM
 		FROM USER_SUBSCRIBE u , WRITER w
 		WHERE u.WRITER_SEQ = w.WRITER_SEQ AND u.USER_SEQ = #{user_seq}
 		ORDER BY u.END_DATE ASC

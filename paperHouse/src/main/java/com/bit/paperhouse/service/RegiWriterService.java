@@ -29,4 +29,13 @@ public class RegiWriterService {
 		}
 		return result;
 	}
+	
+	public int rejectWriter(String checklist) {
+		String writerSeq[] = checklist.split(",");
+		int result = 0;
+		for (int i = 0; i < writerSeq.length; i++) {
+			result = result + regiWriterRepository.rejectWriter(writerSeq[i]);
+		}
+		return result;
+	}
 }

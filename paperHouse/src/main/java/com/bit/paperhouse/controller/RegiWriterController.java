@@ -34,4 +34,11 @@ public class RegiWriterController {
 		int result = regiWriterService.regiWriter(checklist);
 		return result;
 	}
+	
+	@GetMapping("/rejectWriter")
+	@ResponseBody
+	public int rejectWriter(String checklist) {
+		int result = regiWriterService.rejectWriter(checklist);
+		return result;
+	}
 }

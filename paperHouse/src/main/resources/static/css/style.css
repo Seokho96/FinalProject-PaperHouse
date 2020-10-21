@@ -1,3 +1,65 @@
+/* responsive pc, tb, mb */
+.pc-hide {
+  display: none;
+}
+.toggle {
+  float: right;
+}
+.toggle svg {
+  font-size: 32px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
+.mb-bg {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 0;
+}
+header.main-header .close {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  font-size: 30px;
+}
+header.main-header .mb-header-menu {
+  position: fixed;
+  right: -100%;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  padding: 16px;
+  background-color: #fff;
+  -webkit-box-shadow: -5px 5px 10px -1px rgba(102, 102, 102, 1);
+  -moz-box-shadow: -5px 5px 10px -1px rgba(102, 102, 102, 1);
+  box-shadow: -5px 5px 10px -1px rgba(102, 102, 102, 1);
+  transition: all 0.25s ease;
+}
+header.main-header .mb-header-menu .utils {
+  float: none;
+  margin-top: 0;
+  margin-bottom: 24px;
+  text-align: right;
+}
+header.main-header .mb-header-menu .header-menu {
+  float: none;
+}
+header.main-header .mb-header-menu .header-menu li {
+  float: none;
+  padding: 0;
+  padding-bottom: 12px;
+}
+header.main-header .mb-header-menu .header-menu li a {
+  display: block;
+  font-size: 14px;
+  line-height: 24px;
+}
 /* header -> index */
 header.index-header {
   padding: 25px 0;
@@ -42,7 +104,7 @@ header.main-header .logo a {
 header.main-header .logo a img {
   width: 100%;
 }
-header.main-header .headerMenu {
+header.main-header .header-menu {
   float: left;
 }
 header.main-header .header-menu li {
@@ -51,7 +113,7 @@ header.main-header .header-menu li {
 }
 header.main-header .header-menu li a {
   line-height: 65px;
-  font-size: 18px;
+  font-size: 20px;
 }
 header.main-header .header-menu li.active a {
   color: #111;
@@ -939,6 +1001,7 @@ footer .copyright {
   font-weight: 700;
   color: #fff;
   display: block;
+  word-break: keep-all;
 }
 .myLibrary-page .userInfo .notice a:last-child {
   font-size: 12px;
@@ -1101,8 +1164,104 @@ footer .copyright {
   background-repeat: no-repeat;
 }
 
+/* myPageSub */
+.myPageSub {
+}
+.myPageSub .goList {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 11px 12px;
+  border-radius: 2px;
+  background: #ffeb60;
+  font-size: 14px;
+  color: #333;
+  height: 40px;
+  text-align: center;
+  font-weight: 700;
+}
+.myPageSub .inner-top {
+  text-align: center;
+  line-height: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  border-bottom: 1px solid #eee;
+}
+.myPageSub .inner-wrap {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 34px;
+}
+.myPageSub .subRow {
+  margin-bottom: 16px;
+}
+.myPageSub .subRow .subRow-name {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.myPageSub .subRow .subRow-name span {
+  color: #a451f7;
+  font-weight: 700;
+  padding-left: 3px;
+}
+.myPageSub .subRow .subRow-input {
+}
+.myPageSub .subRow .subRow-input input {
+  font-family: "Noto Sans KR";
+  color: #333;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 100%;
+  padding: 11px 12px;
+  float: left;
+  width: calc(100% - 108px);
+}
+.myPageSub .subRow .subRow-input button {
+  font-family: "Noto Sans KR";
+  float: right;
+  border-radius: 2px;
+  background: #ffeb60;
+  font-size: 14px;
+  color: #333;
+  display: block;
+  width: 100px;
+  height: 40px;
+  text-align: center;
+  margin-left: 8px;
+  line-height: 40px;
+  font-weight: 700;
+}
+.myPageSub .subRow .subRow-input button#updatebtn {
+  display: none;
+}
+.myPageSub .subRow .subRow-link {
+  display: block;
+  padding: 11px 12px;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+
+  font-size: 14px;
+  color: #333;
+  line-height: 16px;
+}
+
+/* passwordReset */
+.myPageSub #checkView {
+  display: none;
+}
+.myPageSub #pwdView {
+  display: none;
+}
 /* responsive */
 @media all and (max-width: 1023px) {
+  .pc-only {
+    display: none;
+  }
+  .pc-hide {
+    display: block;
+  }
   .main .main-section.monthly-recommend .site-desc {
     height: 200px;
   }
@@ -1127,6 +1286,9 @@ footer .copyright {
 }
 
 @media all and (max-width: 768px) {
+  .member-page .logo-wrap {
+    top: -10vh;
+  }
   .main-common {
     padding-top: 40px;
   }
@@ -1137,34 +1299,9 @@ footer .copyright {
     width: 50px;
     padding-top: 5px;
     margin-right: 0;
-    height: auto;
-  }
-  header.main-header .utils {
-    margin-top: 5px;
-  }
-  header.main-header .header-menu li {
-    padding: 0 10px;
-  }
-  header.main-header .header-menu li a {
-    line-height: 40px;
-    font-size: 16px;
-  }
-  header.main-header .utils {
-    margin-top: 0;
     height: 40px;
   }
-  header.main-header .utils a {
-    line-height: 40px;
-  }
-  header.main-header .utils .alert {
-    vertical-align: -9px;
-  }
-  header.main-header .utils .logout {
-    width: 30px;
-    font-size: 0;
-    background: url("https://api.iconify.design/carbon:logout.svg") no-repeat center center / 80%;
-  }
-  .main .main-banner .banner-wrap .banner {
+  header .header-menu .main .main-banner .banner-wrap .banner {
     padding: 0 25px;
     padding-top: 25px;
   }
@@ -1214,7 +1351,7 @@ footer .copyright {
   }
   .main .main-section.recommend-article .section-tap-wrap {
     overflow: scroll;
-    min-width: 500px;
+    min-width: 290px;
   }
 }
 @media all and (max-width: 425px) {

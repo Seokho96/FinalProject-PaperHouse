@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/qna/updateAf}" method="post" id="qnaUpdate" name="qnaUpdate">
+
+         <table>
+                 <tr>
+                    <col width="100">   <col width="200">
+                 </tr>
+            <th:block th:if="${not #lists.isEmpty(qnaUpdate)}" th:each="list : ${qnaUpdate}">
+                        <input type="hidden" name="qnaSeq" th:value="${list.qnaSeq}">
+                    <tr>
+                      <th>작성자</th>
+                        <td>
+                        <input type="text" name="userSeq" id="userSeq" readonly="readonly" th:value="${list.userSeq}">
+                        </td>
+                </tr>
+                <tr>
+                    <th>제목</th>
+                    <td>
+                    <input type="text" name="title" id="title"  th:value="${list.title}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td>
+                    <textarea id="conts" name="conts" th:text="${list.conts}"></textarea>
+                    </td>
+                </tr>
+          </th:block>
+             <input type="submit" value="수정">
+
+         </table>
+
+
+</form>
+
+</body>
+<!--<script type="application/javascript" th:inline="javascript">-->
+<!--    $(function () {-->
+<!--        var csrfToken = /*[[${_csrf.token}]]*/ null;-->
+<!--        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;-->
+<!--        $(document).ajaxSend(function (e, xhr, options) {-->
+<!--            xhr.setRequestHeader(csrfHeader, csrfToken);-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+</html>

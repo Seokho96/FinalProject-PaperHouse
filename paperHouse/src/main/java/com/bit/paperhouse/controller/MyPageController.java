@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.paperhouse.dto.UserDto;
@@ -19,6 +20,7 @@ import com.bit.paperhouse.dto.UserSubscribeDto;
 import com.bit.paperhouse.dto.WriterDto;
 import com.bit.paperhouse.model.CustomSecurityDetails;
 import com.bit.paperhouse.service.MypageService;
+import com.bit.paperhouse.service.WriterService;
 import com.bit.paperhouse.util.UtilEx;
 
 
@@ -30,6 +32,9 @@ public class MyPageController {
 	
 	@Autowired
 	MypageService service;
+	
+	@Autowired
+	WriterService writerService;
 	
 	//mypage 메인
 	@GetMapping("/myPage")
@@ -81,7 +86,23 @@ public class MyPageController {
 	
 	//작가 신청하기
 	@GetMapping("/writer/application")
-	public String writerRegi() {
+	public String writerRegi(Model model) {
+		
+		CustomSecurityDetails user = (CustomSecurityDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		int userSeq = user.getUSERSEQ();
+		
+		String seq = writerService.selectWriterApply(userSeq);
+		int status = 0;
+		
+		if(seq == null) {
+			status = 0;
+		} else {
+			status = 1;
+		}
+		
+		model.addAttribute("userSeq", userSeq);
+		model.addAttribute("status",status);
+		
         return "writerApplication";
     }
 

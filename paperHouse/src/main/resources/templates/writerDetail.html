@@ -13,9 +13,11 @@
 <input type="hidden" id="email" th:value="${email}"/>
 <input type="hidden" id="writerSeq" th:value="${param.writerSeq}"/> 
 
-<h1>작가 이미지 (임시)</h1>
-<img id="profile-image" border="1" src="/static/profile/profiledefault.png"/>
-<img id="profile-image" border="1" src="/upload/ca467837-0089-4b4a-815f-0729a2d2debf-test-profile.png"/>
+<h1>작가 이미지</h1>
+
+<br><br>
+
+<img id="profile-image" border="1" th:src="${img}"/>
 
 <br>
 
@@ -48,7 +50,7 @@
 <br><br>
  
  <h3>작가 pr</h3>
- <textarea rows="20" cols="40" readonly="readonly"></textarea>
+ <textarea rows="20" cols="40" readonly="readonly" th:text="${list.publicRelations}"></textarea>
  
  <h3>작가가쓴 글</h3>
  

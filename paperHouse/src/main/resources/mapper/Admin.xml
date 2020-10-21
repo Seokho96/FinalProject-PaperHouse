@@ -12,4 +12,10 @@ SET STATUS = 1
 WHERE WRITER_SEQ = #{writer_seq}
 </update>
 
+<update id="rejectWriter" parameterType="String">
+UPDATE WRITER
+SET STATUS = 3
+WHERE WRITER_SEQ = #{writer_seq}
+</update>
+
 </mapper>

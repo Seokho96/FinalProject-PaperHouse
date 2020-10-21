@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:form id="qnaDetail" name="qnaDetailn">
+        <table>
+            <tr>
+            <col width="100"> <col width="200">
+         </tr>
+            <div>
+                <tr>
+                    <th>작성자</th><td th:text="${qnaDetail.userSeq}" ></td>
+                </tr>
+            <tr>
+                <th>제목</th><td th:text="${qnaDetail.title}" ></td>
+            </tr>
+            <tr>
+                <th>내용</th><td th:text="${qnaDetail.conts}"></td>
+            </tr>
+                <tr>
+                    <th>작성일</th> <td th:text="${qnaDetail.qdate}"></td>
+                </tr>
+            </div>
+
+        </table>
+</th:form>
+<!--<a href="" id="updateBtn" >수정</a>-->
+<div th:if="${qnaDetail.userSeq} == ${userSeq}">
+    <a th:href="@{'/qna/update?qnaSeq='+ ${qnaDetail.qnaSeq}}">
+        <button id="updateBtn">수정</button>
+    </a>
+    <button  id="deleteBtn">삭제</button>
+</div>
+
+</body>
+<input type="hidden" name="userSeq" id="userSeq" th:value="${userSeq}">
+<input type="hidden" name="qnaSeq" id="qnaSeq" th:value="${qnaDetail.qnaSeq}">
+<script type="text/javascript">
+    // $("#updateBtn").click(function() {
+    //     $("#qnaDetailn").attr({ "target":"_self", "action":"/qna/update" }).submit();
+    // });
+
+ // $(document).ready(function(){
+ //
+ //     let qnaSeq= $("#qnaSeq").val();
+ //
+ //     $("#updateBtn").click(function (){
+ //         $.ajax({
+ //             url:"/qna/detail",
+ //             type:"get",
+ //             data:{ qnaSeq:$("#qnaSeq").val()},
+ //             success:function(data){
+ //
+ //              location.href="/qna/update";
+ //             }
+ //         })
+ //     })
+ // })
+</script>
+</html>

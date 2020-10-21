@@ -1,150 +1,117 @@
 <!DOCTYPE html>
 <html
+  lang="ko"
   xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org"
   xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
 >
-  <head th:replace="fragments/config :: configFragment"></head>
-<body>
- 
-<input type="hidden" class="apply" id="userSeq" name="userSeq" th:value="${userSeq}">  
-  
-<br>
-
-<div>
-	변경할 닉네임을 적어주세요.
-</div>
-
-<br>
-<div>
-<input type="text" id="nickname" name="nickname" placeholder="닉네임" />
-<button id="nicknamechk">중복확인</button>
-</div>
-<br>
-
-<div id="nickselect"></div>
- 
-<div id="nickUpdateButtonView">
-
-</div>
-<br>
-
-<a href="#" onclick="location.href = '/user/passwordReset'" style="color: red">비밀번호 재설정하기</a>  
-    
-<br>
-<br>
-
-<input type="checkbox" id="checkbox"> 개인 정보 수집 및 동의
-  
-<br><br>
-
-<p>ㆍ개인정보 수집목적</p>	
-
-<br>
-
-<p>ㆍ개인정보 수집기간</p>	
-
-<br>
-
-<p>ㆍ개인정보 이용기간</p>	
-
-<br><br>
-
-<button id="updatebtn">회원 정보 변경</button>
-
-<br>
-<br>
-
-<button onclick="location.href = '/myPage'">목록으로 돌아가기</button>  
-	
-<script type="application/javascript" th:inline="javascript">
-  $(function () {
-    var csrfToken = /*[[${_csrf.token}]]*/ null;
-    var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
-    $(document).ajaxSend(function (e, xhr, options) {
-      xhr.setRequestHeader(csrfHeader, csrfToken);
-    });
-  });
-</script>	
-	
-
-<script type="text/javascript">
-
-let userSeq = $("#userSeq").val();
-
-$(document).ready(function () {
-  $("#nickUpdateButtonView").hide();
-});
-
-let name = $("#nickname").val();
-console.log(name);
-$("#nicknamechk").click(function(){
-	if($("#nickname").val().trim() == ""){
-		$("#nickname").val("");
-		$("#nickname").focus();
-		 swal("","닉네임을 작성해주세요.","error");
-	}
-	else{
-		$.ajax({
-			url:"/mypage/getNickName",
-			type:"post",
-			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-			data:{ nickname:$("#nickname").val()},
-			success:function( msg ){
-				if(msg == 'find'){
-					swal("","사용할 수 없는 ID입니다.","error");
-					$("#nickselect").html("이 ID는 사용할 수 없습니다");
-					$("#nickselect").css("color", "#ff0000");
-					$("#nickname").val();
-					$("#nickUpdateButtonView").hide();
-				}
-				else{
-					swal("","사용할 수 있는 ID입니다.","success");
-					$("#nickname").attr("readonly","readonly");
-					$("#nickselect").html("이 ID는 사용할 수 있습니다");
-					$("#nickselect").css("color", "#0000ff");
-					$("#nickUpdateButtonView").show();
-				}
-			},
-			error:function(){
-				alert("error");
-			}			
-		});
-	}	
-});
-
-
-$("#updatebtn").click(function () {
-	if($("#nickname").val().trim() == ""){
-		$("#nickname").val("");
-		$("#nickname").focus();
-		 swal("","닉네임을 작성해주세요.","error");
-	} else if($("#checkbox").is(":checked") == false) {
-		swal("","개인 정보 수집에 동의해주세요.","error");
-	} else {
-		$.ajax({
-			url:"/mypage/updateNickName",
-			type:"post",
-			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-			data:{ nickname:$("#nickname").val(), userSeq:$("#userSeq").val()},
-			success:function( msg ){
-				if(msg == 'ok'){
-					swal({
-					    title: "good!",
-					    text: "닉네임이 변경되었습니다!",
-					    type: "success"
-					}).then(function() {
-					    window.location = "/myPage";
-					});
-				}
-			},
-			error:function(){
-				alert("error");
-			}			
-		});
-	}
-});
+  <main class="myPageSub main-common" layout:fragment="content">
+    <div class="inner-top">내 정보 관리</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="inner-wrap">
+            <!-- nickname row -->
+            <div class="subRow">
+              <div class="subRow-name">닉네임<span>*</span></div>
+              <div class="subRow-input clearfix">
+                <input type="text" id="nickname" name="nickname" th:value="${#authentication.principal.NICKNAME}" placeholder="닉네임" />
+                <button id="nicknamechk">중복확인</button>
+                <button id="updatebtn">회원 정보 변경</button>
+              </div>
+            </div>
+            <!-- // nickname row -->
+            <!-- password row -->
+            <div class="subRow">
+              <div class="subRow-name">비밀번호<span>*</span></div>
+              <a class="subRow-link" href="/user/passwordReset">비밀번호 재설정하기</a>
+            </div>
+            <!-- // pasword row -->
+            <a class="goList" href="/myPage">목록으로 돌아가기</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <th:block layout:fragment="script">
+    <script type="application/javascript" th:inline="javascript">
+      $(function () {
+        var csrfToken = /*[[${_csrf.token}]]*/ null;
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+        $(document).ajaxSend(function (e, xhr, options) {
+          xhr.setRequestHeader(csrfHeader, csrfToken);
+        });
+      });
     </script>
-  </body>
+
+    <script type="text/javascript">
+      let userSeq = "[[${userSeq}]]";
+
+      let name = $("#nickname").val();
+      console.log(name);
+      $("#nicknamechk").click(function () {
+        if ($("#nickname").val().trim() == "") {
+          $("#nickname").val("");
+          $("#nickname").focus();
+          swal("", "닉네임을 작성해주세요.", "error");
+        } else {
+          $.ajax({
+            url: "/mypage/getNickName",
+            type: "post",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: { nickname: $("#nickname").val() },
+            success: function (msg) {
+              if (msg == "find") {
+                swal("", "사용할 수 없는 ID입니다.", "error");
+                // $("#nickselect").html("이 ID는 사용할 수 없습니다");
+                // $("#nickselect").css("color", "#ff0000");
+                $("#nickname").val();
+              } else {
+                swal("", "사용할 수 있는 ID입니다.", "success");
+                $("#nickname").attr("readonly", "readonly");
+                // $("#nickselect").html("이 ID는 사용할 수 있습니다");
+                // $("#nickselect").css("color", "#0000ff");
+              }
+            },
+            error: function () {
+              alert("error");
+            },
+          });
+        }
+      });
+
+      $("#updatebtn").click(function () {
+        if ($("#nickname").val().trim() == "") {
+          $("#nickname").val("");
+          $("#nickname").focus();
+          swal("", "닉네임을 작성해주세요.", "error");
+        } else if ($("#checkbox").is(":checked") == false) {
+          swal("", "개인 정보 수집에 동의해주세요.", "error");
+        } else {
+          $.ajax({
+            url: "/mypage/updateNickName",
+            type: "post",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: { nickname: $("#nickname").val(), userSeq: $("#userSeq").val() },
+            success: function (msg) {
+              if (msg == "ok") {
+                swal({
+                  title: "good!",
+                  text: "닉네임이 변경되었습니다!",
+                  type: "success",
+                }).then(function () {
+                  window.location = "/myPage";
+                });
+              }
+            },
+            error: function () {
+              alert("error");
+            },
+          });
+        }
+      });
+    </script>
+  </th:block>
 </html>

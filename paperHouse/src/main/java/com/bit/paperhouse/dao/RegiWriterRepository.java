@@ -13,4 +13,5 @@ public interface RegiWriterRepository {
 
 	public List<WriterDto> getApplyWriter();
 	public int regiWriter(String writerSeq);
+	public int rejectWriter(String writerSeq);
 }

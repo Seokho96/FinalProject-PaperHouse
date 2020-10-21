@@ -26,4 +26,23 @@ public class QnaService {
         dao.qnaCount(dto);
         return dto.getQnaSeq();
     }
+    public QnaDto qnaDetail(int qnaSeq){
+
+
+        QnaDto dto = dao.qnaDetail(qnaSeq);
+
+        return  dto;
+    }
+    public List<QnaDto> qnaUpdate(int qnaSeq){
+        List<QnaDto> dto = dao.qnaUpdate(qnaSeq);
+
+        return dto;
+    }
+    public void qnaUpdateAf(QnaDto dto){
+
+        dao.qnaUpdateAf(dto);
+
+    }
+
+
 }

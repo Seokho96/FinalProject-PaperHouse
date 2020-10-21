@@ -10,6 +10,12 @@
 	WHERE USER_SEQ = #{userSeq}
 </select>
 
+<select id="selectUserSeq" parameterType="int" resultType="String">
+	SELECT USER_SEQ
+	FROM USER_FOLLOW
+	WHERE USER_SEQ = #{userSeq}
+</select>
+
 <insert id="insertFollow" parameterType="com.bit.paperhouse.dto.UserFollowDto">
 	INSERT INTO USER_FOLLOW
 	VALUES(#{userSeq},#{follower})

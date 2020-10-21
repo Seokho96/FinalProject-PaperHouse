@@ -10,6 +10,7 @@ import com.bit.paperhouse.dto.UserFollowDto;
 public interface UserFollowRepository {
 	
 	public String selectFollow(int userSeq);
-	public void insertFollow(UserFollowDto dto);
+	public String selectUserSeq(int userSeq);
+ 	public void insertFollow(UserFollowDto dto);
 	public void updateFollow(UserFollowDto dto);
 }

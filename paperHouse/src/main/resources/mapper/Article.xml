@@ -11,8 +11,8 @@
 </select>
 
 <insert id="insertArticle" parameterType="com.bit.paperhouse.dto.ArticleDto">
-	INSERT INTO ARTICLE(WRITER_SEQ,ARTICLE_SEQ,TITLE,CONT,UPLOAD_DATE,VIEWCOUNT,LIKES,CATEGORYS,FILE_ORIGINAL,FILE_SYSTEM)
-	VALUES(#{writerSeq},ARTICLE_SEQ.NEXTVAL,#{title},#{cont},TO_CHAR(SYSDATE, 'YYYY-MM-DD'),0,0,#{categorys},'test','test')
+	INSERT INTO ARTICLE(WRITER_SEQ,ARTICLE_SEQ,TITLE,CONT,UPLOAD_DATE,VIEWCOUNT,CATEGORYS,FILE_ORIGINAL,FILE_SYSTEM)
+	VALUES(#{writerSeq},ARTICLE_SEQ.NEXTVAL,#{title},#{cont},SYSDATE,0,#{categorys},#{fileOriginal},#{fileSystem})
 </insert>
 
 
@@ -23,7 +23,7 @@
 </select>
 
 <select id="getArticleDetail" parameterType="int" resultType="com.bit.paperhouse.dto.ArticleDto">
-	SELECT WRITER_SEQ,ARTICLE_SEQ,TITLE,CONT,UPLOAD_DATE,VIEWCOUNT,LIKES,CATEGORYS,FILE_ORIGINAL,FILE_SYSTEM
+	SELECT WRITER_SEQ,ARTICLE_SEQ,TITLE,CONT,UPLOAD_DATE,VIEWCOUNT,CATEGORYS,FILE_ORIGINAL,FILE_SYSTEM
 	FROM ARTICLE
 	WHERE ARTICLE_SEQ = #{articleSeq}
 </select>
@@ -34,11 +34,25 @@
 	WHERE ARTICLE_SEQ = #{articleSeq}
 </update>
 
+<update id="updateArticle" parameterType="com.bit.paperhouse.dto.ArticleDto">
+	UPDATE ARTICLE
+	SET TITLE = #{title},
+		CONT = #{cont},
+		FILE_ORIGINAL = #{fileOriginal},
+		FILE_SYSTEM = #{fileSystem}
+	WHERE ARTICLE_SEQ = #{articleSeq}
+</update>
+
 <delete id="deleteArticle" parameterType="int">
 	DELETE ARTICLE
 	WHERE ARTICLE_SEQ = #{articleSeq}
 </delete>
 
+<select id="selectLikeInfo" parameterType="int" resultType="String">
+	SELECT LIKES
+	FROM USER_LIKES
+	WHERE ARTICLE_SEQ = #{articleSeq}
+</select>
 
 
 </mapper>

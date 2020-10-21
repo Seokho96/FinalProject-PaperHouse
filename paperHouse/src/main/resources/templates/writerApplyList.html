@@ -26,6 +26,7 @@
 </table>
 
 <button type="button" id="applyBtn">작가 등록</button>
+<button type="button" id="rejectBtn">신청 거절</button>
 </div>
 </body>
 
@@ -48,7 +49,7 @@ $(document).ready(function(){
 		  });
 		  checkRow = checkRow.substring(0,checkRow.lastIndexOf( ","));
 		  if(checkRow == ''){
-			    alert("삭제할 대상을 선택하세요.");
+			    alert("등록할 대상을 선택하세요.");
 			    return false;
 		  }else{
 			  if(confirm("정보를 등록 하시겠습니까?")){
@@ -63,6 +64,38 @@ $(document).ready(function(){
 						 }
 						 else{
 							 alert("등록 실패");
+						 }
+					 },
+					 error:function(){
+						 alert('error');
+					 }
+				  });
+			  }
+		  }
+	});
+	
+	$("#rejectBtn").click(function(){
+		var checkRow = "";
+		  $( "input[name=ck]:checked" ).each (function (){
+		    checkRow = checkRow + $(this).val()+"," ;
+		  });
+		  checkRow = checkRow.substring(0,checkRow.lastIndexOf( ","));
+		  if(checkRow == ''){
+			    alert("거절할 대상을 선택하세요.");
+			    return false;
+		  }else{
+			  if(confirm("등록을 거절 하시겠습니까?")){
+				  $.ajax({
+					 url:'/rejectWriter',
+					 type:'get',
+					 data:{checklist:checkRow},
+					 success:function(data){
+						 if(data>0){
+							 alert("거절 되었습니다");
+							 location.href="/writerApplyList";
+						 }
+						 else{
+							 alert("거절 실패");
 						 }
 					 },
 					 error:function(){

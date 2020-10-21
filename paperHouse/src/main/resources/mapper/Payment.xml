@@ -11,7 +11,7 @@
 </insert>
 <insert id="insertSubscribe" parameterType="com.bit.paperhouse.dto.UserSubscribeDto">
 	INSERT INTO USER_SUBSCRIBE(USER_SEQ,WRITER_SEQ,START_DATE,END_DATE,STATUS )
-	VALUES(#{userSeq},#{writerSeq},TO_DATE(SYSDATE,'YYYY/MM/DD'),TO_DATE(SYSDATE,'YYYY/MM/DD')+30, 1)
+    VALUES(#{userSeq},#{writerSeq},SYSDATE,SYSDATE+(INTERVAL '30' DAY) , 1) 
 </insert>
 
 </mapper>

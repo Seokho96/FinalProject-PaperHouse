@@ -18,6 +18,7 @@ public interface ArticleRepository {
 	public WriterDto getWriterinfo(int articleSeq);
 	public void updateViewCount(int articleSeq);
 	public void deleteArticle(int articleSeq);
-	
+	public String selectLikeInfo(int articleSeq);
+	public void updateArticle(ArticleDto dto);
 	
 }

@@ -612,3 +612,8 @@
   font-size: 14px;
   line-height: 15px;
 }
+
+/* slick init */
+.slick-track {
+  margin-left: 0 !important;
+}

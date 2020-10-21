@@ -18,9 +18,11 @@
 
             <tr th:if="${not #lists.isEmpty(qna)}" th:each="row: ${qna}">
                 <td align="center">
-                        <a th:href="@{/qna/detail(idx=${row.qnaSeq})}" th:text="${row.title}" ></a>
+                        <a th:href="@{/qna/detail(qnaSeq=${row.qnaSeq})}" th:text="${row.title}" ></a>
                 </td>
-                <td th:text="${row.status}"></td>
+                <td th:if="${row.getStatus()}== '0'">답변대기</td>
+                <td th:unless="${row.getStatus()}=='1'">답변완료</td>
+
                 <td th:text="${row.userSeq}"></td>
                 <td th:text="${row.qdate}"></td>
             </tr>
@@ -33,18 +35,22 @@
 
         </table>
     <input th:type="hidden" name="pageNumber" id="pageNumber" th:value="${not #lists.isEmpty(pageNumber)?0:pageNumber }">
-
+    <input th:type="hidden" name="pageCountPerScreen" id="pageCountPerScreen" th:value="${not #lists.isEmpty(pageCountPerScreen)?0:pageCountPerScreen }">
     <input th:type="hidden" name="recordCountPerPage" id="recordCountPerPage" th:value="${not #lists.isEmpty(recordCountPerPage)?0:recordCountPerPage }">
+    <input th:type="hidden" name="totalRecordCount" id="totalRecordCount" th:value="${not #lists.isEmpty(totalRecordCount)?0:totalRecordCount }">
+    <input th:type="hidden" name="choice"  th:value="${not #lists.isEmpty(choice)?0:choice}">
+    <input th:type="hidden" name="searchWord"  th:value="${not #lists.isEmpty(searchWord)?0:searchWord}">
+
             <div id="paging">
                 <th:include page="">
 
                 </th:include>
             </div>
     <br>
-    <form th:action="@{'/qna/choice'}" method="get" >
+    <form th:action="@{'/qna/search'}" method="get" >
 
-        <div align="center" class="search-wrap">
-            <select   name="choice" style="border-radius: 0.3em; height:2em; line-height: 2em; padding:0 0.2em ">
+        <div align="center" >
+            <select  id="choice" name="choice" style="border-radius: 0.3em; height:2em; line-height: 2em; padding:0 0.2em ">
                 <option value="sel">선택</option>
                 <option value="title">제목</option>
                 <option value="writer">작성자</option>
@@ -52,8 +58,15 @@
             </select>
 
 
-            <input type="text"   name="searchWord" style="border-radius: 0.3em;  padding: 0 0.9em; height:2em; line-height: 2em; border: 1px solid gray;"  value="">
+            <input type="text" id="searchWord"  name="searchWord" style="border-radius: 0.3em;  padding: 0 0.9em; height:2em; line-height: 2em; border: 1px solid gray;" placeholder="검색어를 입력해주세요" value="">
+<!--            <button type="button" name="btnSearch" id="btnSearch">검색</button>-->
 
+            <tr th:each="list : ${qna}">
+                <td th:if="${list.pageNumber}">
+                    <span th:text="${list.pageNumber +1}"></span>
+                </td>
+
+            </tr>
             <input type="submit" style="background-color: #fee134; color:white; border-radius: 0.3em; border: none;height:2em; line-height: 2em; padding:0 0.9em;"  value="검색">
         </div>
     </form>
@@ -62,6 +75,28 @@
 </th:form>
 
 
+<script type="text/javascript">
+   let choice = "${'choice'}";
+   let searchWord = "${'searchWord'}";
 
+   function searchQna(){
+       let choice = document.getElementById("choice").value;
+       let searchWord = document.getElementById("searchWord").value;
+
+       location.href = "@{'/qna/search}?=choice&searchWord=";
+   }
+    // let choice =choice;
+    // let searchWord = searchWord;
+    //
+    // document.getElementById('choice').value = choice;
+    // document.getElementById('searchWord').value = searchWord;
+    //
+    // function searchQna(){
+    //     const choice = document.getElementById("choice").value;
+    //     const searchWord = document.getElementById("searchWord").value;
+    //
+    //     location.href ="choice&searchWord=" + searchWord + "&choice=" + choice;
+    // }
+</script>
 </body>
 </html>

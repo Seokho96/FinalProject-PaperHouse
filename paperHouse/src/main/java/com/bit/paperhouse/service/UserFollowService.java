@@ -19,6 +19,11 @@ public class UserFollowService {
 		return follow;
 	}
 	
+	public String selectUserSeq(int userSeq) {
+		String seq = dao.selectUserSeq(userSeq);
+		return seq;
+	}
+	
 	public void insertFollow(UserFollowDto dto) {
 		dao.insertFollow(dto);
 	}

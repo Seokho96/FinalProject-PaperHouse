@@ -9,8 +9,7 @@
 <body>
 
 <form th:action="@{/writer/application/appComplete}" id="form" name="form" method="POST" enctype="multipart/form-data">
-<input type="hidden" class="apply" id="userSeq" name="userSeq" th:value="${param.userSeq}"> 
-
+<input type="hidden" class="apply" id="userSeq" name="userSeq" th:value="${userSeq}"> 
 
 <div>
 	<div class="img_wrap">
@@ -43,9 +42,14 @@
 
 <br><br>
 
-<input type="submit" id="submitbtn"  value="작가신청하기">
+<input th:if="${status} == '0'" type="submit" id="submitbtn"  value="작가신청하기">
+<p th:if="${status} == '1'">이미 신청하셨습니다!!</p>
 
 </form>
+
+<br><br>
+
+<button onclick="location.href = '/myPage'">목록으로 돌아가기</button>  
 
 
 <script type="application/javascript" th:inline="javascript">
@@ -137,34 +141,13 @@ $(document).ready(function(){
 			 swal("","PR글을 작성 해주세요.","error");
 			 return false;
 		} else {
-			
-			$.ajax({
-				url:"/writer/apply",
-				type:"post",
-				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-				datatype:'json',
-				data:{userSeq:$("#userSeq").val()},
-				async:true,	
-				success:function( resp ){
-					
-					if(resp == "ok"){
-						swal({
-						    title: "good!",
-						    text: "작가 신청이 완료되었습니다!",
-						    type: "success"
-						}).then(function() {
-							$("#form").submit();
-						});
-					}else {
-						swal({
-						    title: "error",
-						    text: "이미 작가 신청 하셨습니다.",
-						    type: "error"
-						}).then(function() {
-							return false;
-						});
-					}
-			});	
+			swal({
+			    title: "good!",
+			    text: "작가 신청이 완료되었습니다!",
+			    type: "success"
+			}).then(function() {
+				$("#form").submit();
+			});
 		}
 	});
 });

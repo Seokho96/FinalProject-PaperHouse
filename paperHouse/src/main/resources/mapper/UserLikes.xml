@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit.paperhouse.dao.UserLikesRepository">
+<select id="selectLikes" parameterType="int" resultType="String">
+	SELECT USER_LIKE
+	FROM USER_LIKES
+	WHERE ARTICLE_SEQ = #{articleSeq}
+</select>
+
+<select id="selectArticleSeq" parameterType="int" resultType="String">
+	SELECT ARTICLE_SEQ
+	FROM USER_LIKES
+	WHERE ARTICLE_SEQ = #{articleSeq}
+</select>
+
+<insert id="insertLikes" parameterType="com.bit.paperhouse.dto.UserLikesDto">
+	INSERT INTO USER_LIKES
+	VALUES(#{articleSeq},#{userLike},1)
+</insert>
+
+<update id="updateGoodLikes" parameterType="com.bit.paperhouse.dto.UserLikesDto">
+	UPDATE USER_LIKES
+	SET LIKES = LIKES + 1,
+	USER_LIKE = #{userLike}
+	WHERE ARTICLE_SEQ = #{articleSeq}
+</update>
+
+<update id="updateBadLikes" parameterType="com.bit.paperhouse.dto.UserLikesDto">
+	UPDATE USER_LIKES
+	SET LIKES = LIKES - 1,
+	USER_LIKE = #{userLike}
+	WHERE ARTICLE_SEQ = #{articleSeq}
+</update>
+
+
+</mapper>

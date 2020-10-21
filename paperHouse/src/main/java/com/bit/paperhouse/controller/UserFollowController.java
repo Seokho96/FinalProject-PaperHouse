@@ -18,24 +18,32 @@ public class UserFollowController {
 
 	@ResponseBody
 	@PostMapping("/article/follow")
-	public String articleFollower(UserFollowDto dto , Model model) {
+	public String articleFollower(UserFollowDto dto) {
 		
 		int userSeq = dto.getUserSeq();
 		System.out.println("팔로우 유저 시퀀스 :" + userSeq);
 		
+		String userSeqCheck = service.selectUserSeq(userSeq);
 		String followCheck = service.selectFollow(userSeq);
 		
-		if(followCheck == null) {
-			
+		System.out.println(followCheck);
+		System.out.println(userSeqCheck);
+		
+		if(followCheck == null && userSeqCheck != null) {
 			String follower = dto.getFollower() + "-";
 			dto.setFollower(follower);
 			
-			System.out.println("INSERT에 해당합니다.");
+			System.out.println("UPDATE에 해당합니다.");
+			
+			service.updateFollow(dto);
+		} else if (followCheck == null){
+			String follower = dto.getFollower() + "-";
+			dto.setFollower(follower);
+			
+			System.out.println("엘쓰이프 INSERT에 해당합니다.");
 			
 			service.insertFollow(dto);
-			
-		}else {
-			
+		} else {
 			String follower = followCheck + dto.getFollower() + "-";
 			dto.setFollower(follower);
 			
@@ -44,30 +52,27 @@ public class UserFollowController {
 			service.updateFollow(dto);
 		}
 		
-		
 		String str = "ok";
-		String followChk = "1";
 		
-		model.addAttribute("followChk",followChk);
 		
 		return str;
 	}
 	
 	@ResponseBody
 	@PostMapping("/article/unfollow")
-	public String articleUnFollower(UserFollowDto dto , Model model) {
+	public String articleUnFollower(UserFollowDto dto) {
 		
-		//조회할 user_seq
+		//조회 user_seq
 		int userSeq = dto.getUserSeq();
 		System.out.println("팔로우 유저 시퀀스 :" + userSeq);
 		
-		//언팔로우 할 writer_seq
+		//언팔로우  writer_seq
 		String unfollow = dto.getFollower();
 		
 		//팔로우 조회
 		String followCheck = service.selectFollow(userSeq);
 		
-		//언팔로우 함수
+		//언팔로우 함수 (라이크랑 공용)
 		String setFollowerDB = UtilEx.unFollow(followCheck, unfollow);
 		
 		//바꾸기
@@ -77,9 +82,7 @@ public class UserFollowController {
 		service.updateFollow(dto);
 		
 		String str = "ok";
-		String followChk = "0";
 		
-		model.addAttribute("followChk",followChk);
 		
 		return str;
 	}
