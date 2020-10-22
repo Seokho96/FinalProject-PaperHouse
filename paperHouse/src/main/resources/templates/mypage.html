@@ -47,8 +47,6 @@
   
   </main>
   
-  
-  
   <th:block layout:fragment="script">
     <script>
       $(document).ready(function () {
@@ -58,8 +56,7 @@
         console.log(footerHeight);
         $(".myPage").css("min-height", "calc(100vh - " + (headerHeight + footerHeight) + "px)");
         console.log($(".myPage"));
-      });
-    
     </script>
+    
   </th:block>
 </html>

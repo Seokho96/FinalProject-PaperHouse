@@ -87,21 +87,7 @@ public class UserService {
 		dao.resetPassword(dto);
 	}
 	
-	public List<ArticleDto> getArticleList(String category){
-		
-		List<ArticleDto> list = dao.getArticleList(category);
-		
-		return list;
-	}
-	
-	
-	public WriterDto getTodayWriter() {
-		
-		WriterDto dto = dao.getTodayWriter();
-		
-		return dto;
-		
-	}
+
 	
 	
 	

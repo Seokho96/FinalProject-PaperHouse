@@ -52,13 +52,22 @@ public class ArticleController {
     }
 	
 	//작가 디테일
+	
 	@GetMapping("/article/detail")
-	public String ariticleDetail(Model model, @RequestParam("articleSeq") int articleSeq) {
+	public String articleDetail(Model model, @RequestParam("articleSeq") int articleSeq) {
 		CustomSecurityDetails user = (CustomSecurityDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		int userSeq = user.getUSERSEQ();
+		String userNickName = user.getNICKNAME();
 		
 		//detail
 		ArticleDto list = service.getArticleDetail(articleSeq);
+		
+		// image
+		String profileUploadPath = "/static/upload/profile/";
+		String img = profileUploadPath + list.getFileSystem();
+		
+		System.out.println(img);
+		
 		
 		//likeinfo
 		String likesInfo = service.selectLikeInfo(articleSeq);
@@ -133,15 +142,20 @@ public class ArticleController {
 		
 		System.out.println("팔로우 체크: " + followChk);
 		
+		// 넘길 값
+		model.addAttribute("userNickName", userNickName);
 		model.addAttribute("userSeq", userSeq);
 		model.addAttribute("articleSeq", articleSeq);
 		
+		// 팔로우, 좋아요
 		model.addAttribute("followChk", followChk);
 		model.addAttribute("likesChk", likesChk);
 		
+		//디테일 정보
 		model.addAttribute("writerInfo", writerInfo);
 		model.addAttribute("likesInfo", likesInfo);
 		model.addAttribute("list", list);
+		model.addAttribute("img", img);
 		
 		return "articleDetail";
     }

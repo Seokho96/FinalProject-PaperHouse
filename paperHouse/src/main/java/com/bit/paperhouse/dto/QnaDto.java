@@ -33,4 +33,6 @@ public class QnaDto implements Serializable {
 	private int start = 1;
 	private int end = 10;
 
+
+
 }

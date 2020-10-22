@@ -2,30 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bit.paperhouse.dao.UserRepository">
 
-
+<!-- 이메일 인증 후 처리 -->
 <select id="regi" parameterType="com.bit.paperhouse.dto.UserDto">
   INSERT INTO MEMBER(USER_SEQ, EMAIL, PWD, NICKNAME, AUTHORITY, ENABLED)
   VALUES(USER_SEQ.NEXTVAL, #{email}, #{pwd}, #{nickname}, #{authority}, #{enabled})
 </select> 
 
+<!-- 소셜서비스를 이용한 화원가입 -->
 <select id="findByid" resultType="com.bit.paperhouse.model.CustomSecurityDetails">
    SELECT *
    FROM MEMBER
    WHERE EMAIL = #{username}
 </select>
 
+<!-- 이메일 인증 전 회원가입 -->
  <select id="findByEmail" parameterType="java.lang.String" resultType="com.bit.paperhouse.dto.UserDto">
    SELECT *
    FROM MEMBER
    WHERE EMAIL = #{email}
 </select>
 
+<!-- 임시 비밀번호 설정 -->
 <select id="resetPassword" parameterType="com.bit.paperhouse.dto.UserDto">
   UPDATE MEMBER
   SET PWD = #{pwd}
   WHERE EMAIL = #{email}
 </select> 
 
+<!-- 소셜로그인 시 체크 -->
 <select id="emailCheckAf" parameterType="com.bit.paperhouse.dto.UserDto">
   UPDATE MEMBER
   SET ENABLED = 0, EMAIL = #{email}

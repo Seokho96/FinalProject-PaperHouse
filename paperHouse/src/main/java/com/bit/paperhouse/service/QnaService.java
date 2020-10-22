@@ -14,35 +14,62 @@ public class QnaService {
     QnaRepository dao;
 
     public List<QnaDto> qnaList(QnaDto dto) {  //받는곳
-        return  dao.qnaList(dto);
+        return dao.qnaList(dto);
     }
 
-    public void writeQnaAf(QnaDto dto){
+    public List<QnaDto> qnaSearchList(QnaDto dto) {
 
-        dao.writeQnaAf(dto);
-    }
-    public int qnaCount(QnaDto dto){
+        List<QnaDto> qsl = dao.qnaSearchList(dto);
 
-        dao.qnaCount(dto);
-        return dto.getQnaSeq();
+        return qsl;
     }
-    public QnaDto qnaDetail(int qnaSeq){
+
+    public int qnaCount(QnaDto dto) {
+
+
+        return dao.qnaCount(dto);
+
+    }
+
+    public boolean writeQnaAf(QnaDto dto) {
+
+
+        return dao.writeQnaAf(dto);
+    }
+
+    public QnaDto qnaDetail(int qnaSeq) {
 
 
         QnaDto dto = dao.qnaDetail(qnaSeq);
 
-        return  dto;
+        return dto;
     }
-    public List<QnaDto> qnaUpdate(int qnaSeq){
+
+    public List<QnaDto> qnaUpdate(int qnaSeq) {
         List<QnaDto> dto = dao.qnaUpdate(qnaSeq);
 
         return dto;
     }
-    public void qnaUpdateAf(QnaDto dto){
+
+    public void qnaUpdateAf(QnaDto dto) {
 
         dao.qnaUpdateAf(dto);
 
     }
 
+    public QnaDto qnaReply(QnaDto dto) {
 
+        QnaDto qry = dao.qnaReply(dto);
+
+        return qry;
+    }
+
+
+    public void qnaReplyInsert(QnaDto dto) {
+        dao.qnaReplyInsert(dto);
+    }
+
+    public void qnaReplyUpdate(QnaDto dto) {
+        dao.qnaReplyUpdate(dto);
+    }
 }

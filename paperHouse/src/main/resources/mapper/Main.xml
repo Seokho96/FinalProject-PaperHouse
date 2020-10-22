@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.paperhouse.dao.MainRepository">
+
+<!-- 취향별 추천글  -->
+<select id="getArticleList" resultType="com.bit.paperhouse.dto.ArticleDto">
+SELECT *
+FROM ARTICLE
+WHERE CATEGORYS = #{category}
+ORDER BY UPLOAD_DATE DESC
+</select>
+
+<!-- 오늘의 추천 작가 -->
+<select id="getTodayWriter" resultType="com.bit.paperhouse.dto.WriterDto">
+SELECT *
+FROM WRITER
+WHERE STATUS = 1
+AND ROWNUM = 1 
+ORDER BY WRITER_SEQ DESC
+</select>
+
+<!-- 이번 달 추천 작가 -->
+<select id="getWriterlist" resultType="com.bit.paperhouse.dto.WriterDto"> 
+	SELECT *
+	FROM WRITER
+	WHERE STATUS = 1
+	ORDER BY WDATE 
+</select>
+
+</mapper>

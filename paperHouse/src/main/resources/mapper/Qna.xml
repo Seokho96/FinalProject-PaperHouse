@@ -10,7 +10,9 @@
                 USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM,
                 REPLY, STATUS, QDATE
         FROM QNA
+
         WHERE 1=1
+
         <if test="choice != null and choice != ''
                     and searchWord != null and searchWord !=''">
                 <if test="choice == 'title'">
@@ -24,7 +26,9 @@
                 </if>
         </if>
     ) A
+
     WHERE RNUM BETWEEN  #{start} AND #{end}
+
 </select>
 
     <!-- 글의 총수 -->
@@ -32,10 +36,11 @@
     SELECT NVL(COUNT(*), 0) AS CNT
     FROM QNA
     WHERE 1=1
+
         <if test="choice !=null and choice != ''
             and searchWord !=null and searchWord !=''">
-            <if test="choice == 'title">
-                AND TITLE LIKE '%'||#{searchWord}}}'%'
+            <if test="choice == 'title'">
+                AND TITLE LIKE '%'||#{searchWord}||'%'
             </if>
             <if test="choice == 'content'">
                 AND CONTS LIKE '%'||#{searchWord}||'%'
@@ -50,8 +55,13 @@
 <select id="qnaSearchList" parameterType="com.bit.paperhouse.dto.QnaDto" resultType="com.bit.paperhouse.dto.QnaDto" >
     SELECT USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM,
             REPLY , STATUS, QDATE
+    FROM
+    (SELECT ROW_NUMBER()OVER(ORDER BY QNA_SEQ DESC) AS RNUM,
+    USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM,
+    REPLY, STATUS, QDATE
     FROM QNA
     WHERE 1=1
+
         <if test="choice !=null and choice !=''
             and searchWord !=null and searchWord !=''">
             <if test="choice =='title'">
@@ -64,7 +74,9 @@
                 AND USER_SEQ=#{searchWord}
             </if>
         </if>
+    ) A
 
+    WHERE RNUM BETWEEN  #{start} AND #{end}
 </select>
 
 <select id="qnaSearAll" resultType="com.bit.paperhouse.dto.QnaDto" parameterType="com.bit.paperhouse.dto.QnaDto">
@@ -96,7 +108,6 @@
     FROM QNA
     WHERE QNA_SEQ= #{qnaSeq}
 
-
 </select>
 
 <select id="qnaUpdate" resultType="com.bit.paperhouse.dto.QnaDto" parameterType="int">
@@ -108,7 +119,33 @@
 
 <update id="qnaUpdateAf" parameterType="com.bit.paperhouse.dto.QnaDto">
     UPDATE QNA
-    SET
+    SET TITLE=#{title} , CONTS=#{conts} , QDATE=SYSDATE
+    WHERE QNA_SEQ=#{qnaSeq}
 
 </update>
+
+<select id="qnaReply" resultType="com.bit.paperhouse.dto.QnaDto" parameterType="com.bit.paperhouse.dto.QnaDto">
+    SELECT *
+    FROM QNA
+
+</select>
+
+<update id="qnaReplyAf" parameterType="com.bit.paperhouse.dto.QnaDto">
+    UPDATE QNA
+    SET TITLE=#{title}, CONTS=#{conts}
+    WHERE QNA_SEQ=#{qnaSeq}
+
+</update>
+
+<insert id="qnaReplyInsert"  parameterType="com.bit.paperhouse.dto.QnaDto">
+    INSERT INTO QNA(USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM, REPLY, STATUS,  QDATE)
+    VALUES(#{userSeq}, QNA_SEQ.NEXTVAL, #{title}, #{conts}, 'null', 'null', 'null', 0, SYSDATE)
+</insert>
+
+<update id="qnaReplyUpdate" parameterType="com.bit.paperhouse.dto.QnaDto">
+    UPDATE QNA
+    SET    STATUS=1
+    WHERE QNA_SEQ =?
+</update>
+
 </mapper>

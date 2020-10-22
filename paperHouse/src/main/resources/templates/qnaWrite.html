@@ -39,7 +39,7 @@
         </tr>
         <tr>
             <td colspan="2" style="height:50px; text-align:center;">
-                <input type="submit" value="글쓰기">
+               <button type="button" id="writeBtn">글작성</button>
 
 
 
@@ -56,4 +56,20 @@
 
 
 </body>
+<script type="text/javascript">
+    $(document).ready(function (){
+        $("#writeBtn").click(function (){
+
+            if($("#conts").val().trim() ==""){
+
+                alert("글 작성을 해주세요");
+                $("#conts").focus();
+            }
+            else{
+
+                $("#qnaForm").submit();
+            }
+        })
+    })
+</script>
 </html>

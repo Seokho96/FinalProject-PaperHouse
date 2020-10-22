@@ -1,274 +1,276 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
-<main class="search-page main-common" layout:fragment="content">
- <div class="container">
-   <div class="row">
-     <div class="col-12">
-       <div class="search-wrap">
-         <form id="searchForm">
-           <div class="select-wrap">
-             <select name="searchCategory">
-               <option value="writer">작가</option>
-               <option value="title">글 제목</option>
-             </select>
-             <div class="arrow">
-               <span class="iconify" data-icon="bi:chevron-down" data-inline="false"></span>
-             </div>
-           </div>
-           <div class="input-wrap">
-             <input type="text" name="searchWord" placeholder="검색어를 입력하세요." />
-             <button id="searchButton" type="button">
-               <span class="iconify" data-icon="bytesize:search" data-inline="false"></span>
-             </button>
-             <input type="hidden" name="wNowPage" value="0">
-             <input type="hidden" name="cNowPage" value="0">
-           </div>
-         </form>
-       </div>
-       <div class="result-wrap">
-         <div class="base-result">
-           <!-- base-result는 검색을 하지 않았을 경우 기본적으로 팔로워 or 구독수가 많은 기준으로 소팅 -->
-           <div class="best-writer">
-             <div class="writer-title">종이의 집 베스트 작가</div>
-             <div class="writer-grid clearfix">
+<html
+  lang="ko"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
+>
+  <main class="search-page main-common" layout:fragment="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="search-wrap">
+            <form id="searchForm">
+              <div class="select-wrap">
+                <select name="searchCategory">
+                  <option value="writer">작가</option>
+                  <option value="title">글 제목</option>
+                </select>
+                <div class="arrow">
+                  <span class="iconify" data-icon="bi:chevron-down" data-inline="false"></span>
+                </div>
+              </div>
+              <div class="input-wrap">
+                <input type="text" name="searchWord" placeholder="검색어를 입력하세요." />
+                <button id="searchButton" type="button">
+                  <span class="iconify" data-icon="bytesize:search" data-inline="false"></span>
+                </button>
+                <input type="hidden" name="wNowPage" value="0" />
+                <input type="hidden" name="cNowPage" value="0" />
+              </div>
+            </form>
+          </div>
+          <div class="result-wrap">
+            <div class="base-result">
+              <!-- base-result는 검색을 하지 않았을 경우 기본적으로 팔로워 or 구독수가 많은 기준으로 소팅 -->
+              <div class="best-writer">
+                <div class="writer-title">종이의 집 베스트 작가</div>
+                <div class="writer-grid clearfix">
+                  <th:block th:each="bestWriter:${bestWriters}">
+                    <div class="writer">
+                      <div class="writer-photo">
+                        <a href="#" onclick="writerDetail(${bestWriter.writerSeq})">
+                          <img src="/static/asset/mush.jpg" alt="" />
+                          <!-- <img th:src='@{/upload/profile/bestWriter.profileFileOriginal}' alt='' /> -->
+                        </a>
+                      </div>
+                      <div class="writer-desc" th:text="${bestWriter.intro}"></div>
+                      <div class="writer-name" th:text="${bestWriter.writerName}"></div>
+                    </div>
+                  </th:block>
+                </div>
+                <div class="more-btn writer-more">
+                  <span id="write-more">더 보기</span>
+                </div>
+              </div>
+              <div class="best-article">
+                <div class="article-title">종이의 집 베스트 글</div>
+                <div class="select-wrap"></div>
+                <div class="article-grid clearfix">
+                  <th:block th:each="bestArticle:${bestArticles}">
+                    <div class="article">
+                      <div class="article-photo">
+                        <a href="#" onclick="writerDetail(${bestArticle.writerSeq})">
+                          <img src="/static/asset/a.jpg" alt="" />
+                          <!-- <img th:src='@{/upload/cover/bestArticle.fileOriginal}' alt='' /> -->
+                        </a>
+                      </div>
+                      <div class="article-name" th:text="${bestArticle.title}"></div>
+                      <div class="article-desc viewcount" th:text="|${bestArticle.viewCount}|"></div>
+                      <div class="article-desc date" th:text="|${bestArticle.uploadDate}|"></div>
+                      <div class="article-desc category" th:text="${bestArticle.categorys}"></div>
+                    </div>
+                  </th:block>
+                </div>
+                <div class="more-btn article-more">
+                  <span id="article-more">더 보기</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <th:block layout:fragment="script">
+    <script type="text/javascript">
+      let ct = "";
+      let sort_select =
+        "<select onchange='articleSort()' id='artSort'>" +
+        "<option value='viewCount'>조회수 순</option>" +
+        "<option value='upload_date'>등록일 순</option>" +
+        "<option value='시'>시</option>" +
+        "<option value='소설'>소설</option>" +
+        "<option value='에세이'>에세이</option>" +
+        "</select>";
+      $(document).ready(function () {
+        $("#write-more").click(function () {
+          let np = $("input[name=wNowPage]").val();
+          np = Number(np) + 1;
+          $("input[name=wNowPage]").val(np);
+          let formData = $("#searchForm").serialize();
 
-               <th:block th:each="bestWriter:${bestWriters}">
-                 <div class="writer">
-                   <div class="writer-photo">
-                     <a href='#' onclick='writerDetail(${bestWriter.writerSeq})'>
-                       <img src="/static/asset/mush.jpg" alt="" />
-                     </a>
-                   </div>
-                   <div class="writer-desc" th:text='${bestWriter.intro}'></div>
-                   <div class="writer-name" th:text='${bestWriter.writerName}'></div>
-                 </div>
-               </th:block>
-             </div>
-             <div class="more-btn writer-more">
-               <span id="write-more">더 보기</span>
-             </div>
-           </div>
+          searchWriter(formData);
+        });
 
-           <div class="best-article">
-             <div class="article-title">종이의 집 베스트 글</div>
-             <div class="select-wrap"></div>
-             <div class="article-grid clearfix">
-               <th:block th:each='bestArticle:${bestArticles}'>
-                 <div class="article">
-                   <div class="article-photo">
-                     <a href='#' onclick='writerDetail(${bestArticle.writerSeq})'>
-                       <img src="/static/asset/a.jpg" alt="" />
-                     </a>
-                   </div>
-                   <div class="article-name" th:text="${bestArticle.title}"></div>
-                   <div class="article-desc" th:text='|조회수  ${bestArticle.viewCount}|'></div>
-                   <div class="article-desc" th:text='|등록일   ${bestArticle.uploadDate}|'></div>
-                   <div class="article-desc" th:text='${bestArticle.categorys}'></div>
-                 </div>
-               </th:block>
-             </div>
-             <div class="more-btn article-more">
-               <span id="article-more">더 보기</span>
-             </div>
-           </div>
+        $("#article-more").click(function () {
+          let np = $("input[name=cNowPage]").val();
+          np = Number(np) + 1;
+          $("input[name=cNowPage]").val(np);
+          let formData = $("#searchForm").serialize();
+          let sel = $("#artSort").val();
+          if (sel == null || sel == "") {
+            searchCont(formData);
+          } else if (sel == "upload_date") {
+            sortingC("UPLOAD_DATE", "DESC", ct);
+          } else if (sel == "viewCount") {
+            sortingC("VIEWCOUNT", "DESC", ct);
+          } else {
+            sortingC("VIEWCOUNT", "DESC", sel);
+          }
+        });
 
-         </div>
-       </div>
-     </div>
-   </div>
- </div>
- </main>
- <th:block layout:fragment="script">
- <script type="text/javascript">
-    
-    let ct = "";
-    let sort_select = "<select onchange='articleSort()' id='artSort'>"
-     	+"<option value='viewCount'>조회수 순</option>"
-     	+"<option value='upload_date'>등록일 순</option>"
-     	+"<option value='시'>시</option>"
-     	+"<option value='소설'>소설</option>"
-     	+"<option value='에세이'>에세이</option>"
-     	+"</select>";
-    $(document).ready(function () {
-      $("#write-more").click(function () {
-    	  let np =  $("input[name=wNowPage]").val();
-    	  np = Number(np) + 1;
-    	  $("input[name=wNowPage]").val(np);
-      	let formData = $("#searchForm").serialize();
-        
-      	searchWriter(formData);
+        $("#searchButton").click(function () {
+          if ($("input[name=searchWord]").val() == "") {
+            alert("검색어를 입력하세요");
+          } else {
+            $("input[name=wNowPage]").val(0);
+            $("input[name=cNowPage]").val(0);
+            let formData = $("#searchForm").serialize();
+            if ($("select[name=searchCategory]").val() == "writer") {
+              $(".best-writer").show();
+              $(".writer-title").text("검색 결과");
+              $(".article-title").text("검색 결과와 관련된 글");
+              $(".article-title select-wrap").empty();
+              $(".article-title").after(sort_select);
+              $(".writer-grid").empty();
+              $(".article-grid").empty();
+              searchWriter(formData);
+              searchCont(formData);
+            } else {
+              $(".best-writer").hide();
+              $(".article-title").text("검색 결과");
+              $(".best-article select").remove();
+              $(".article-title").after(sort_select);
+              $(".article-grid").empty();
+              searchCont(formData);
+            }
+          }
+        });
       });
 
-      $("#article-more").click(function () {
-    	  let np =  $("input[name=cNowPage]").val();
-    	  np = Number(np) + 1;
-    	  $("input[name=cNowPage]").val(np);
-      	let formData = $("#searchForm").serialize();
-      	let sel = $("#artSort").val();
-      if(sel == null || sel == ""){
-    	  searchCont(formData);
-      }else if(sel == "upload_date"){
-    	  sortingC("UPLOAD_DATE","DESC",ct);
-      }else if(sel =="viewCount" ){
-    	  sortingC("VIEWCOUNT","DESC",ct);	
-      }else{
-    	  sortingC("VIEWCOUNT","DESC",sel);
+      function articleSort() {
+        let sel = $("#artSort").val();
+        $("input[name=cNowPage]").val(0);
+        if (sel == "viewCount") {
+          sortingC("VIEWCOUNT", "DESC", ct);
+          $(".article-grid").empty();
+        } else if (sel == "upload_date") {
+          sortingC("UPLOAD_DATE", "DESC", ct);
+          $(".article-grid").empty();
+        } else {
+          sortingC("VIEWCOUNT", "DESC", sel);
+          $(".article-grid").empty();
+        }
       }
-    	  
-      	
-      });
 
+      function sortingC(st, s, ct) {
+        $("#searchButton").after("<input type='hidden' name='searchSort' value='" + st + "'><input type='hidden' name='sort' value='" + s + "'>");
 
-      $("#searchButton").click(function () {
-    	  if($("input[name=searchWord]").val()==""){
-    		  alert("검색어를 입력하세요");
-    	  }else{
-    		  $("input[name=wNowPage]").val(0);
-    	      $("input[name=cNowPage]").val(0);
-    	    	 let formData = $("#searchForm").serialize();
-    	    	if($("select[name=searchCategory]").val()=='writer'){
-    	    		$(".best-writer").show();
-    	    		$(".writer-title").text("검색 결과");
-    	           	$(".article-title").text("검색 결과와 관련된 글");
-    	           	$(".article-title select-wrap").empty();
-    	          	$(".article-title").after(sort_select);
-    	          	$(".writer-grid").empty();
-    	          	$(".article-grid").empty();
-    	            searchWriter(formData);
-    	           	searchCont(formData);
-    	           
-    	    	}else{
-    	    		$(".best-writer").hide();
-    	    		$(".article-title").text("검색 결과");
-    	    		$(".best-article select").remove();
-    	    		$(".article-title").after(sort_select);
-    	    		$(".article-grid").empty();
-    	    		searchCont(formData);
-    	    		
-    	    	}
-    	  }
-       	
-      });
-    });
+        if (ct != "") {
+          $("#searchButton").after("<input type='hidden' name='categorySort' value='" + ct + "'>");
+        }
+        let formData = $("#searchForm").serialize();
 
-   	
-    function articleSort(){
-    	let sel = $("#artSort").val();
-    	$("input[name=cNowPage]").val(0);
-   		if(sel == "viewCount"){
-   			sortingC("VIEWCOUNT","DESC",ct);
-   			$(".article-grid").empty();
-   		}else if(sel == "upload_date"){
-   			sortingC("UPLOAD_DATE","DESC",ct);	
-   			$(".article-grid").empty();
-   		}else{
-   			sortingC("VIEWCOUNT","DESC",sel);
-   			$(".article-grid").empty();
-   		}
-    }
-    
+        searchCont(formData);
+        $("input[name=searchSort]").remove();
+        $("input[name=sort]").remove();
+        $("input[name=categorySort]").remove();
+      }
+      function searchWriter(formData) {
+        $.ajax({
+          url: "/getSearchWlist",
+          type: "get",
+          dataType: "json",
+          data: formData,
+          success: function (data) {
+            let addlist = "";
+            let list = data.list;
+            let more = data.more;
 
-    function sortingC(st,s,ct){
-    	
-    	$("#searchButton").after("<input type='hidden' name='searchSort' value='"+st+"'><input type='hidden' name='sort' value='"+s+"'>");
-    	
-    	if(ct != ""){
-    		$("#searchButton").after("<input type='hidden' name='categorySort' value='"+ct+"'>");	
-    	}
-    	let formData = $("#searchForm").serialize();
-    	
-    	searchCont(formData);
-    	$("input[name=searchSort]").remove();
-    	$("input[name=sort]").remove();
-    	$("input[name=categorySort]").remove();
-    }
-    function searchWriter(formData) {
-      $.ajax({
-        url: "/getSearchWlist",
-        type: "get",
-        dataType: "json",
-        data: formData,
-        success: function (data) {
-         
-          let addlist = "";
-          let list = data.list;
-          let more = data.more;
-          
-          $.each(list, function (i, ser) {
-        	  addlist += "<div class='writer'>"
-                  + "<div class='writer-photo'>"
-                  + "<a href='#' onclick='writerDetail(" + ser.writerSeq + ")'>"
-                  + "<img src='/static/asset/mush.jpg' alt='' /></a></div>"
-                  + "<div class='writer-desc'>" + ser.intro + "</div>"
-                  + "<div class='writer-name'>" + ser.writerName + "</div></div>";
-          });
-          $(".writer-grid").append(addlist);
-          
-          if(more == true){
-		  	$("#write-more").show();
-		  }else{
-		  	$("#write-more").hide();
-		  	if(list==""){
-					alert("더 이상 결과가 없습니다");
-				}
-		  }
-          
-        },
-        error: function () {
-          alert("error");
-        },
-      });
-    }
+            $.each(list, function (i, ser) {
+              addlist +=
+                "<div class='writer'>" +
+                "<div class='writer-photo'>" +
+                "<a href='#' onclick='writerDetail(" +
+                ser.writerSeq +
+                ")'>" +
+                "<img src='/static/asset/mush.jpg' alt='' /></a></div>" +
+                "<div class='writer-desc'>" +
+                ser.intro +
+                "</div>" +
+                "<div class='writer-name'>" +
+                ser.writerName +
+                "</div></div>";
+            });
+            $(".writer-grid").append(addlist);
 
-    function searchCont(formData){
-    	$.ajax({
-    		url:"/getSearchClist",
-    		type:"get",
-    		dataType: "json",
-    		data: formData,
-    		success:function(data){
-    			let addlist = "";
-    			let list = data.list;
-    	 		let more = data.more;
-    	 		
-   	 			$.each(list, function(i,ser){
-   	 				addlist += "<div class='article'>"
-   	 	                  + "<div class='article-photo'>"
-   	 	                  + "<a href='#' onclick='writerDetail(" + ser.writerSeq + ")'>"
-   	 	                  + "<img src='/static/asset/a.jpg' alt='' /></a></div>"
-   	 	                  + "<div class='article-name'>" + ser.title + "</div>"
-   	 	                  + "<div class='article-desc'>조회수  " + ser.viewCount + "</div>"
-   	 	                  + "<div class='article-desc'>등록일  " + ser.uploadDate + "</div>"
-   	 	                  + "<div class='article-desc'>" + ser.categorys + "</div>"
-   	 	                  + "</div>";
-   					
-   				});
-   				$(".article-grid").append(addlist); 
-   				
-   				if(more == true){
-   					$("#article-more").show();
-   				}else{
-   					$("#article-more").hide();
-   					if(list==""){
-   						alert("더 이상 결과가 없습니다");
-   					}
-   				}
-    	 			
-    		},
-    		error:function(){
-    			alert('error');
-    		}
-    	});
-    	
-    }
-    
- 
-	             	
-	             	
-	             	
-	             
-  </script>
-</th:block>
+            if (more == true) {
+              $("#write-more").show();
+            } else {
+              $("#write-more").hide();
+              if (list == "") {
+                alert("더 이상 결과가 없습니다");
+              }
+            }
+          },
+          error: function () {
+            alert("error");
+          },
+        });
+      }
+
+      function searchCont(formData) {
+        $.ajax({
+          url: "/getSearchClist",
+          type: "get",
+          dataType: "json",
+          data: formData,
+          success: function (data) {
+            let addlist = "";
+            let list = data.list;
+            let more = data.more;
+
+            $.each(list, function (i, ser) {
+              addlist +=
+                "<div class='article'>" +
+                "<div class='article-photo'>" +
+                "<a href='#' onclick='writerDetail(" +
+                ser.writerSeq +
+                ")'>" +
+                "<img src='/static/asset/a.jpg' alt='' /></a></div>" +
+                "<div class='article-name'>" +
+                ser.title +
+                "</div>" +
+                "<div class='article-desc viewcount'>조회수  " +
+                ser.viewCount +
+                "</div>" +
+                "<div class='article-desc date'>등록일  " +
+                ser.uploadDate +
+                "</div>" +
+                "<div class='article-desc category'>" +
+                ser.categorys +
+                "</div>" +
+                "</div>";
+            });
+            $(".article-grid").append(addlist);
+
+            if (more == true) {
+              $("#article-more").show();
+            } else {
+              $("#article-more").hide();
+              if (list == "") {
+                alert("더 이상 결과가 없습니다");
+              }
+            }
+          },
+          error: function () {
+            alert("error");
+          },
+        });
+      }
+    </script>
+  </th:block>
 </html>

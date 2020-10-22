@@ -60,16 +60,16 @@
               <div class="section-body writer-grid clearfix">
                 <div class="grid-wrap left clearfix">
                   <div class="writer-pic">
-                 <img alt="" src="/static/asset/ccc.jpg" height="150">
-                 </div>
+                    <img alt="" th:src="@{static/upload/profile/}+${todayWriter.profileFileSystem}" height="150" />
+                  </div>
                   <div class="writer-info-wrap">
                     <div class="writer-name" th:text="${todayWriter.writerName}"></div>
-                    <div class="writer-birth" >작가 정보</div>
+                    <div class="writer-birth">작가 정보</div>
                   </div>
                 </div>
                 <div class="right">
                   <div class="grid-wrap right-up">
-                    <div class="writer-desc"  th:text="${todayWriter.intro}"></div>
+                    <div class="writer-desc" th:text="${todayWriter.intro}"></div>
                   </div>
                   <div class="grid-wrap right-down">
                     <div class="writer-recommend">
@@ -89,12 +89,17 @@
                   <th:block th:each="writer, i:${writerList}">
                     <th:block th:if="${i.index < 4}">
                       <div class="grid-wrap">
+                       <a th:href="@{/writer/detail?writerSeq={writerSeq}(writerSeq=${writer.writerSeq})}" onfocus="this.blur()">
                         <div class="writer-photo">
                           <div class="filter"></div>
-                          <img src="/static/asset/c.jpg" alt="" />
+                         <img th:if="${not #strings.isEmpty(writer.profileFileSystem)}" th:src="@{static/upload/profile/}+${writer.profileFileSystem}"alt="" /> 
+                         <img th:unless="${not #strings.isEmpty(writer.profileFileSystem)}" th:src="@{static/upload/profile/nonProfile.jpg}" alt="" />                                
                         </div>
-                        <div class="writer-desc" th:text="${writer.intro}" ></div>
+                        </a>
+                        <a th:href="@{/writer/detail?writerSeq={writerSeq}(writerSeq=${writer.writerSeq})}" onfocus="this.blur()">
+                        <div class="writer-desc" th:text="${writer.intro}"></div>
                         <div class="writer-name" th:text="${writer.writerName}"></div>
+                        </a>
                       </div>
                     </th:block>
                   </th:block>
@@ -127,17 +132,22 @@
                 <div class="article-wrap clearfix" id="articleWrap">
                   <th:block th:each="articleList, i:${articleList}">
                     <th:block th:if="${i.index < 6}">
-                      <div class="articles">
+                      <div class="articles" >
+                      <a th:href="@{/article/detail?articleSeq={articleSeq}(articleSeq=${articleList.articleSeq})}" onfocus="this.blur()">
                         <div class="article-thumb">
-                          <img src="/static/asset/cc.jpg" alt="article thumb" />
+                        <img th:if="${not #strings.isEmpty(articleList.fileSystem)}" th:src="@{static/upload/cover/}+${articleList.fileSystem}"alt="" /> 
+                         <img th:unless="${not #strings.isEmpty(articleList.fileSystem)}" th:src="@{static/upload/cover/nonCover.jpg}" alt="" />  
                         </div>
+                        </a>
+                        <a th:href="@{/article/detail?articleSeq={articleSeq}(articleSeq=${articleList.articleSeq})}" onfocus="this.blur()">
                         <div class="article-title" th:text="${articleList.title}"></div>
+                        </a>
                       </div>
                     </th:block>
                   </th:block>
                 </div>
               </div>
-            </div>
+            </div>  
             <!-- //recommend-article -->
 
             <!-- today-sentence -->
@@ -200,6 +210,8 @@
           });
         });
       }
+      
+      
       // article category
       function articleWrap(tab) {
         let category = $(tab).data("name");
@@ -210,17 +222,22 @@
           success: function (data) {
             let article = "";
             $.each(data, function (index, item) {
-              if (index < 6) {
+              if (index < 6 ) {
+            	  item.articleSeq += "";
                 article +=
                   "<div class='articles'>" +
-                  "<div class='article-thumb'>" +
-                  "<img src='/static/asset/cc.jpg' alt='article thumb' />" +
+                  "<a href='/article/detail?articleSeq="+ item.articleSeq +"'>"+
+                  "<div class='article-thumb'>" +            
+                  "<img src='/static/upload/cover/"+ item.fileSystem +"' alt='' />" +         
                   "</div>" +
+                  "</a>" +
+                  "<a href='/article/detail?articleSeq="+ item.articleSeq +"'>"+
                   "<div class='article-title'>" +
                   item.title +
                   "</div>" +
+                  "</a>"+
                   "</div>";
-              }
+                }
             });
             let articleWrap = $("#articleWrap").html(article);
             $(".section-tap-wrap .tab").removeClass("active");
@@ -231,6 +248,9 @@
           },
         });
       }
+      function articleDetail(seq){
+    	  location.href = "article/detail?articleSeq="+ seq;
+      };
 
       $(document).ready(function () {
         // article wrap function add to each tab
@@ -240,6 +260,8 @@
         // main banner
         bannerBg();
         $(".banner-wrap").slick({
+          touchMove: false,
+          draggable: false,
           dots: false,
           appendArrows: $(".banner-arrows"),
           prevArrow: '<div class="arrow prev-arrow"><span class="iconify" data-icon="bi:chevron-left" data-inline="false"></span></div>',

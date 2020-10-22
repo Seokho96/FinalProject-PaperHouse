@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html
+  lang="ko"
   xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org"
   xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
 >
-  <head th:replace="fragments/config :: configFragment"></head>
-<body>
+<head th:replace="fragments/config :: configFragment">
+<style>
 
+</style>
+
+</head>
+
+
+ <div layout:fragment="content">
 <input type="hidden" id="articleSeq" name="articleSeq" th:value="${articleSeq}">
 <input type="hidden" id="userSeq" name="userSeq" th:value="${userSeq}">
 <input type="hidden" id="writerSeq" name="writerSeq" th:value="${writerInfo.writerSeq}">
 
 
-<h3>책표지(임시 업로드 인성 문제잇음)</h3>
+<h3>책표지</h3>
 
 <br><br>
 
-<img src="/static/profile/profiledefault.png">
+<img th:src="${img}">
 
 <br><br>
 
@@ -66,21 +74,31 @@
 
 <br><br>
 
-<h3>유저 시퀀스 같은지 확인용</h3>
-
-<br><br>
-
-<div th:text="${userSeq}"></div>
-<div th:text="${writerInfo.userSeq}"></div>
-
-<br><br>
-
 <div th:if="${userSeq} == ${writerInfo.userSeq}">
 	<a th:href="@{'/article/update?articleSeq=' + ${articleSeq}}">
 	<button id="updatebtn" style="float:left; margin-right: 10px">수정</button>
 	</a>
 	<button id="deletebtn">삭제</button>
 </div>
+<div id="insertReview">
+	<input type="text" id="nickName" th:value="${userNickName}">
+	<br>
+	<textarea id="conts" rows="3" cols="50"></textarea>
+	<button type="submit" id="insertBtn">입력</button>
+</div>
+
+<!-- review  -->
+<table class="list_table" style="width: 85%" id="_list_table">
+<colgroup>
+	<col style="width:500px">
+	<col style="width:500px">
+</colgroup>
+<tbody>
+
+</tbody>
+</table>
+
+<br><br>
 
 <div class="container">
 	<nav aria-label="Page navigation">
@@ -89,47 +107,140 @@
 </div>
 
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/static/js/jquery.twbsPagination.min.js"></script>
-<script type="application/javascript" th:inline="javascript">
-  $(function () {
-    var csrfToken = /*[[${_csrf.token}]]*/ null;
-    var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
-    $(document).ajaxSend(function (e, xhr, options) {
-      xhr.setRequestHeader(csrfHeader, csrfToken);
-    });
-  });
-</script>
 
+<th:block layout:fragment="script">
+<script type="application/javascript" th:inline="javascript">
+        $(function() {
+            var csrfToken = /*[[${_csrf.token}]]*/ null;
+            var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+            $(document).ajaxSend(function (e, xhr, options) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            });
+        });
+</script>
 <script type="text/javascript">
 $(document).ready(function(){
+	getReviewListData(0);
+	getReviewListCount(); 
+});
 
-	let totalCount = 51;	// 글의 총수
-	let pageSize = 10;		// 페이지 크기 [1] ~ [10] [1] ~ [5]
-	let nowPage = 1;		// 현재 페이지 
+let userSeq=$("#userSeq").val();
+let writerSeq = $("#writerSeq").val();
 
-	let _totalPages = totalCount / pageSize;
+$("#insertBtn").click(function () {
+		 $.ajax({
+	            url: "/review/insert",
+	            type: "post",
+	            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+	            data:{ 
+	            	articleSeq:$("#articleSeq").val(),
+	            	nickName:$("#nickName").val(), 
+	            	userSeq:$("#userSeq").val(), 
+	            	cont:$("#conts").val()
+	            },
+	            success: function (msg) {
+	              if (msg == "ok") {
+	            	 console.log('ok');
+	              }
+	              
+	              $("#conts").val('');
+	              getReviewListData( 0 );
+	  				
+	            },
+	            error: function () {
+	              alert("error");
+	            }
+	     });
+});
+
+function getReviewListData( pNumber ){
+	$.ajax({
+		url:"/review/list",
+		type:"post",
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		data:{"pageNumber":pNumber, "recordCountPerPage":10, "articleSeq":$("#articleSeq").val()},
+		success:function( list ){
+ 		
+			console.log('ok');
+			
+			$("#_list_table tbody").empty();
+			
+			$.each(list, function(i, val){
+				if( userSeq == val.userSeq ) {
+					var str = "<td>" + "<button id='reviewUpdate' style='margin-right:5px'>수정</button>"+ "<button id='reviewDelete'>삭제</button>"  + "</td></tr>";
+				} else {
+					var str = "";
+				}
+				
+					let app = "<tr class='list_col'>"
+						+  "<tr><td>" + val.nickName + "</td><td>" + val.reviewDate +"</td>"
+						+  str
+						+  "<tr class='list_col' colspan='3'>" 
+						+ "<td>" +  val.cont + "</td>"
+						+ "</tr>"; 
+								 
+								
+					$("#_list_table tbody").append(app);
+			});
+			
+		},
+		error:function(){
+			alert("error1");
+		}
+	});
+}
+
+
+// 글의 총 수를 취득
+function getReviewListCount(){
+	
+	$.ajax({
+		url:"/review/count",
+		type:"post",
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		data:{"pageNumber":0, "recordCountPerPage":10},
+		success:function( count ){
+			//alert("sucess");
+			//alert(count);	
+			loadPage(count);
+		},
+		error:function(){
+			alert("error2");
+		}
+	});
+}
+
+// paging 처리
+function loadPage( totalCount ){
+
+	let pageSize = 10;
+	let nowPage = 1;
+	
+	let totalPages = totalCount / pageSize;
 	if(totalCount % pageSize > 0) {
-	   _totalPages++;
+	   totalPages++;
 	}
-
+	
+	$("#pagination").twbsPagination('destroy');	//	페이지 갱신
+	
 	$("#pagination").twbsPagination({
-		   startPage: 1,
-		   totalPages: _totalPages,
+	//	   startPage: 1,
+		   totalPages: totalPages,	// 전체 페이지 수
 		   visiblePages: 10,
 		   first:'<span aria-hidden="true"><<</span>',
 		   prev:"이전",
 		   next:"다음",
 		   last:'<span aria-hidden="true">>></span>',
+		   initiateStartPageClick:false,				// onPageClick 자동 실행하지 않는다.
 		   onPageClick: function(event, page) {
 		      nowPage = page;
+		      //alert('nowPage: ' + nowPage);
+		      getReviewListData( nowPage - 1 );
 		   }
-	});	
-	
-let userSeq = $("#userSeq").val();
-let writerSeq = $("#writerSeq").val();
+	});
+} 
 
-
+$(document).ready(function(){
 $("#follow").click(function() {
 	$.ajax({
 		url:"/article/follow",
@@ -222,33 +333,33 @@ $("#unlike").click(function() {
 	});
 });
 
-$("#deletebtn").click(function() {
-		$.ajax({
-			url:"/article/delete",
-			type:"post",
-			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-			data:{ articleSeq:$("#articleSeq").val() , follower:$("#writerSeq").val()},
-			success:function( msg ){
-				if(msg == 'ok'){
-					swal({
-					    title: "good!",
-					    text: "글 삭제가 완료되었습니다.",
-					    type: "success"
-					}).then(function() {
-					    window.location = "/myPage";
-					});
-				}
-			},
-			error:function(){
-				alert("error");
-			}			
+	$("#deletebtn").click(function() {
+			$.ajax({
+				url:"/article/delete",
+				type:"post",
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				data:{ articleSeq:$("#articleSeq").val() , follower:$("#writerSeq").val()},
+				success:function( msg ){
+					if(msg == 'ok'){
+						swal({
+						    title: "good!",
+						    text: "글 삭제가 완료되었습니다.",
+						    type: "success"
+						}).then(function() {
+						    window.location = "/myPage";
+						});
+					}
+				},
+				error:function(){
+					alert("error");
+				}			
+			});
 		});
-	});
 });
-
-
 </script>
+</th:block>
 
-
-</body>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.twbsPagination.min.js"></script>
+</div>
 </html>
