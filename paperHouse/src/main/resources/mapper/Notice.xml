@@ -2,21 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bit.paperhouse.dao.NoticeRepository">
 
-<select id="allList" resultType="com.bit.paperhouse.dto.NoticeDto">
-    SELECT *FROM NOTICE
-    ORDER BY NOTICE_SEQ DESC
-</select>
+	<select id="allList"
+		resultType="com.bit.paperhouse.dto.NoticeDto">
+		SELECT * FROM NOTICE
+		ORDER BY NOTICE_SEQ DESC
+	</select>
+
+	<select id="getNotice"
+		resultType="com.bit.paperhouse.dto.NoticeDto">
+		SELECT * FROM NOTICE
+		WHERE NOTICE_SEQ = #{noticeSeq}
+	</select>
+
+	<insert id="insertNotice"
+		parameterType="com.bit.paperhouse.dto.NoticeDto">
+		INSERT INTO
+		NOTICE(NOTICE_SEQ,TITLE,CONT,UPLOAD_DATE,FILE_ORIGINAL,FILE_SYSTEM,VIEWCOUNT,DEL)
+		VALUES(NOTICE_SEQ.NEXTVAL,#{title},#{cont},SYSDATE,#{fileOriginal},#{fileSystem},0,0)
+	</insert>
 
 
-<insert id="writeNoticeAf" parameterType="com.bit.paperhouse.dto.NoticeDto">
-    INSERT INTO NOTICE(NOTICE_SEQ,TITLE,CONT,UPLOAD_DATE,FILE_ORIGINAL,FILE_SYSTEM,VIEWCOUNT,DEL)
-    VALUES(NOTICE_SEQ.NEXTVAL,#{title},#{cont},SYSDATE,'null','null',0,0)
-</insert>
-
-
-    <delete id="deleteNotice" parameterType="com.bit.paperhouse.dto.NoticeDto">
-    DELETE NOTICE
-	SET DEL=1
-	WHERE NOTICE_SEQ=#{seq}
-    </delete>
+	<delete id="deleteNotice"
+		parameterType="com.bit.paperhouse.dto.NoticeDto">
+		UPDATE NOTICE
+		SET DEL = 1
+		WHERE NOTICE_SEQ = #{noticeSeq}
+	</delete>
 </mapper>

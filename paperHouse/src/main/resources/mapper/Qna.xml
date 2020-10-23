@@ -110,42 +110,45 @@
 
 </select>
 
-<select id="qnaUpdate" resultType="com.bit.paperhouse.dto.QnaDto" parameterType="int">
-    SELECT
-    *
-    FROM QNA
-    WHERE QNA_SEQ= #{qnaSeq}
-</select>
+
 
 <update id="qnaUpdateAf" parameterType="com.bit.paperhouse.dto.QnaDto">
     UPDATE QNA
-    SET TITLE=#{title} , CONTS=#{conts} , QDATE=SYSDATE
+    SET  TITLE=#{title} , CONTS=#{conts}
     WHERE QNA_SEQ=#{qnaSeq}
 
 </update>
 
-<select id="qnaReply" resultType="com.bit.paperhouse.dto.QnaDto" parameterType="com.bit.paperhouse.dto.QnaDto">
-    SELECT *
-    FROM QNA
-
-</select>
-
-<update id="qnaReplyAf" parameterType="com.bit.paperhouse.dto.QnaDto">
+<update id="qnaStaus" parameterType="int">
     UPDATE QNA
-    SET TITLE=#{title}, CONTS=#{conts}
-    WHERE QNA_SEQ=#{qnaSeq}
-
+    SET STATUS= 1
+    WHERE QNA_SEQ = #{qnaSeq}
 </update>
 
-<insert id="qnaReplyInsert"  parameterType="com.bit.paperhouse.dto.QnaDto">
-    INSERT INTO QNA(USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM, REPLY, STATUS,  QDATE)
-    VALUES(#{userSeq}, QNA_SEQ.NEXTVAL, #{title}, #{conts}, 'null', 'null', 'null', 0, SYSDATE)
-</insert>
 
-<update id="qnaReplyUpdate" parameterType="com.bit.paperhouse.dto.QnaDto">
-    UPDATE QNA
-    SET    STATUS=1
-    WHERE QNA_SEQ =?
-</update>
+
+<!--<select id="qnaReply" resultType="com.bit.paperhouse.dto.QnaDto" parameterType="com.bit.paperhouse.dto.QnaDto">-->
+<!--    SELECT *-->
+<!--    FROM QNA-->
+
+<!--</select>-->
+
+<!--<update id="qnaReplyAf" parameterType="com.bit.paperhouse.dto.QnaDto">-->
+<!--    UPDATE QNA-->
+<!--    SET TITLE=#{title}, CONTS=#{conts}-->
+<!--    WHERE QNA_SEQ=#{qnaSeq}-->
+
+<!--</update>-->
+
+<!--<insert id="qnaReplyInsert"  parameterType="com.bit.paperhouse.dto.QnaDto">-->
+<!--    INSERT INTO QNA(USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM, REPLY, STATUS,  QDATE)-->
+<!--    VALUES(#{userSeq}, QNA_SEQ.NEXTVAL, #{title}, #{conts}, 'null', 'null', 'null', 0, SYSDATE)-->
+<!--</insert>-->
+
+<!--<update id="qnaReplyUpdate" parameterType="com.bit.paperhouse.dto.QnaDto">-->
+<!--    UPDATE QNA-->
+<!--    SET    STATUS=1-->
+<!--    WHERE QNA_SEQ =?-->
+<!--</update>-->
 
 </mapper>

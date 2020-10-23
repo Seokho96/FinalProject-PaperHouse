@@ -31,7 +31,9 @@ public class SearchController {
 			SearchDto sd = new SearchDto();
 			sd.setStart(1);
 			sd.setEnd(5);
-			List<WriterDto> bestWriters = searchService.getBestWriter(sd);
+			Map<String, Object> map = searchService.getBestWriter(sd);
+			Object obj = map.get("list");
+			List<WriterDto> bestWriters = (List<WriterDto>)obj;
 			
 			sd.setStart(1);
 			sd.setEnd(7);
@@ -55,7 +57,7 @@ public class SearchController {
 		int np = searchDto.getWNowPage();
 		int start = np*VIEW_MORE_WRITER+1;
 		int end = start+VIEW_MORE_WRITER-1;
-		
+		System.out.println("start:"+start+"end:"+end);
 		searchDto.setStart(start);
 		searchDto.setEnd(end);
 		
@@ -81,4 +83,17 @@ public class SearchController {
 		return map;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/getBestWriters",method = RequestMethod.GET)
+	public Map<String, Object> getBestWriters(SearchDto searchDto){
+		int np = searchDto.getWNowPage();
+		int start = np*VIEW_MORE_WRITER+1;
+		int end = start+VIEW_MORE_WRITER-1;
+		searchDto.setStart(start);
+		searchDto.setEnd(end);
+		System.out.println(searchDto.toString());
+		Map<String, Object>map = searchService.getBestWriter(searchDto);
+		
+		return map;
+	}
 }

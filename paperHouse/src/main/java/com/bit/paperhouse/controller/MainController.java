@@ -93,7 +93,7 @@ public class MainController {
 		String[] pstr2 = todaySentence.split("상세보기");
 		
 		for(int i=0;i<pstr2.length;i++) {
-			pstr2[i] = pstr2[i].replace("<", "<br><");
+			pstr2[i] = pstr2[i].replace("<", "<p class='text' style='font-size: 12px; margin-top: 75px' ><");
 		}
 		
       return pstr2;

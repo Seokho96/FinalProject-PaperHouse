@@ -62,4 +62,17 @@ public class UserReviewController {
 		
 		return count;
 	}
+	
+	@ResponseBody
+	@PostMapping("/review/delete")
+	public String UserReviewDelete(int reviewSeq) {
+		
+		System.out.println(reviewSeq);
+		
+		service.deleteUserReview(reviewSeq);
+		
+		String str = "ok";
+		
+		return str;
+	}
 }

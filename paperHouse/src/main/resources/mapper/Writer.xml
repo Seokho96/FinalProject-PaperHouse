@@ -17,12 +17,6 @@
 	WHERE WRITER_SEQ = #{writerSeq}
 </select>
 
-<select id="getWriterlist" resultType="com.bit.paperhouse.dto.WriterDto"> 
-	SELECT *
-	FROM WRITER
-	WHERE STATUS = 1
-</select>
-
 <select id="getWriterAllSubCount" resultType="java.lang.Integer">
 	SELECT COUNT(USER_SEQ)
 	FROM USER_SUBSCRIBE
@@ -35,10 +29,29 @@
 	WHERE WRITER_SEQ = #{writerSeq}
 </select>
 
+<select id="getReviewAllCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	SELECT COUNT(R.ARTICLE_SEQ)
+	FROM USER_REVIEW R INNER JOIN ARTICLE A ON R.ARTICLE_SEQ = A.ARTICLE_SEQ
+	WHERE A.WRITER_SEQ = #{writerSeq}
+</select>
+
 <select id="selectWriterApply" parameterType="java.lang.Integer" resultType="java.lang.String">
 	SELECT USER_SEQ
 	FROM WRITER
 	WHERE USER_SEQ=#{userSeq}
-</select>	
+</select>
+
+<select id="selectWriteArticle" parameterType="java.lang.Integer" resultType="com.bit.paperhouse.dto.ArticleDto">
+	SELECT *
+	FROM ARTICLE
+	WHERE WRITER_SEQ = #{writerSeq}
+</select>
+
+<select id="selectWriteReview" parameterType="java.lang.Integer" resultType="com.bit.paperhouse.dto.UserReviewDto">
+	SELECT R.NICKNAME AS NICKNAME, R.CONT AS CONT, R.REVIEW_DATE AS REVIEWDATE 
+	FROM USER_REVIEW R INNER JOIN ARTICLE A ON R.ARTICLE_SEQ = A.ARTICLE_SEQ
+	WHERE WRITER_SEQ = #{writerSeq}
+</select>
+
 
 </mapper>

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserReviewDto {
 	
+	private int reviewSeq;
 	private int articleSeq;
 	private int userSeq;
 	private String nickName;

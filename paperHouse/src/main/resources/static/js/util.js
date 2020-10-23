@@ -19,9 +19,9 @@ $(function () {
   let headerHeight = $("header").outerHeight();
   let footerHeight = $("footer").outerHeight();
   if ($(".myPage").length > 0) {
-    $(".myPage").css("min-height", "calc(100vh - " + (headerHeight + footerHeight) + "px)");
+    $(".myPage").css("min-height", "calc(100vh - " + footerHeight + "px)");
   } else if ($(".myPageSub").length > 0) {
     let innerTopHeight = $(".inner-top").outerHeight();
-    $(".myPageSub").css("min-height", "calc(100vh - " + (headerHeight + innerTopHeight + footerHeight) + "px)");
+    $(".myPageSub").css("min-height", "calc(100vh - " + footerHeight + "px)");
   }
 });

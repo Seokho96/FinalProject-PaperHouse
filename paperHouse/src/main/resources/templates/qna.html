@@ -1,192 +1,151 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="/static/js/jquery.twbsPagination.min.js"></script>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<hr/>
-<h2 align="center">1:1 문의</h2>
-<hr/>
-<input type="hidden" th:value="${qna}">
-
-    <br>
-    <form th:action="@{'/qna/search'}" method="get">
-        <table>
-        <tr>
-        <div align="center" >
-            <td>
-            <select  id="choice" name="choice" style="border-radius: 0.3em; height:2em; line-height: 2em; padding:0 0.2em ">
-                <option value="" selected="selected">선택</option>
-                <option value="title">제목</option>
-                <option value="writer">작성자</option>
-                <option value="content">내용</option>
-            </select>
-            </td>
-            <td>
-            <input type="text" id="searchWord"  name="searchWord" style="border-radius: 0.3em;  padding: 0 0.9em; height:2em; line-height: 2em; border: 1px solid gray;" placeholder="검색어를 입력해주세요">
-            </td>
-            <td>
-                <span>
-                    <button type="button" id="searchBtn">검색</button>
-                </span>
-            </td>
-
-
-<!--            <input type="submit" style="background-color: #fee134; color:white; border-radius: 0.3em; border: none;height:2em; line-height: 2em; padding:0 0.9em;"  value="검색">-->
+<html
+  lang="ko"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
+>
+  <main class="myPageSub qna main-common" layout:fragment="content">
+    <div class="inner-top">1:1 문의</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="inner-wrap">
+            <!-- searchWrap -->
+            <div class="searchWrap clearfix">
+              <div class="select-wrap">
+                <select id="choice" name="choice">
+                  <option value="title" selected="selected">제목</option>
+                  <option value="writer">작성자</option>
+                  <option value="content">내용</option>
+                </select>
+                <div class="arrow"><span class="iconify" data-icon="bi:chevron-down" data-inline="false"></span></div>
+              </div>
+              <div class="input-wrap">
+                <input type="text" id="searchWord" name="searchWord" placeholder="검색어를 입력해주세요" />
+              </div>
+              <button type="button" id="searchBtn">검색</button>
+            </div>
+            <!-- list -->
+            <div class="listWrap">
+              <table class="list_table" id="list_table">
+                <thead>
+                  <tr>
+                    <th class="title">제목</th>
+                    <th class="date">작성일</th>
+                    <th class="status">답변상태</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <!-- paging -->
+            <div class="paging-wrap">
+              <nav aria-label="Page navigation">
+                <ul class="pagination clearfix" id="pagination"></ul>
+              </nav>
+              <a class="goAsk" th:href="@{'/qna/write'}">문의하기</a>
+            </div>
+          </div>
         </div>
-        </tr>
-        </table>
-    </form>
-
-    <table class="list_table" style="width: 85%" id="_list_table" border="1 solid" >
-        <colgroup>
-            <col style="width:30px">
-            <col style="width:10px">
-            <col style="width:30px">
-            <col style="width:70px">
-        </colgroup>
-        <tr>
-            <th>제목</th><th>답변상태</th><th>작성자</th><th>작성일</th>
-        </tr>
-
-    </table>
-
-        <a th:href="@{'/qna/write'}">문의하기</a>
-
-
-<!-- paging -->
-<div class="container">
-    <nav aria-label="Page navigation">
-        <ul class="pagination" id="pagination" style="justify-content: center;"></ul>
-    </nav>
-</div>
-
-<br><br>
-
-<script type="application/javascript" th:inline="javascript">
-    $(function () {
+      </div>
+    </div>
+  </main>
+  <th:block layout:fragment="script">
+    <script type="application/javascript" th:inline="javascript">
+      $(function () {
         var csrfToken = /*[[${_csrf.token}]]*/ null;
         var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
         $(document).ajaxSend(function (e, xhr, options) {
-            xhr.setRequestHeader(csrfHeader, csrfToken);
+          xhr.setRequestHeader(csrfHeader, csrfToken);
         });
-    });
-</script>
-<script>
-    getBbsListData(0);
-    getBbsListCount();
-    //검색
-$(document).ready(function (){
-    $("#searchBtn").click(function (){
-        getBbsListData(0);
-        getBbsListCount();
-    })
-});
-
-function getBbsListData( pNumber){
-
-    $.ajax({                            //ajax 는 컨트롤러로 보내는 역할
-        url:"/qna/search",
-        type:'get',
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        data:{"pageNumber" :pNumber, "recordCountPerPage":10,
-            "choice":$("#choice").val(), "searchWord":$("#searchWord").val()},
-        success:function(list){
+      });
+    </script>
+    <script type="text/javascript" src="/static/js/jquery.twbsPagination.min.js"></script>
+    <script>
+      getBbsListData(0);
+      getBbsListCount();
+      //검색
+      $(document).ready(function () {
+        $("#searchBtn").click(function () {
+          getBbsListData(0);
+          getBbsListCount();
+        });
+      });
+      function getBbsListData(pNumber) {
+        $.ajax({
+          //ajax 는 컨트롤러로 보내는 역할
+          url: "/qna/search",
+          type: "get",
+          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+          data: { pageNumber: pNumber, recordCountPerPage: 10, choice: $("#choice").val(), searchWord: $("#searchWord").val() },
+          success: function (list) {
             $(".list_col").remove();
-            console.log(list);
             let status = "";
-            if(list.length > 0) {
-                $.each(list, function (i, val) {
-                    let app =
-                          "<tr class='list_col'>"
-                        // +  "<td>" + (i + 1) + "</td>"
-                        + "<td style='text-align: center'>"
-                        + "<a href='/qna/detail?qnaSeq=" + val.qnaSeq + "'>" + val.title+"</a>"
-                        + "</td>"
-                        +"<td style='text-align: center'>" + val.status+ "</td>"
-                        +"<td style='text-align: center'>" + val.userSeq + "</td>"
-                        +"<td style='text-align: center'>" + val.qdate + "</td>"
-                        +"</tr>";
-
-                    $("#_list_table").append(app);
-
-
-
-                });
-
+            if (list.length > 0) {
+              $.each(list, function (i, val) {
+                let app =
+                  "<tr class='list_col' onclick=location.href='/qna/detail?qnaSeq=" +
+                  val.qnaSeq +
+                  "'>" +
+                  "<td class='title'>" +
+                  val.title +
+                  "</a>" +
+                  "</td>" +
+                  "<td class='date'>" +
+                  val.qdate.split(" ", 2)[0] +
+                  "</td>" +
+                  "<td class='status'>" +
+                  val.status +
+                  "</td>" +
+                  "</tr>";
+                $("#list_table tbody").append(app);
+              });
             }
-        },
-        error:function(){
+          },
+          error: function () {
             alert("error");
-        }
-
-
-    });
-}
-// 글의 총수를 취득
-    function getBbsListCount(){
-    $.ajax({
-        url:"/qna/count",
-        type:"get",
-
-        data:{"pageNumber":0, "recordCountPerPage":10,
-            "choice":$("#choice").val(), "searchWord":$("#searchWord").val()},
-        success:function(count){
-            loadPage(count);
-        },
-        error:function (){
-            alert("error");
-        }
-    });
-    }
-
-    //paging 처리
-
-    function loadPage(totalCount){
-        let pageSize = 5;
-        let nowPage =1;
-
-        let totalPages = totalCount / pageSize;
-
-        if(totalCount % pageSize>0){
-            totalPages ++;
-        }
-
-        $("#pagination").twbsPagination('destroy'); //페이지 갱신
-
-        $("#pagination").twbsPagination({
-            startPage: 1,
-            totalPages : totalPages,  //전체 페이지
-            visiblePages : 5,
-            first:'<span aria-hidden="true"><<</span>',
-            prev:"이전",
-            next:"다음",
-            last:'<span aria-hidden="true">>></span>',
-            initiateStartPageClick:false,
-            onPageClick: function (event , page){
-                nowPage = page;
-                 alert('nowPage:' + nowPage);
-                getBbsListData(nowPage -1);
-            }
+          },
         });
-    }
-
-
-    // 댓글 이미지 처리
-    // function getArrow( depth ) {
-    //     let rs = "<img src='./image/arrow.png' width='20px' height='20px'/>";
-    //     let nbsp = "&nbsp;&nbsp;&nbsp;&nbsp;";
-    //
-    //     let ts = "";
-    //     for(i = 0;i < depth; i++) {
-    //         ts += nbsp;
-    //     }
-    //
-    //     return depth==0?"":ts + rs;
-    // }
-</script>
-</body>
+      }
+      // 글의 총수를 취득
+      function getBbsListCount() {
+        $.ajax({
+          url: "/qna/count",
+          type: "get",
+          data: { pageNumber: 0, recordCountPerPage: 10, choice: $("#choice").val(), searchWord: $("#searchWord").val() },
+          success: function (count) {
+            loadPage(count);
+          },
+          error: function () {
+            alert("error");
+          },
+        });
+      }
+      //paging 처리
+      function loadPage(totalCount) {
+        let pageSize = 10;
+        let nowPage = 1;
+        let totalPages = totalCount / pageSize;
+        if (totalCount % pageSize > 0) totalPages++;
+        $("#pagination").twbsPagination("destroy"); //페이지 갱신
+        $("#pagination").twbsPagination({
+          startPage: 1,
+          totalPages: totalPages, //전체 페이지
+          visiblePages: 5,
+          first: "",
+          prev: "",
+          next: "",
+          last: "",
+          initiateStartPageClick: false,
+          onPageClick: function (event, page) {
+            nowPage = page;
+            getBbsListData(nowPage - 1);
+          },
+        });
+      }
+    </script>
+  </th:block>
 </html>

@@ -46,7 +46,7 @@
             </td>
         </tr>
         <tr>
-            <td> <input type="file"> </td>
+            <td> <input type="file" name="file" > </td>
         </tr>
         </tbody>
 
@@ -56,6 +56,16 @@
 
 
 </body>
+<script type="application/javascript" th:inline="javascript">
+    $(function () {
+        var csrfToken = /*[[${_csrf.token}]]*/ null;
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(csrfHeader, csrfToken);
+        });
+    });
+</script>
+
 <script type="text/javascript">
     $(document).ready(function (){
         $("#writeBtn").click(function (){

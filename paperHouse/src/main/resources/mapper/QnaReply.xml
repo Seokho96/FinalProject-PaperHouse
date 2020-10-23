@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.paperhouse.dao.QnaReplyRepository">
+
+<select id="replyList" resultType="com.bit.paperhouse.dto.QnaReplyDto" parameterType="int">
+    SELECT * FROM QNA_REPLY
+    WHERE QNA_SEQ = #{qnaSeq}
+
+</select>
+
+
+
+<insert id="replyInsert" parameterType="com.bit.paperhouse.dto.QnaReplyDto">
+    INSERT INTO QNA_REPLY(REPLY_SEQ , QNA_SEQ , USER_SEQ , TITLE , CONT , REPLY_DATE)
+    VALUES (QNA_REPLY_SEQ.NEXTVAL, #{qnaSeq}, #{userSeq} , #{title} , #{cont} , SYSDATE)
+</insert>
+
+</mapper>

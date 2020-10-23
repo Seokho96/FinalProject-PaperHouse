@@ -1,40 +1,39 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+
 <body>
 
-<input type="hidden" name="userSeq" id="userSeq" th:value="${userSeq}">
-<input type="hidden" name="qnaSeq" id="qnaSeq" th:value="${qnaDetail}">
+    <input type="hidden" name="userSeq" id="userSeq" th:value="${userSeq}">
+    <input type="hidden" name="qnaSeq" id="qnaSeq" th:value="${qnaSeq}">
 
 
-<th:form id="qnaDetail" name="qnaDetailn" method="post">
+
+    <th:form id="qnaDetail" name="qnaDetailn">
         <table>
             <tr>
-            <col width="100"> <col width="200">
-         </tr>
+                <col width="100">
+                <col width="200">
+            </tr>
             <div>
                 <tr>
                     <th>작성자</th>
                     <td>
-                        <input type="text"   th:value="${qnaDetail.userSeq}">
+                        <input type="text" th:value="${qnaDetail.userSeq}" readonly="readonly">
                     </td>
                 </tr>
-            <tr>
-                <th>제목</th>
-                <td>
-                    <input type="text" th:value="${qnaDetail.title}">
-                </td>
-            </tr>
-            <tr>
-                <th>내용</th>
-                <td>
-                <textarea th:text="${qnaDetail.conts}"></textarea>
-            </td>
-            </tr>
+                <tr>
+                    <th>제목</th>
+                    <td>
+                        <input type="text" id="title" th:value="${qnaDetail.title}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td>
+                        <textarea id="conts" th:text="${qnaDetail.conts}"></textarea>
+                    </td>
+                </tr>
                 <tr>
                     <th>작성일</th>
                     <td>
@@ -44,46 +43,58 @@
             </div>
 
         </table>
-</th:form>
-<!--<a href="" id="updateBtn" >수정</a>-->
-<div th:if="${qnaDetail.userSeq} == ${userSeq}">
-    <a th:href="@{'/qna/update?qnaSeq='+ ${qnaDetail.qnaSeq}}">
-        <button id="updateBtn">수정</button>
-    </a>
-</div>
+    </th:form>
 
-<hr/>
-<h3 align="center" id="answer">답글달기를 누르세요 </h3>
+    <table>
+        <thead>
+            <tr>
+                <th>답변제목</th>
+                <th>답변내용</th>
+                <th>답변작성일</th>
 
-<th:form id="qnaReply" name="qnaReply" method="post" th:action="@{/qna/replyAf}">
-   <table>
+            </tr>
+        </thead>
+        <tbody id="listReply">
 
-        <tr>
-            <th>작성자</th>
-            <td th:text="${userSeq}"></td>
-        </tr>
+        </tbody>
+    </table>
+    <!--<a href="" id="updateBtn" >수정</a>-->
+    <div th:if="${qnaDetail.userSeq} == ${userSeq}">
+        <button id="updateBtn">글수정</button>
+    </div>
+    <button id="qnaList" type="button">목록으로</button>
 
-        <tr>
-            <th>답변 제목</th>
-            <td>
-                <input type="text" >
-            </td>
-        </tr>
+    <hr />
+    <h3 align="center" id="answer">답글달기를 누르세요 </h3>
 
-        <tr>
-            <th>답변 내용</th>
-            <td><textarea id="answerConts" name="answerConts" placeholder="답변을 입력하세요"></textarea></td>
-        </tr>
-    <tr>
-        <td>
-            <a th:href="@{'/qna/replyAf?qnaSeq='+ ${qnaDetail.qnaSeq}}">
-        <button type="button" id="answerBtn">답글달기</button>
-            </a>
-        </td>
-    </tr>
-   </table>
+    <th:form id="qnaReply" name="qnaReply" method="post" th:action="@{/qna/replyWrite}">
+        <table>
+            <tr>
+                <th>작성자</th>
+                <td th:text="${userSeq}" name="user" id="user"></td>
+            </tr>
 
-</th:form>
+            <tr>
+                <th>답변 제목</th>
+                <td>
+                    <input type="text" id="replyTitle" name="replyTitle">
+                </td>
+            </tr>
+
+            <tr>
+                <th>답변 내용</th>
+                <td><textarea id="answerConts" name="answerConts" placeholder="답변을 입력하세요"></textarea></td>
+            </tr>
+            <tr>
+                <td>
+
+                    <button type="button" id="answerBtn">답글달기</button>
+
+                </td>
+            </tr>
+        </table>
+
+    </th:form>
 
 
 
@@ -101,29 +112,108 @@
 </script>
 
 <script type="text/javascript">
-//답변 입력 버튼
-$('#qnaReply').hide();
-$(document).ready(function () {
-        $("#answer").click(function (){
+
+    $("#updateBtn").click(function () {
+        $.ajax({
+            url: "/qna/updateAf",
+            type: 'post',
+            data: { qnaSeq: $("#qnaSeq").val(), title: $("#title").val(), conts: $("#conts").val() }, //컨트롤러로 보내주는 데이터
+            success: function (data) { // 컨트롤러에서 받는 펑션
+                alert(data);
+                window.location = "/qna";
+            },
+            error: function () {
+                alert('error');
+            }
+
+        });
+    });
+
+    $("#qnaList").click(function () {
+        window.location = "/qna";
+    })
+
+
+
+
+
+
+
+    //답변 입력 버튼
+
+    $(document).ready(function () {
+        $("#answer").click(function () {
             $('#qnaReply').toggle();
         });
-});
-
-
-
-$(document).ready(function (){
-
-    $("#answerBtn").click(function (){
-        if($('#answerConts').val().trim() == ""){
-
-            alert("답변을 입력해주세요");
-            $('#answerConts').focus();
-        }
-        else{
-            $('#qnaReply').submit();
-        }
     });
-});
+
+
+    //
+    // $(document).ready(function (){
+    //
+    //     $("#answerBtn").click(function (){
+    //         if($('#answerConts').val().trim() == ""){
+    //
+    //             alert("답변을 입력해주세요");
+    //             $('#answerConts').focus();
+    //         }
+    //         else{
+    //             $.ajax({
+    //                 url: "/qna/"
+    //             })
+    //
+    //
+    //         }
+    //     });
+    // });
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "/qna/replyList",
+            type: 'post',
+            data: { qnaSeq: $("#qnaSeq").val() },
+            success: function (list) {
+                console.log(list);
+                $.each(list, function (i, val) {
+                    let app =
+                        "<tr>"
+                        + "<td>" + val.title + "</td>"
+                        + "<td>" + val.cont + "</td>"
+                        + "<td>" + val.replyDate + "</td>"
+                        + "</tr>";
+
+                    $("#listReply").append(app);
+                })
+
+
+            },
+            error: function () {
+                alert('error');
+
+            }
+        });
+    });
+
+    $(document).ready(function () {
+
+
+        $("#answerBtn").click(function () {
+            $.ajax({
+                url: "/qna/replyInsert",
+                type: 'post',
+                data: { qnaSeq: $("#qnaSeq").val(), userSeq: $("#userSeq").val(), title: $("#replyTitle").val(), cont: $("#answerConts").val() },
+                success: function (msg) {
+                    alert(msg);
+                },
+                error: function () {
+                    alert("error");
+                }
+            })
+
+        });
+    });
 
 </script>
+
 </html>

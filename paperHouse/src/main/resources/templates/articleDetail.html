@@ -8,10 +8,6 @@
   layout:decorator="layout/layout"
 >
 <head th:replace="fragments/config :: configFragment">
-<style>
-
-</style>
-
 </head>
 
 
@@ -106,7 +102,7 @@
 	</nav>
 </div>
 
-
+<br><br>
 
 <th:block layout:fragment="script">
 <script type="application/javascript" th:inline="javascript">
@@ -118,14 +114,16 @@
             });
         });
 </script>
+
 <script type="text/javascript">
 $(document).ready(function(){
 	getReviewListData(0);
-	getReviewListCount(); 
+	getReviewListCount();
 });
 
 let userSeq=$("#userSeq").val();
-let writerSeq = $("#writerSeq").val();
+let writerSeq=$("#writerSeq").val();
+
 
 $("#insertBtn").click(function () {
 		 $.ajax({
@@ -153,6 +151,31 @@ $("#insertBtn").click(function () {
 	     });
 });
 
+function deleteReview(reviewSeq) {
+	
+	$.ajax({
+		 url: "/review/delete",
+        type: "post",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        data:{ "reviewSeq":reviewSeq},
+        success: function (msg) {
+          if (msg == "ok") {
+        	  swal({
+				    title: "delete",
+				    text: "댓글 삭제 완료.",
+				    icon: "success"
+				});
+          }
+          $("#conts").val('');
+          getReviewListData( 0 );
+        },
+        error: function () {
+          alert("error");
+        }
+ 	}); 
+}
+
+
 function getReviewListData( pNumber ){
 	$.ajax({
 		url:"/review/list",
@@ -161,25 +184,23 @@ function getReviewListData( pNumber ){
 		data:{"pageNumber":pNumber, "recordCountPerPage":10, "articleSeq":$("#articleSeq").val()},
 		success:function( list ){
  		
-			console.log('ok');
 			
 			$("#_list_table tbody").empty();
 			
 			$.each(list, function(i, val){
-				if( userSeq == val.userSeq ) {
-					var str = "<td>" + "<button id='reviewUpdate' style='margin-right:5px'>수정</button>"+ "<button id='reviewDelete'>삭제</button>"  + "</td></tr>";
-				} else {
-					var str = "";
+				if( userSeq == "50" ) {
+					var str = "<td>" + "<button class='reviewDelete'  onclick='deleteReview("+ val.reviewSeq +")' value='" +val.reviewSeq +"'>삭제</button>"+"</td></tr>";
+				} else { 
+					var str = "</tr>";
 				}
 				
 					let app = "<tr class='list_col'>"
-						+  "<tr><td>" + val.nickName + "</td><td>" + val.reviewDate +"</td>"
+						+  "<tr><td id='ReviewnickName'>" + val.nickName + "</td><td>" + val.reviewDate +"</td>"
 						+  str
 						+  "<tr class='list_col' colspan='3'>" 
-						+ "<td>" +  val.cont + "</td>"
+						+ "<td id='ReviewCont" +val.reviewSeq +"'>" +  val.cont + "</td>"
 						+ "</tr>"; 
 								 
-								
 					$("#_list_table tbody").append(app);
 			});
 			
@@ -356,6 +377,9 @@ $("#unlike").click(function() {
 			});
 		});
 });
+
+
+
 </script>
 </th:block>
 

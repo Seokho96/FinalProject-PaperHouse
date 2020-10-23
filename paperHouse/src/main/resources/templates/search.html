@@ -23,7 +23,7 @@
                 </div>
               </div>
               <div class="input-wrap">
-                <input type="text" name="searchWord" placeholder="검색어를 입력하세요." />
+                <input type="text" name="searchWord" id="searchKey"  placeholder="검색어를 입력하세요." />
                 <button id="searchButton" type="button">
                   <span class="iconify" data-icon="bytesize:search" data-inline="false"></span>
                 </button>
@@ -43,7 +43,7 @@
                       <div class="writer-photo">
                         <a href="#" onclick="writerDetail(${bestWriter.writerSeq})">
                           <img src="/static/asset/mush.jpg" alt="" />
-                          <!-- <img th:src='@{/upload/profile/bestWriter.profileFileOriginal}' alt='' /> -->
+                          <!-- <img th:src='@{static/upload/profile/bestWriter.profileFileSystem}' alt='' /> -->
                         </a>
                       </div>
                       <div class="writer-desc" th:text="${bestWriter.intro}"></div>
@@ -57,14 +57,14 @@
               </div>
               <div class="best-article">
                 <div class="article-title">종이의 집 베스트 글</div>
-                <div class="select-wrap"></div>
+                <div class="article-select"></div>
                 <div class="article-grid clearfix">
                   <th:block th:each="bestArticle:${bestArticles}">
                     <div class="article">
                       <div class="article-photo">
                         <a href="#" onclick="writerDetail(${bestArticle.writerSeq})">
                           <img src="/static/asset/a.jpg" alt="" />
-                          <!-- <img th:src='@{/upload/cover/bestArticle.fileOriginal}' alt='' /> -->
+                          <!-- <img th:src='@{static/upload/cover/bestArticle.fileSystem}' alt='' /> -->
                         </a>
                       </div>
                       <div class="article-name" th:text="${bestArticle.title}"></div>
@@ -102,17 +102,17 @@
           $("input[name=wNowPage]").val(np);
           let formData = $("#searchForm").serialize();
 
-          searchWriter(formData);
+          getBestWriters(formData);
         });
 
         $("#article-more").click(function () {
           let np = $("input[name=cNowPage]").val();
           np = Number(np) + 1;
           $("input[name=cNowPage]").val(np);
-          let formData = $("#searchForm").serialize();
+        
           let sel = $("#artSort").val();
           if (sel == null || sel == "") {
-            searchCont(formData);
+        	  sortingC("VIEWCOUNT", "DESC", ct);
           } else if (sel == "upload_date") {
             sortingC("UPLOAD_DATE", "DESC", ct);
           } else if (sel == "viewCount") {
@@ -123,33 +123,18 @@
         });
 
         $("#searchButton").click(function () {
-          if ($("input[name=searchWord]").val() == "") {
-            alert("검색어를 입력하세요");
-          } else {
-            $("input[name=wNowPage]").val(0);
-            $("input[name=cNowPage]").val(0);
-            let formData = $("#searchForm").serialize();
-            if ($("select[name=searchCategory]").val() == "writer") {
-              $(".best-writer").show();
-              $(".writer-title").text("검색 결과");
-              $(".article-title").text("검색 결과와 관련된 글");
-              $(".article-title select-wrap").empty();
-              $(".article-title").after(sort_select);
-              $(".writer-grid").empty();
-              $(".article-grid").empty();
-              searchWriter(formData);
-              searchCont(formData);
-            } else {
-              $(".best-writer").hide();
-              $(".article-title").text("검색 결과");
-              $(".best-article select").remove();
-              $(".article-title").after(sort_select);
-              $(".article-grid").empty();
-              searchCont(formData);
+        	searchResult();
+        });
+        $("#searchKey").keypress(function (e) {
+        	/* e.preventDefault(); */
+            if (e.which == 13){
+            	searchResult();  // 실행할 이벤트
+            	return false;
             }
-          }
+            
         });
       });
+      
 
       function articleSort() {
         let sel = $("#artSort").val();
@@ -198,6 +183,7 @@
                 ser.writerSeq +
                 ")'>" +
                 "<img src='/static/asset/mush.jpg' alt='' /></a></div>" +
+                //<img th:src='@{static/upload/profile/bestWriter.profileFileSystem}' alt='' />
                 "<div class='writer-desc'>" +
                 ser.intro +
                 "</div>" +
@@ -241,6 +227,7 @@
                 ser.writerSeq +
                 ")'>" +
                 "<img src='/static/asset/a.jpg' alt='' /></a></div>" +
+                //<img th:src='@{static/upload/cover/bestArticle.fileSystem}' alt='' />
                 "<div class='article-name'>" +
                 ser.title +
                 "</div>" +
@@ -271,6 +258,78 @@
           },
         });
       }
+      function getBestWriters(formData) {
+          $.ajax({
+            url: "/getBestWriters",
+            type: "get",
+            dataType: "json",
+            data: formData,
+            success: function (data) {
+              let addlist = "";
+              let list = data.list;
+              let more = data.more;
+
+              $.each(list, function (i, ser) {
+                addlist +=
+                  "<div class='writer'>" +
+                  "<div class='writer-photo'>" +
+                  "<a href='#' onclick='writerDetail(" +
+                  ser.writerSeq +
+                  ")'>" +
+                  "<img src='/static/asset/mush.jpg' alt='' /></a></div>" +
+                  //<img th:src='@{static/upload/profile/bestWriter.profileFileSystem}' alt='' />
+                  "<div class='writer-desc'>" +
+                  ser.intro +
+                  "</div>" +
+                  "<div class='writer-name'>" +
+                  ser.writerName +
+                  "</div></div>";
+              });
+              $(".writer-grid").append(addlist);
+
+              if (more == true) {
+                $("#write-more").show();
+              } else {
+                $("#write-more").hide();
+                if (list == "") {
+                  alert("더 이상 결과가 없습니다");
+                }
+              }
+            },
+            error: function () {
+              alert("error");
+            },
+          });
+        }
+      function searchResult(){
+    	  if ($("input[name=searchWord]").val() == "") {
+              alert("검색어를 입력하세요");
+            } else {
+              $("input[name=wNowPage]").val(0);
+              $("input[name=cNowPage]").val(0);
+              let formData = $("#searchForm").serialize();
+              if ($("select[name=searchCategory]").val() == "writer") {
+                $(".best-writer").show();
+                $(".writer-title").text("검색 결과");
+                $(".article-title").text("검색 결과와 관련된 글");
+                $(".article-select").empty();
+                $(".article-select").append(sort_select);
+                $(".writer-grid").empty();
+                $(".article-grid").empty();
+                searchWriter(formData);
+                sortingC("VIEWCOUNT", "DESC", ct);
+              } else {
+                $(".best-writer").hide();
+                $(".article-title").text("검색 결과");
+                $(".article-select").empty();
+                $(".article-select").append(sort_select);
+                $(".article-grid").empty();
+                sortingC("VIEWCOUNT", "DESC", ct);
+              }
+            }
+      }
+    
     </script>
   </th:block>
 </html>
+

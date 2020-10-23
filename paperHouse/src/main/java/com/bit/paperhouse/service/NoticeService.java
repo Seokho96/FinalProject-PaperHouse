@@ -18,14 +18,16 @@ public class NoticeService {
     public List<NoticeDto> allList() {
         return dao.allList();
     }
-
-    public void writeNoticeAf(NoticeDto dto){
-
-        dao.writeNoticeAf(dto);
+    
+    public NoticeDto getNotice(int noticeSeq) {
+        return dao.getNotice(noticeSeq);
     }
-
+    
+    public void insertNotice(NoticeDto notice) {
+        dao.insertNotice(notice);
+    }
+    
     public void deleteNotice(int noticeSeq){
-
         dao.deleteNotice(noticeSeq);
     }
 

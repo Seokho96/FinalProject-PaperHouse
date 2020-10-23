@@ -30,4 +30,8 @@ public class UserReviewService {
 		return count;
 	}
 	
+	public void deleteUserReview(int reviewSeq) {
+		dao.deleteUserReview(reviewSeq);
+	}
+	
 }

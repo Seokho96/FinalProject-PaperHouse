@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html
+  lang="ko"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
+>
+  <main class="myPageSub notice-detail main-common" layout:fragment="content">
+    <div class="inner-top">공지사항</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="inner-wrap">
+            <div class="notice-wrap">
+              <div class="notice-header clearfix">
+                <div class="title" th:text="${notice.title}"></div>
+                <div class="infos">
+                  <span class="viewCount">
+                    <span class="iconify" data-icon="carbon:view" data-inline="false"></span>
+                    <span th:text="${notice.viewCount}"></span>
+                  </span>
+                  <span class="date">
+                    <span class="iconify" data-icon="ant-design:calendar-twotone" data-inline="false"></span>
+                    <span class="text" th:text="${notice.uploadDate}"></span>
+                  </span>
+                </div>
+              </div>
+              <div class="notice-body">
+                <div class="img-wrap">
+                  <img th:src="@{/static/upload/noticeFile/}+${notice.fileSystem}" alt="" />
+                </div>
+                <div th:text="${notice.cont}"></div>
+              </div>
+              <div class="notice-footer">
+                <a href="/notice" class="goList">목록으로</a>
+                <a th:href="@{'delete?i='}+${notice.noticeSeq}" class="goList" sec:authorize="hasRole('ROLE_ADMIN')">글삭제</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <th:block layout:fragment="script">
+    <script>
+      // date split 함수
+      $(".date .text").text($(".date .text").text().split(" ")[0]);
+    </script>
+  </th:block>
+</html>

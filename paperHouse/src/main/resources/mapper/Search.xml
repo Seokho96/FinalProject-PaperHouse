@@ -3,10 +3,10 @@
 
 <mapper namespace="com.bit.paperhouse.dao.SearchRepository">
 <select id="getSearchWriter" parameterType="com.bit.paperhouse.dto.SearchDto" resultType="com.bit.paperhouse.dto.WriterDto">
-	SELECT ROW_NUMBER()OVER(ORDER BY WRITER_NAME ASC)AS RNUM, WRITER_SEQ, WRITER_NAME, INTRO, STATUS, HISTORY, PROFILE_FILE_ORIGINAL,PUBLIC_RELATIONS  
-	FROM (SELECT ROW_NUMBER()OVER(ORDER BY WRITER_NAME ASC)AS RNUM, WRITER_SEQ, WRITER_NAME, INTRO, STATUS, HISTORY, PROFILE_FILE_ORIGINAL,PUBLIC_RELATIONS 
+	SELECT ROW_NUMBER()OVER(ORDER BY WRITER_NAME ASC)AS RNUM, WRITER_SEQ, WRITER_NAME, INTRO, STATUS, HISTORY, PROFILE_FILE_SYSTEM,PUBLIC_RELATIONS  
+	FROM (SELECT ROW_NUMBER()OVER(ORDER BY WRITER_NAME ASC)AS RNUM, WRITER_SEQ, WRITER_NAME, INTRO, STATUS, HISTORY, PROFILE_FILE_SYSTEM,PUBLIC_RELATIONS 
 			FROM WRITER WHERE 1=1 
-		<if test="searchCategory != null and searchCategory != '' and searchCategory == 'writer'">
+		<if test="searchCategory != null and searchCategory != '' and searchCategory == 'writer' and searchWord != '' and searchWord != null">
 		AND WRITER_NAME LIKE '%'||#{searchWord}||'%'
 		</if>)
 	
@@ -14,38 +14,40 @@
 </select>
 
 <select id="getSearchCont" parameterType="com.bit.paperhouse.dto.SearchDto" resultType="com.bit.paperhouse.dto.ArticleDto">
-	SELECT WRITER_SEQ, ARTICLE_SEQ, TITLE, CONT, to_char(UPLOAD_DATE, 'yyyy-mm-dd')AS UPLOAD_DATE, VIEWCOUNT, CATEGORYS, FILE_ORIGINAL
-	FROM (SELECT ROW_NUMBER()OVER(ORDER BY VIEWCOUNT DESC)AS RNUM, WRITER_SEQ, ARTICLE_SEQ, TITLE, CONT, UPLOAD_DATE, VIEWCOUNT, CATEGORYS, FILE_ORIGINAL 
+	SELECT WRITER_SEQ, ARTICLE_SEQ, TITLE, CONT, to_char(UPLOAD_DATE, 'yyyy-mm-dd')AS UPLOAD_DATE, VIEWCOUNT, CATEGORYS, FILE_SYSTEM
+	FROM (SELECT ROW_NUMBER()OVER(ORDER BY VIEWCOUNT DESC,ARTICLE_SEQ ASC)AS RNUM, WRITER_SEQ, ARTICLE_SEQ, TITLE, CONT, UPLOAD_DATE, VIEWCOUNT, CATEGORYS, FILE_SYSTEM 
 			FROM ARTICLE 
 			WHERE 1=1
 			<if test="searchCategory != null and searchCategory != '' and searchCategory == 'writer'">
-			AND WRITER_SEQ IN (SELECT WRITER_SEQ FROM WRITER WHERE WRITER_NAME LIKE '%'||#{searchWord}||'%')
+			AND WRITER_SEQ IN (SELECT WRITER_SEQ FROM WRITER WHERE WRITER_NAME LIKE '%'||#{searchWord}||'%') 
 				<if test="categorySort != null and categorySort != ''">
 				AND CATEGORYS = #{categorySort}
 				</if>
+			ORDER BY ${searchSort} ${sort}
 			</if>
 	
 			<if test="searchCategory != null and searchCategory != '' and searchCategory == 'title'">
-			AND TITLE LIKE '%'||#{searchWord}||'%'
+			AND TITLE LIKE '%'||#{searchWord}||'%' 
 				<if test="categorySort != null and categorySort != ''">
 				AND CATEGORYS = #{categorySort}
 				</if>
+			ORDER BY ${searchSort} ${sort}
 			</if>) 
 	
 	WHERE RNUM BETWEEN #{start} AND #{end}
-	ORDER BY ${searchSort} ${sort}
+<!-- ORDER BY ${searchSort} ${sort} -->
 </select>
 
 <select id="getBestWriter" parameterType="com.bit.paperhouse.dto.SearchDto" resultType="com.bit.paperhouse.dto.WriterDto">
-	SELECT WRITER_SEQ, WRITER_NAME, INTRO, STATUS, HISTORY, PROFILE_FILE_ORIGINAL,PUBLIC_RELATIONS
-	FROM (SELECT ROW_NUMBER()OVER(ORDER BY u.CW DESC)AS RNUM,w.WRITER_SEQ, w.WRITER_NAME, w.INTRO, w.STATUS, w.HISTORY, w.PROFILE_FILE_ORIGINAL,w.PUBLIC_RELATIONS 
+	SELECT WRITER_SEQ, WRITER_NAME, INTRO, STATUS, HISTORY, PROFILE_FILE_SYSTEM,PUBLIC_RELATIONS
+	FROM (SELECT ROW_NUMBER()OVER(ORDER BY u.CW DESC)AS RNUM,w.WRITER_SEQ, w.WRITER_NAME, w.INTRO, w.STATUS, w.HISTORY, w.PROFILE_FILE_SYSTEM,w.PUBLIC_RELATIONS 
         FROM WRITER w , (SELECT DISTINCT COUNT(USER_SEQ)OVER(PARTITION BY WRITER_SEQ)AS CW, WRITER_SEQ FROM USER_SUBSCRIBE) u WHERE w.WRITER_SEQ = u.WRITER_SEQ)
 	WHERE RNUM BETWEEN #{start} AND #{end}
 </select>
 
 <select id="getBestArticle" parameterType="com.bit.paperhouse.dto.SearchDto" resultType="com.bit.paperhouse.dto.ArticleDto">
-	SELECT WRITER_SEQ, ARTICLE_SEQ, TITLE, CONT, to_char(UPLOAD_DATE, 'yyyy-mm-dd')AS UPLOAD_DATE, VIEWCOUNT, CATEGORYS, FILE_ORIGINAL
-	FROM (SELECT ROW_NUMBER()OVER(ORDER BY VIEWCOUNT DESC)AS RNUM, WRITER_SEQ, ARTICLE_SEQ, TITLE, CONT, UPLOAD_DATE, VIEWCOUNT, CATEGORYS, FILE_ORIGINAL 
+	SELECT WRITER_SEQ, ARTICLE_SEQ, TITLE, CONT, to_char(UPLOAD_DATE, 'yyyy-mm-dd')AS UPLOAD_DATE, VIEWCOUNT, CATEGORYS, FILE_SYSTEM
+	FROM (SELECT ROW_NUMBER()OVER(ORDER BY VIEWCOUNT DESC)AS RNUM, WRITER_SEQ, ARTICLE_SEQ, TITLE, CONT, UPLOAD_DATE, VIEWCOUNT, CATEGORYS,  FILE_SYSTEM 
 			FROM ARTICLE)
 	WHERE RNUM BETWEEN #{start} AND #{end} 
 </select>

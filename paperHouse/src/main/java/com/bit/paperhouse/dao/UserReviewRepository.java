@@ -14,5 +14,6 @@ public interface UserReviewRepository {
 	public void insertReview(UserReviewDto dto);
 	public List<UserReviewDto> getUserReviewList(UserReviewDto dto);
 	public int getUserReviewCount(UserReviewDto dto);
+	public void deleteUserReview(int reviewSeq);
 
 }

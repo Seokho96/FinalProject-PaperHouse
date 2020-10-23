@@ -45,8 +45,17 @@ public class SearchService {
 		return map;
 	}
 	
-	public List<WriterDto> getBestWriter(SearchDto searchDto) {
-		return searchRepository.getBestWriter(searchDto);
+	public Map<String, Object> getBestWriter(SearchDto searchDto) {
+		List<WriterDto> list = searchRepository.getBestWriter(searchDto);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		
+		if(list.size()<5) {
+			map.put("more", false);
+		}else {
+			map.put("more", true);
+		}
+		return map;
 	}
 	
 	public List<ArticleDto> getBestArticle(SearchDto searchDto) {

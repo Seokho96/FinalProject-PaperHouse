@@ -1405,7 +1405,6 @@ footer .copyright {
 }
 .myPageSub .applyRow .applyWrap .apply-input input[type="file"] {
 }
-
 .myPageSub .applyRow .applyWrap .apply-input textarea {
   resize: none;
   font-family: "Noto Sans KR";
@@ -1419,6 +1418,9 @@ footer .copyright {
 }
 .myPageSub .btnWrap {
   text-align: center;
+}
+.myPageSub .btnWrap * {
+  vertical-align: middle;
 }
 .myPageSub .btnWrap .btn {
   cursor: pointer;
@@ -1438,6 +1440,313 @@ footer .copyright {
 .myPageSub .btnWrap .btn:last-child {
   margin-right: 0;
 }
+
+/* qna */
+.myPageSub.qna {
+}
+.myPageSub.qna .goAsk {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 11px 12px;
+  border-radius: 2px;
+  background: #ffeb60;
+  font-size: 14px;
+  color: #333;
+  height: 40px;
+  text-align: center;
+  font-weight: 700;
+}
+.myPageSub.qna .searchWrap {
+  margin-bottom: 24px;
+}
+.myPageSub.qna .searchWrap .select-wrap {
+  float: left;
+  position: relative;
+  border: 1px solid #676767;
+  border-radius: 4px;
+  margin-right: 13px;
+}
+.myPageSub.qna .searchWrap .select-wrap select {
+  display: block;
+  padding: 4px 12px;
+  font-size: 14px;
+  width: 85px;
+  border: 0;
+  background-color: transparent;
+  appearance: none;
+}
+.myPageSub.qna .searchWrap .select-wrap .arrow {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  font-size: 14px;
+  z-index: -1;
+}
+.myPageSub.qna .searchWrap .input-wrap {
+  float: left;
+  width: calc(100% - 200px);
+  border-bottom: 1px solid #ccc;
+}
+.myPageSub.qna .searchWrap .input-wrap input {
+  width: 100%;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 27px;
+  color: #333;
+  padding: 0 12px;
+}
+.myPageSub.qna .searchWrap button {
+  margin-left: 15px;
+  float: left;
+  width: 85px;
+  height: 27px;
+  font-family: "Noto Sans KR";
+  border-radius: 2px;
+  background: #ffeb60;
+  font-size: 14px;
+  color: #333;
+  display: block;
+  text-align: center;
+  line-height: 27px;
+  font-weight: 700;
+}
+.myPageSub.qna .listWrap {
+}
+.myPageSub.qna .listWrap table {
+  width: 100%;
+  table-layout: fixed;
+}
+.myPageSub.qna .listWrap table thead {
+}
+.myPageSub.qna .listWrap table thead tr {
+  border-bottom: 1px solid #ccc;
+}
+.myPageSub.qna .listWrap table thead tr th {
+  font-weight: 500;
+  padding: 11px 12px;
+}
+.myPageSub.qna .listWrap table tbody {
+}
+.myPageSub.qna .listWrap table tbody tr {
+  border-bottom: 1px solid #ccc;
+}
+.myPageSub.qna .listWrap table tbody tr td {
+  cursor: pointer;
+  font-weight: 500;
+  padding: 11px 12px;
+}
+.myPageSub.qna .listWrap table .title {
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+.myPageSub.qna .listWrap table .date {
+  width: 18%;
+  text-align: center;
+}
+.myPageSub.qna .listWrap table .status {
+  width: 12%;
+  text-align: center;
+}
+.myPageSub.qna .paging-wrap {
+  position: relative;
+  margin-top: 24px;
+}
+.myPageSub.qna .paging-wrap nav {
+}
+.myPageSub.qna .paging-wrap nav ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+}
+.myPageSub.qna .paging-wrap nav ul li {
+  padding: 0 12px;
+}
+.myPageSub.qna .paging-wrap nav ul li a {
+  color: #ccc;
+}
+.myPageSub.qna .paging-wrap nav ul li.active a {
+  color: #333;
+}
+.myPageSub.qna .paging-wrap .goAsk {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+}
+/* notice */
+.myPageSub.notice {
+}
+.myPageSub.notice .goList {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.myPageSub.notice .listWrap {
+}
+.myPageSub.notice .listWrap .list {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background: #fff;
+  margin-bottom: 16px;
+}
+.myPageSub.notice .listWrap .list:last-child {
+  margin-bottom: 0;
+}
+.myPageSub.notice .listWrap .list a {
+  display: block;
+  padding: 15px;
+}
+.myPageSub.notice .listWrap .list .title {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.myPageSub.notice .listWrap .list .infos {
+  color: #777;
+  font-size: 12px;
+}
+.myPageSub.notice .listWrap .list .infos svg {
+  vertical-align: -1px;
+}
+.myPageSub.notice .listWrap .list .date {
+}
+.myPageSub.notice .listWrap .list .viewCount {
+  padding-right: 8px;
+}
+/* notice-detail */
+.myPageSub.notice-detail {
+}
+.myPageSub.notice-detail .notice-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+}
+.myPageSub.notice-detail .notice-header .title {
+  float: left;
+  width: 100%;
+  font-size: 20px;
+  line-height: 24px;
+  word-break: break-all;
+  margin-bottom: 16px;
+}
+.myPageSub.notice-detail .notice-header .infos {
+  float: right;
+  line-height: 24px;
+}
+.myPageSub.notice-detail .notice-header .infos {
+}
+.myPageSub.notice-detail .notice-header .infos svg {
+  vertical-align: -2px;
+}
+.myPageSub.notice-detail .notice-header .infos .viewCount {
+  padding-right: 8px;
+}
+.myPageSub.notice-detail .notice-body {
+  min-height: 400px;
+  border: 1px solid #eee;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.myPageSub.notice-detail .notice-body .img-wrap {
+  margin-bottom: 16px;
+}
+.myPageSub.notice-detail .notice-body .img-wrap img {
+  width: 100%;
+}
+.myPageSub.notice-detail .notice-footer {
+  text-align: center;
+}
+
+/* notice-write */
+.myPageSub.notice-write {
+}
+.myPageSub.notice-write .noticeFormWrap {
+}
+.myPageSub.notice-write .noticeFormWrap .form-row {
+  margin-bottom: 16px;
+}
+.myPageSub.notice-write .noticeFormWrap .form-row .row-title {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.myPageSub.notice-write .noticeFormWrap .form-row .row-input {
+}
+.myPageSub.notice-write .noticeFormWrap .form-row .row-input input[type="text"] {
+  font-family: "Noto Sans KR";
+  color: #333;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 100%;
+  padding: 11px 12px;
+}
+.myPageSub.notice-write .noticeFormWrap .form-row .row-input.file {
+}
+.myPageSub.notice-write .noticeFormWrap .form-row .row-input.file .fileName {
+  float: left;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: calc(100% - 96px);
+  padding: 11px 12px;
+  margin-right: 16px;
+  transition: all 0.25s ease;
+}
+.myPageSub.notice-write .noticeFormWrap .form-row .row-input.file .fileName.active {
+  color: #333;
+}
+.myPageSub.notice-write .noticeFormWrap .form-row .row-input.file label {
+  cursor: pointer;
+  display: block;
+  position: relative;
+  float: left;
+  width: 80px;
+  padding: 11px 12px;
+  border-radius: 2px;
+  background: #ffeb60;
+  font-size: 14px;
+  color: #333;
+  height: 40px;
+  text-align: center;
+  font-weight: 700;
+}
+.myPageSub.notice-write .noticeFormWrap .form-row .row-input.file label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.myPageSub.notice-write .noticeFormWrap .form-row .row-input textarea {
+  font-family: "Noto Sans KR";
+  color: #333;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 100%;
+  padding: 11px 12px;
+  resize: none;
+  min-height: 350px;
+}
+
 /* responsive */
 @media all and (max-width: 1023px) {
   .pc-only {

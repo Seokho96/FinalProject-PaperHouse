@@ -1,6 +1,7 @@
 package com.bit.paperhouse.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bit.paperhouse.dto.ArticleDto;
+import com.bit.paperhouse.dto.UserReviewDto;
 import com.bit.paperhouse.dto.WriterDto;
 import com.bit.paperhouse.model.CustomSecurityDetails;
 import com.bit.paperhouse.service.WriterService;
@@ -51,7 +54,7 @@ public class WriterController {
 		
 		return "redirect:/myPage";
 	}
-	
+
 	@GetMapping("/writer/detail")
 	public String writerDetail(@RequestParam("writerSeq")int writerSeq, Model model) throws IOException {
 		
@@ -65,6 +68,11 @@ public class WriterController {
 		WriterDto dto = service.getWriterDetail(writerSeq);
 		int writerCount = service.getWriterAllSubCount(writerSeq);
 		int articleCount = service.getArticleAllSubCount(writerSeq);
+		int reviewCount = service.getReviewAllCount(writerSeq);
+		
+		//작가가 쓴글 , 한줄 리뷰
+		List<ArticleDto> ArticleList = service.selectWriteArticle(writerSeq);
+		List<UserReviewDto> UserReviewList = service.selectWriteReview(writerSeq);
 		
 		//이미지 불러오기
 		String profileUploadPath = "/static/upload/profile/";
@@ -77,7 +85,7 @@ public class WriterController {
 		System.out.println("aricle: " + articleCount);
 		
 		//hidden
-		model.addAttribute("nickname", nickname);	
+		model.addAttribute("nickname", nickname);
 		model.addAttribute("userSeq", userSeq);
 		model.addAttribute("email", email);
 		
@@ -88,6 +96,11 @@ public class WriterController {
 		//Count
 		model.addAttribute("writerCount", writerCount);	
 		model.addAttribute("articleCount", articleCount);	
+		model.addAttribute("reviewCount", reviewCount);	
+		
+		//작가가 쓴글 , 한줄 리뷰
+		model.addAttribute("ArticleList", ArticleList);	
+		model.addAttribute("UserReviewList", UserReviewList);
 		
 		return "/writerDetail";
 	}

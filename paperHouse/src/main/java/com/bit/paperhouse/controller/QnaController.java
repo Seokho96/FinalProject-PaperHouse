@@ -91,8 +91,9 @@ public class QnaController {
         return "redirect:/qna";
     }
 
+
     @GetMapping("/qna/detail")
-    public String detailQna(QnaDto dto, Model model, @RequestParam("qnaSeq") int qnaSeq ) {
+    public String detailQna( Model model, @RequestParam("qnaSeq") int qnaSeq ) {
         CustomSecurityDetails user = (CustomSecurityDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userSeq = user.getUSERSEQ();
         model.addAttribute("userSeq", userSeq);
@@ -100,29 +101,33 @@ public class QnaController {
 
         QnaDto qna = service.qnaDetail(qnaSeq);
         model.addAttribute("qnaDetail", qna);
+        model.addAttribute("qnaSeq" ,  qnaSeq);
 
-        //List<QnaDto> list = service.qnaList(dto);
-        //model.addAttribute("qnaDetail" , list);
+
         return "qnaDetail";
     }
 
-    @GetMapping("/qna/update")
-    public String updateQna(QnaDto qto,Model model,  @RequestParam("qnaSeq") int qnaSeq) {
+    @PostMapping("/qna/update")
+    public String updateQna(Model model,  @RequestParam("qnaSeq") int qnaSeq) {
         CustomSecurityDetails user = (CustomSecurityDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userSeq = user.getUSERSEQ();
         List<QnaDto> qna = service.qnaUpdate(qnaSeq);
 
         model.addAttribute("userSeq", userSeq);
         model.addAttribute("qnaUpdate",qna);
-        model.addAttribute(qnaSeq);
+
         return "qnaUpdate";
     }
+    @ResponseBody
     @PostMapping("/qna/updateAf")
     public String updateQnaAf(QnaDto dto){
+        System.out.println(dto.toString());
 
-        service.qnaUpdateAf(dto);
+            service.qnaUpdateAf(dto);
 
-        return "redirect:/qna";
+        String str = "수정되었습니다";
+
+        return str;
     }
 
     @PostMapping("/qna/reply")
@@ -136,21 +141,16 @@ public class QnaController {
 
             return "qnaDetail";
     }
-    @PostMapping("/qna/replyAf")
-    public String qnaReplyAf(QnaDto dto){
 
-       service.qnaReplyUpdate(dto);
 
-        return "qnaDetail";
+
+    @PostMapping("/qna/replyWrite")
+    public String replyWrite(QnaDto dto, Authentication auth , int qnaSeq ) {
+        CustomSecurityDetails user = (CustomSecurityDetails) auth.getPrincipal();
+        dto.setUserSeq(user.getUSERSEQ());
+        service.qnaReplyInsert(dto);
+        service.qnaReplyUpdate(qnaSeq);
+
+        return "redirect:/qna";
     }
-
-    @PostMapping("/qna/insert")
-    public String qnaReplyInsert(QnaDto dto){
-
-         service.qnaReplyInsert(dto);
-
-        return "qnaDetail";
-    }
-
-
 }

@@ -59,9 +59,11 @@
               <div class="section-title">오늘의 작가</div>
               <div class="section-body writer-grid clearfix">
                 <div class="grid-wrap left clearfix">
+                <a th:href="@{/writer/detail?writerSeq={writerSeq}(writerSeq=${todayWriter.writerSeq})}" onfocus="this.blur()">
                   <div class="writer-pic">
                     <img alt="" th:src="@{static/upload/profile/}+${todayWriter.profileFileSystem}" height="150" />
                   </div>
+                  </a>
                   <div class="writer-info-wrap">
                     <div class="writer-name" th:text="${todayWriter.writerName}"></div>
                     <div class="writer-birth">작가 정보</div>
@@ -97,6 +99,7 @@
                         </div>
                         </a>
                         <a th:href="@{/writer/detail?writerSeq={writerSeq}(writerSeq=${writer.writerSeq})}" onfocus="this.blur()">
+                  
                         <div class="writer-desc" th:text="${writer.intro}"></div>
                         <div class="writer-name" th:text="${writer.writerName}"></div>
                         </a>
