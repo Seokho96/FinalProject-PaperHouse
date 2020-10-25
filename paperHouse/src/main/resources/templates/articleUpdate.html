@@ -8,10 +8,12 @@
   layout:decorator="layout/layout"
 >
   <head th:replace="fragments/config :: configFragment"></head>
-<body>
+ <div layout:fragment="content">
 
 <form th:action="@{/article/updateAf}" id="form" method="POST" enctype="multipart/form-data">
 <input type="hidden" class="apply" id="articleSeq" name="articleSeq" th:value="${param.articleSeq}"> 
+
+<br><br><br><br>
 
 <select id="categorys" name="categorys">
 	<option>소설</option>
@@ -25,11 +27,18 @@
 
 <br><br>
 
-<input type="file" id="file" name="file" onchange="validateimg(this)">
+<h3>책 표지</h3>
+<input type="file" id="bookcover" name="bookcover" onchange="validateimg(this)">
 
 <br><br>
 
-<textarea id="cont" name="cont" rows="20" cols="50" placeholder="내용을 작성해주세요." th:value="${list.cont}"></textarea>
+<h3>소설</h3>
+<input type="file" id="novel" name="novel"  accept=".txt">
+
+
+<br><br>
+
+<textarea id="cont" name="cont" rows="20" cols="50" placeholder="내용을 작성해주세요." readonly="readonly" th:text="${novel}"></textarea>
 
 <br><br>
 
@@ -50,8 +59,7 @@
     });
   });
 </script>
-
-<script type="text/javascript">
+<script layout:fragment="script">
 function validateimg(ctrl) { 
     var fileUpload = ctrl;
     var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(.jpg|.png|.gif)$");
@@ -91,20 +99,20 @@ $(document).ready(function(){
 	$("#submitbtn").click(function (e) { 
 		e.preventDefault();
 		
-		if($("#title").val().trim() == ""){
+		if($("#title").val() == ""){
 			$("#title").val("");
 			$("#title").focus();
 			 swal("","제목을 입력 해주세요.","error");
 			 return false;
-		} else if($("#file").val().trim() == "") {
+		} else if($("#file").val() == "") {
 			$("#file").val("");
 			$("#file").focus();
 			 swal("","책 표지를 업로드 해주세요.","error");
 			 return false;
-		} else if($("#cont").val().trim() == "") {
-			$("#cont").val("");
-			$("#cont").focus();
-			 swal("","내용을 작성 해주세요.","error");
+		} else if($("#novel").val() == "") {
+			$("#novel").val("");
+			$("#novel").focus();
+			 swal("","소설을 업로드 해주세요.","error");
 			 return false;
 		} else {
 			swal({
@@ -118,10 +126,5 @@ $(document).ready(function(){
 	});
 });
 </script>
-
-
-
-
-
-</body>
+</div>
 </html>

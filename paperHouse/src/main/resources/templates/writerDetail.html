@@ -1,147 +1,204 @@
 <!DOCTYPE html>
 <html
+  lang="ko"
   xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org"
   xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
 >
-  <head th:replace="fragments/config :: configFragment"></head>
-<body>
+  <main class="writerDetail main-common" layout:fragment="content">
+    <div class="detail-top"><a href="#">다른작가 보러가기</a></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <input type="hidden" id="nickname" th:value="${nickname}" />
+          <input type="hidden" id="userSeq" th:value="${userSeq}" />
+          <input type="hidden" id="email" th:value="${email}" />
+          <input type="hidden" id="writerSeq" th:value="${param.writerSeq}" />
+          <!-- writerInfo -->
+          <div class="writerInfo writerRow clearfix">
+            <div class="left">
+              <div class="imgWrap">
+                <img id="profile-image" th:src="${img}" />
+              </div>
+            </div>
+            <div class="right">
+              <div class="info01">
+                <div class="name-wrap info">
+                  <strong th:text="${list.writerName}"></strong>
+                  <small>작가</small>
+                </div>
+                <div class="history-wrap info">
+                  <div class="title">이력</div>
+                  <div class="value" th:text="${list.history}"></div>
+                </div>
+                <div class="profile-wrap info">
+                  <div class="title">프로필</div>
+                  <div class="value" th:text="${list.intro}"></div>
+                </div>
+              </div>
+              <div class="info02 clearfix">
+                <div class="subscribers info">
+                  <div class="title"><span class="iconify" data-icon="bi:person-circle" data-inline="false"></span>구독자</div>
+                  <div class="value"><span th:text="${reviewCount}"></span>명</div>
+                </div>
+                <div class="reviews info">
+                  <div class="title"><span class="iconify" data-icon="octicon:code-review-16" data-inline="false"></span>리뷰</div>
+                  <div class="value"><span th:text="${reviewCount}"></span>개</div>
+                </div>
+                <div class="works info">
+                  <div class="title"><span class="iconify" data-icon="raphael:books" data-inline="false"></span>작품</div>
+                  <div class="value"><span th:text="${articleCount}"></span>개</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- //writerInfo -->
 
-<input type="hidden" id="nickname" th:value="${nickname}"/>
-<input type="hidden" id="userSeq" th:value="${userSeq}"/>
-<input type="hidden" id="email" th:value="${email}"/>
-<input type="hidden" id="writerSeq" th:value="${param.writerSeq}"/> 
+          <!-- writerIntro -->
+          <div class="writerIntro writerRow">
+            <div class="row-title">작가 소개글</div>
+            <div class="intro" th:text="${list.publicRelations}"></div>
+          </div>
+          <!-- //writerIntro -->
 
-<h1>작가 이미지</h1>
+          <!-- writerWorks -->
+          <div class="writerWorks writerRow">
+            <div class="row-title"><strong th:text="${list.writerName}"></strong> 작가의 다른 글</div>
+            <!-- here slick -->
+            <div class="worksSlickWrap" th:if="${not #lists.isEmpty( ArticleList )}">
+              <a th:each="list : ${ArticleList}" th:href="@{'/article/detail?articleSeq=' + ${list.articleSeq}}">
+                <div class="works">
+                  <div class="img-wrap">
+                    <img alt="" th:src="'/static/upload/cover/' + ${list.fileSystem}" />
+                  </div>
+                  <div class="title" th:text="${list.title}"></div>
+                </div>
+              </a>
+            </div>
+            <div class="work-dots-wrap dots-wrap"></div>
+            <div class="noResult" th:unless="${not #lists.isEmpty( ArticleList )}">아직 출간한 글이 없습니다 !</div>
+          </div>
+          <!-- //writerWorks -->
 
-<br><br>
+          <!-- writerReview -->
+          <!-- 가장 최근거 5개만 가져오기 -->
+          <div class="writerReview writerRow">
+            <div class="row-title">리뷰</div>
+            <div class="reviewWrap" th:if="${not #lists.isEmpty( UserReviewList )}">
+              <div class="review" th:each="list : ${UserReviewList}">
+                <div class="nickname" th:text="${list.nickName}"></div>
+                <div class="date" th:text="${list.reviewDate}"></div>
+                <div class="cont" th:text="${list.cont}"></div>
+              </div>
+            </div>
+            <div class="noResult" th:unless="${not #lists.isEmpty( UserReviewList )}">아직 작성된 댓글이 없습니다 !</div>
+          </div>
+          <!-- //writerReview -->
 
-<img id="profile-image" border="1" th:src="${img}"/>
+          <!-- subscribe -->
+          <div class="subscribeBtn">
+            <button id="purchase">구독하기</button>
+          </div>
+          <!-- //subscribe -->
+        </div>
+      </div>
+    </div>
 
-<br>
-
-<h3>작가이름</h3>
-<input type="text" id="writerName" th:value="${list.writerName}" readonly="readonly"> 
-
-<br>
- 
-<h3>작가 이력</h3>
-
-<input type="text" id="history" th:value="${list.history}" readonly="readonly"> 
-
-<br><br>
-
-<h3>작가 소개</h3>
-<input type="text" th:value="${list.intro}" readonly="readonly"> 
-<br><br>
- 
-<table border="1">
-<tr>
-	<th>구독중인 사람의 수</th><th>리뷰 수</th><th>작가가 쓴 글</th>
-</tr>
-<tr>
-	<td th:text="${writerCount}"></td><td th:text="${reviewCount}"></td><td th:text="${articleCount}"></td>
-</tr>
-
-
-</table> 
-
-<br><br>
- 
- <h3>작가 pr</h3>
- <textarea rows="20" cols="40" readonly="readonly" th:text="${list.publicRelations}"></textarea>
- 
- <h3>작가가쓴 글</h3>
- 
- <h3>한 줄 리뷰</h3>
-
-<br><br>
-
-<button id="purchase">결제하기</button>
-
-<br><br>
-
-<button onclick="location.href = '/search'">검색으로 돌아가기</button>
-
-
-<script type="application/javascript" th:inline="javascript">
-  $(function () {
-    var csrfToken = /*[[${_csrf.token}]]*/ null;
-    var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
-    $(document).ajaxSend(function (e, xhr, options) {
-      xhr.setRequestHeader(csrfHeader, csrfToken);
-    });
-  });
-</script>	
-
-<!--결제 -->
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-<script type="text/javascript">
-
-
-let id=$("#nickname").val();
-let userSeq=$("#userSeq").val();
-let writerSeq=$("#writerSeq").val();
-let email=$("#email").val();
-
-$("#purchase").click(function(){
-	IMP.init('imp61961074');
-	
-	IMP.request_pay({
-	    pg : 'imp61961074', // version 1.1.0부터 지원.
-	    pay_method : 'card',
-	    merchant_uid : 'merchant_' + new Date().getTime(),
-	    name : '주문명:종이의집 작가구독서비스 30일',
-	    amount : 9900, //판매 가격
-	    buyer_email : email,
-	    buyer_name : id,
-	    buyer_tel : '010-1234-5678'
-	}, function(rsp) {
-	    if ( rsp.success ) {
-	     
-	        let data = {
-	        	"userSeq":userSeq,
-	        	"writerSeq":writerSeq,
-	        	"approvalNumber":rsp.apply_num,
-	        	"paymentMethod":rsp.pay_method,
-	        	"paymentDetail":rsp.paid_amount
-	        };
-	        $.ajax({
-	        	url:"/pay",
-	        	type:"post",
-	        	contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-	        	datatye:'json',
-	        	data:data,
-	        	async:true,	
-	    		success:function( resp ){
-	    			
-	    			$.ajax({
-	    				url:"/sub",
-	    				type:"post",
-	    				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-	    				datatype:'json',
-	    				data:data,
-	    				async:true,	
-	    				success:function( resp ){
-	    					swal("good!","결제가 완료되었습니다!","success")
-	    				},
-	    				error:function(){
-	    					alert('구독error');
-	    				}
-	    			});
-	    		},
-	    		error:function(){
-	    			alert('결제error');
-	    		}
-	        });
-	    } else {
-	        var msg = '결제에 실패하였습니다.';
-	        msg += '에러내용 : ' + rsp.error_msg;
-	    }
-	});
-});
-</script>
-
-</body>
+    <!--결제 -->
+  </main>
+  <th:block layout:fragment="script">
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+    <script type="application/javascript" th:inline="javascript">
+      $(function () {
+        var csrfToken = /*[[${_csrf.token}]]*/ null;
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+        $(document).ajaxSend(function (e, xhr, options) {
+          xhr.setRequestHeader(csrfHeader, csrfToken);
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      let id = $("#nickname").val();
+      let userSeq = $("#userSeq").val();
+      let writerSeq = $("#writerSeq").val();
+      let email = $("#email").val();
+      // click to subscribe
+      $("#purchase").click(function () {
+        IMP.init("imp61961074");
+        IMP.request_pay(
+          {
+            pg: "imp61961074", // version 1.1.0부터 지원.
+            pay_method: "card",
+            merchant_uid: "merchant_" + new Date().getTime(),
+            name: "주문명:종이의집 작가구독서비스 30일",
+            amount: 9900, //판매 가격
+            buyer_email: email,
+            buyer_name: id,
+            buyer_tel: "010-1234-5678",
+          },
+          function (rsp) {
+            if (rsp.success) {
+              let data = {
+                userSeq: userSeq,
+                writerSeq: writerSeq,
+                approvalNumber: rsp.apply_num,
+                paymentMethod: rsp.pay_method,
+                paymentDetail: rsp.paid_amount,
+              };
+              $.ajax({
+                url: "/pay",
+                type: "post",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                datatye: "json",
+                data: data,
+                async: true,
+                success: function (resp) {
+                  $.ajax({
+                    url: "/sub",
+                    type: "post",
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    datatype: "json",
+                    data: data,
+                    async: true,
+                    success: function (resp) {
+                      swal("good!", "결제가 완료되었습니다!", "success");
+                    },
+                    error: function () {
+                      alert("구독error");
+                    },
+                  });
+                },
+                error: function () {
+                  alert("결제error");
+                },
+              });
+            } else {
+              var msg = "결제에 실패하였습니다.";
+              msg += "에러내용 : " + rsp.error_msg;
+            }
+          }
+        );
+      });
+      $(document).ready(function () {
+        // work list slick
+        $(".worksSlickWrap").slick({
+          infinite: false,
+          arrows: false,
+          dots: true,
+          slidesToShow: 3,
+          appendDots: $(".work-dots-wrap"),
+          responsive: [
+            {
+              breakpoint: 476,
+              settings: {
+                slidesToShow: 2,
+              },
+            },
+          ],
+        });
+      });
+    </script>
+  </th:block>
 </html>

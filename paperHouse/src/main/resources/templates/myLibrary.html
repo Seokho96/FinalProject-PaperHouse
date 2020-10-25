@@ -67,10 +67,14 @@
     $(document).ready(function () {
     	$("#followWriterList").hide();
       $("#subBtn").click(function () {
+        $("#folBtn").removeClass("active")
+        $(this).addClass("active");
         $("#followWriterList").hide();
         $("#subscribeWriterList").show();
       });
       $("#folBtn").click(function () {
+        $("#subBtn").removeClass("active")
+        $(this).addClass("active");
         $("#subscribeWriterList").hide();
         $("#followWriterList").show();
       });

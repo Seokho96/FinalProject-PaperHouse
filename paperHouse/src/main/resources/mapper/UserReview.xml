@@ -25,6 +25,7 @@
 <select id="getUserReviewCount" parameterType="com.bit.paperhouse.dto.UserReviewDto" resultType="java.lang.Integer">
 	SELECT NVL(COUNT(*), 0) AS CNT
 	FROM USER_REVIEW
+	WHERE ARTICLE_SEQ = #{articleSeq}
 </select>
 
 <delete id="deleteUserReview" parameterType="int">

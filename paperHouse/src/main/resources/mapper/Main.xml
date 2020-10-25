@@ -27,4 +27,26 @@ ORDER BY WRITER_SEQ DESC
 	ORDER BY WDATE 
 </select>
 
+<select id="getTodayWriterRecommend"  resultType="com.bit.paperhouse.dto.UserReviewDto">
+   SELECT *
+   FROM USER_REVIEW
+   WHERE ARTICLE_SEQ = (SELECT ARTICLE_SEQ
+                        FROM ARTICLE
+                        WHERE WRITER_SEQ=#{writerSeq}
+                        AND ROWNUM = 1)
+   AND ROWNUM = 1                     
+</select>
+
+<select id="newNoticeCheck" resultType="java.lang.Integer">
+  SELECT COUNT(*)
+  FROM NOTICE
+  WHERE UPLOAD_DATE = SYSDATE
+</select>
+
+<select id="articleCategorys" resultType="java.lang.String">
+  SELECT CATEGORYS
+  FROM ARTICLE
+  GROUP BY CATEGORYS
+</select>
+
 </mapper>

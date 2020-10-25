@@ -65,8 +65,8 @@
 
 <br><br>
 
-<h3>내용(못불러옴 CLOB이라서 아직)</h3>
-<textarea id="cont" name="cont" rows="20" cols="50" readonly="readonly" th:value="${list.cont}"></textarea>
+<h3>내용</h3>
+<textarea id="content" name="content" rows="20" cols="50" readonly="readonly" th:text="${novel}"></textarea>
 
 <br><br>
 
@@ -219,7 +219,7 @@ function getReviewListCount(){
 		url:"/review/count",
 		type:"post",
 		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		data:{"pageNumber":0, "recordCountPerPage":10},
+		data:{"pageNumber":0, "recordCountPerPage":10, "articleSeq":$("#articleSeq").val()},
 		success:function( count ){
 			//alert("sucess");
 			//alert(count);	

@@ -833,7 +833,7 @@ footer .copyright {
   font-size: 20px;
   line-height: 32px;
   color: #333;
-  margin-left: 36px;
+  padding-left: 36px;
 }
 .search-page .search-wrap form .input-wrap button {
   position: absolute;
@@ -953,6 +953,239 @@ footer .copyright {
   background-image: url("https://api.iconify.design/ic:outline-library-books.svg");
 }
 
+/* writerDetail */
+.writerDetail {
+}
+.writerDetail .detail-top {
+  text-align: center;
+  height: 40px;
+  background-color: #ffeb60;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+.writerDetail .detail-top a {
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.writerDetail .noResult {
+}
+.writerDetail .writerRow {
+  margin-bottom: 24px;
+}
+.writerDetail .writerRow .row-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+.writerDetail .dots-wrap {
+  margin-top: 24px;
+}
+.writerDetail .dots-wrap ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.writerDetail .dots-wrap ul li {
+  margin: 0 4px;
+  transition: all 0.25s ease;
+}
+.writerDetail .dots-wrap ul li button {
+  cursor: pointer;
+  background-color: #ccc;
+  font-size: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.writerDetail .dots-wrap ul li.slick-active button {
+  background-color: #333;
+}
+.writerDetail .writerInfo {
+  display: flex;
+}
+.writerDetail .writerInfo .left {
+  float: left;
+  width: 400px;
+  padding-right: 26px;
+}
+.writerDetail .writerInfo .left .imgWrap {
+  min-height: 374px;
+}
+.writerDetail .writerInfo .left .imgWrap img {
+  width: 100%;
+  box-shadow: 12px 8px 24px rgba(0, 0, 0, 0.2), 4px 8px 8px rgba(0, 0, 0, 0.1), 0 0 2px rgba(0, 0, 0, 0.24);
+}
+.writerDetail .writerInfo .right {
+  float: left;
+  width: calc(100% - 400px);
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 16px;
+}
+.writerDetail .writerInfo .right .info {
+  margin-bottom: 16px;
+}
+.writerDetail .writerInfo .right .info .title {
+  font-size: 18px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.writerDetail .writerInfo .right .info .value {
+  font-size: 16px;
+  padding-left: 10px;
+  color: #555;
+
+  line-height: 20px;
+  max-height: 140px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+}
+.writerDetail .writerInfo .right .info.name-wrap {
+}
+.writerDetail .writerInfo .right .info.name-wrap strong {
+  font-size: 28px;
+}
+.writerDetail .writerInfo .right .info.name-wrap small {
+  color: #8b8b8b;
+}
+.writerDetail .writerInfo .right .info02 {
+  background: #fafaf6;
+  border-radius: 12px;
+  height: 88px;
+  margin-top: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.writerDetail .writerInfo .right .info02 .info {
+  position: relative;
+  float: left;
+  width: calc(100% / 3);
+  text-align: center;
+  margin-bottom: 0;
+}
+.writerDetail .writerInfo .right .info02 .info:before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 80%;
+  background-color: #dfdfdf;
+}
+.writerDetail .writerInfo .right .info02 .info:last-child:before {
+  display: none;
+}
+.writerDetail .writerInfo .right .info02 .info .title {
+  color: #8b8b8b;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.writerDetail .writerInfo .right .info02 .info .title svg {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 8px;
+}
+.writerDetail .writerInfo .right .info02 .info .value {
+  padding-left: 0;
+  color: #555;
+}
+.writerDetail .writerIntro {
+}
+
+.writerDetail .writerIntro .intro {
+  background-color: #f7f7f7;
+  padding: 24px;
+  border-radius: 32px;
+  font-size: 24px;
+  line-height: 34px;
+}
+.writerDetail .writerWorks {
+}
+.writerDetail .writerWorks .worksSlickWrap {
+}
+.writerDetail .writerWorks .worksSlickWrap a {
+  margin: 0 8px;
+}
+.writerDetail .writerWorks .worksSlickWrap .works {
+}
+.writerDetail .writerWorks .worksSlickWrap .works .img-wrap {
+  position: relative;
+  background: #f6f4ee;
+  border-radius: 16px;
+  min-height: 180px;
+}
+.writerDetail .writerWorks .worksSlickWrap .works .img-wrap img {
+  height: 150px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1), 0 0 2px rgba(0, 0, 0, 0.2);
+}
+.writerDetail .writerWorks .worksSlickWrap .works .title {
+  padding-top: 12px;
+  font-size: 12px;
+  text-align: left;
+}
+.writerDetail .writerWorks .work-dots-wrap {
+}
+.writerDetail .writerReview {
+}
+.writerDetail .writerReview .reviewWrap {
+}
+.writerDetail .writerReview .reviewWrap .review {
+  margin-bottom: 16px;
+  padding: 12px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1), 0 0 2px rgba(0, 0, 0, 0.2);
+}
+.writerDetail .writerReview .reviewWrap .review:last-child {
+  margin-bottom: 0;
+}
+.writerDetail .writerReview .reviewWrap .review .nickname {
+  color: #555;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.writerDetail .writerReview .reviewWrap .review .date {
+  font-size: 12px;
+  color: #a5a5a5;
+  margin-bottom: 8px;
+}
+.writerDetail .writerReview .reviewWrap .review .cont {
+  color: #555;
+  font-size: 20px;
+}
+.writerDetail .subscribeBtn {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.writerDetail .subscribeBtn button {
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background-color: #ffeb60;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  width: 300px;
+}
+
 /* myLibrary */
 .myLibrary-page {
 }
@@ -1056,7 +1289,7 @@ footer .copyright {
 }
 .myLibrary-page .writerList .btnWrap .btn.active {
   color: #111;
-  box-shadow: inset 0px -3px #111;
+  border-bottom: 3px solid #111;
   font-weight: 700;
 }
 
@@ -1579,6 +1812,67 @@ footer .copyright {
   top: 0;
   margin: 0;
 }
+
+/* qna detail */
+.myPageSub.qna-detail {
+}
+.myPageSub.qna-detail .qna-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+}
+.myPageSub.qna-detail .qna-header .title {
+  float: left;
+  width: 100%;
+  font-size: 20px;
+  line-height: 24px;
+  word-break: break-all;
+  margin-bottom: 16px;
+}
+.myPageSub.qna-detail .qna-header .date {
+  float: right;
+  line-height: 24px;
+}
+.myPageSub.qna-detail .qna-header .date svg {
+  vertical-align: -2px;
+}
+.myPageSub.qna-detail .qna-body {
+  min-height: 400px;
+  border: 1px solid #eee;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.myPageSub.qna-detail .qna-body .img-wrap {
+  margin-bottom: 16px;
+}
+.myPageSub.qna-detail .qna-body .img-wrap img {
+  width: 100%;
+}
+.myPageSub.qna-detail .qna-footer {
+  text-align: center;
+}
+.myPageSub.qna-detail .reply-wrap {
+}
+.myPageSub.qna-detail .reply-wrap .reply {
+  margin-bottom: 16px;
+  padding: 12px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1), 0 0 2px rgba(0, 0, 0, 0.2);
+}
+.myPageSub.qna-detail .reply-wrap .reply .title {
+  color: #555;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.myPageSub.qna-detail .reply-wrap .reply .date {
+  font-size: 12px;
+  color: #a5a5a5;
+  margin-bottom: 8px;
+}
+.myPageSub.qna-detail .reply-wrap .reply .cont {
+  color: #555;
+  font-size: 20px;
+}
+
 /* notice */
 .myPageSub.notice {
 }
@@ -1755,6 +2049,48 @@ footer .copyright {
   .pc-hide {
     display: block;
   }
+  .section01 .desc-wrap .desc01 {
+    font-size: 25px;
+    line-height: 35px;
+  }
+  .section01 .desc-wrap .desc02 {
+    font-size: 15px;
+    line-height: 20px;
+    padding-top: 20px;
+  }
+  .section01 .img-wrap img {
+    width: 100%;
+  }
+  .section02 .writers .w-grid {
+    width: 50%;
+  }
+  .section02 .shelfs .text,
+  .section02 .shelfs .text * {
+    font-size: 20px;
+    line-height: 25px;
+  }
+  .section02 .shelfs img {
+    width: 100%;
+    margin: 0 !important;
+  }
+  .section03 .desc-wrap .desc.desc01 {
+    font-size: 15px;
+    line-height: 20px;
+  }
+  .section03 .desc-wrap .desc {
+    font-size: 30px;
+    line-height: 40px;
+  }
+
+  .section03 .img-wrap img {
+    width: 100%;
+  }
+  .section03 .meet {
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+  }
   .main .main-section.monthly-recommend .site-desc {
     height: 200px;
   }
@@ -1826,22 +2162,89 @@ footer .copyright {
     height: 120px;
   }
   .main .main-section.today-sentence .random-img .random-text .text {
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 12px;
+    line-height: 16px;
+    padding: 0 10px;
   }
   .main .main-section.today-sentence .random-img .random-text .quote-top {
-    left: 5px;
-    top: 5px;
+    left: 0px;
+    top: 0px;
   }
   .main .main-section.today-sentence .random-img .random-text .quote-bottom {
-    right: 5px;
-    bottom: 5px;
+    right: 0px;
+    bottom: 0px;
   }
   .search-page .result-wrap .base-result .best-writer .writer-grid .writer {
     width: 25%;
   }
   .search-page .result-wrap .base-result .best-article .article-grid .article {
     width: calc(100% / 5);
+  }
+  .myPageSub .applyRow .left {
+    float: none;
+    width: 100%;
+    padding-right: 0;
+  }
+  .myPageSub .applyRow .right {
+    float: none;
+    width: 100%;
+    margin-top: 16px;
+  }
+  .myPageSub .applyRow .applyWrap.portfolio .apply-title {
+    float: none;
+    line-height: unset;
+    padding-right: 0;
+    margin-bottom: 8px;
+    width: 100%;
+  }
+  .myPageSub .applyRow .applyWrap.portfolio .apply-input {
+    float: none;
+    width: 100%;
+  }
+  .myPageSub.qna .listWrap table thead {
+    display: none;
+  }
+  .myPageSub.qna .listWrap table tbody tr td {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+  .myPageSub.qna .listWrap table .title {
+    width: 55%;
+  }
+  .myPageSub.qna .listWrap table .date {
+    width: 35%;
+  }
+  .myPageSub.qna .listWrap table .status {
+    width: 10%;
+  }
+  .myPageSub.qna .searchWrap .select-wrap {
+    margin-right: 0;
+    margin-bottom: 16px;
+  }
+  .myPageSub.qna .searchWrap .input-wrap {
+    width: calc(100% - 85px);
+  }
+  .myPageSub.qna .searchWrap button {
+    width: 70px;
+  }
+  .myPageSub.qna .paging-wrap .goAsk {
+    position: static;
+  }
+  .writerDetail .writerInfo {
+    display: block;
+  }
+  .writerDetail .writerInfo .left {
+    float: none;
+    width: 100%;
+    padding-right: 0;
+  }
+  .writerDetail .writerInfo .left .imgWrap {
+    min-height: 290px;
+  }
+  .writerDetail .writerInfo .right {
+    display: block;
+    float: none;
+    width: 100%;
   }
 }
 @media all and (max-width: 600px) {

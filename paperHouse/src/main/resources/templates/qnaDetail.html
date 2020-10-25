@@ -1,219 +1,144 @@
-<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
-
-<body>
-
-    <input type="hidden" name="userSeq" id="userSeq" th:value="${userSeq}">
-    <input type="hidden" name="qnaSeq" id="qnaSeq" th:value="${qnaSeq}">
-
-
-
-    <th:form id="qnaDetail" name="qnaDetailn">
-        <table>
-            <tr>
-                <col width="100">
-                <col width="200">
-            </tr>
-            <div>
-                <tr>
-                    <th>작성자</th>
-                    <td>
-                        <input type="text" th:value="${qnaDetail.userSeq}" readonly="readonly">
-                    </td>
-                </tr>
-                <tr>
-                    <th>제목</th>
-                    <td>
-                        <input type="text" id="title" th:value="${qnaDetail.title}">
-                    </td>
-                </tr>
-                <tr>
-                    <th>내용</th>
-                    <td>
-                        <textarea id="conts" th:text="${qnaDetail.conts}"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th>작성일</th>
-                    <td>
-                        <input type="text" th:value="${qnaDetail.qdate}">
-                    </td>
-                </tr>
+<!DOCTYPE html>
+<html
+  lang="ko"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
+>
+  <!-- <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> -->
+  <main class="myPageSub qna-detail main-common" layout:fragment="content">
+    <div class="inner-top">1:1 문의</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <input type="hidden" name="userSeq" id="userSeq" th:value="${userSeq}" />
+          <input type="hidden" name="qnaSeq" id="qnaSeq" th:value="${qnaSeq}" />
+          <div class="inner-wrap">
+            <div class="qna-wrap">
+              <div class="qna-header clearfix">
+                <div class="title" th:text="${qnaDetail.title}"></div>
+                <div class="date">
+                  <span class="iconify" data-icon="ant-design:calendar-twotone" data-inline="false"></span>
+                  <span class="text" th:text="${qnaDetail.qdate}"></span>
+                </div>
+              </div>
+              <div class="qna-body">
+                <div class="img-wrap">
+                  <img th:src="@{/static/upload/qnaFile/}+${qnaDetail.fileSystem}" alt="" />
+                </div>
+                <div th:text="${qnaDetail.conts}"></div>
+              </div>
+              <div class="reply-wrap">
+                <div th:if="${reply} == null">답변 대기중입니다 !</div>
+                <div class="reply" th:each="reply : ${reply}">
+                  <div class="title" th:text="${reply.title}"></div>
+                  <div class="date" th:text="${reply.replyDate}"></div>
+                  <div class="cont" th:text="${reply.cont}"></div>
+                </div>
+              </div>
+              <div class="qna-footer">
+                <a href="/qna" class="goList">목록으로</a>
+                <!-- <a th:href="@{'delete?i='}+${notice.noticeSeq}" class="goList" sec:authorize="hasRole('ROLE_ADMIN')">글삭제</a> -->
+              </div>
             </div>
-
-        </table>
-    </th:form>
-
-    <table>
-        <thead>
-            <tr>
-                <th>답변제목</th>
-                <th>답변내용</th>
-                <th>답변작성일</th>
-
-            </tr>
-        </thead>
-        <tbody id="listReply">
-
-        </tbody>
-    </table>
-    <!--<a href="" id="updateBtn" >수정</a>-->
-    <div th:if="${qnaDetail.userSeq} == ${userSeq}">
-        <button id="updateBtn">글수정</button>
-    </div>
-    <button id="qnaList" type="button">목록으로</button>
-
-    <hr />
-    <h3 align="center" id="answer">답글달기를 누르세요 </h3>
-
-    <th:form id="qnaReply" name="qnaReply" method="post" th:action="@{/qna/replyWrite}">
-        <table>
-            <tr>
-                <th>작성자</th>
-                <td th:text="${userSeq}" name="user" id="user"></td>
-            </tr>
-
-            <tr>
-                <th>답변 제목</th>
-                <td>
-                    <input type="text" id="replyTitle" name="replyTitle">
-                </td>
-            </tr>
-
-            <tr>
-                <th>답변 내용</th>
-                <td><textarea id="answerConts" name="answerConts" placeholder="답변을 입력하세요"></textarea></td>
-            </tr>
-            <tr>
-                <td>
-
+          </div>
+          <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <th:form id="qnaReply" name="qnaReply" method="post" th:action="@{/qna/replyWrite}">
+              <table>
+                <tr>
+                  <th>작성자</th>
+                  <td th:text="${userSeq}" name="user" id="user"></td>
+                </tr>
+                <tr>
+                  <th>답변 제목</th>
+                  <td>
+                    <input type="text" id="replyTitle" name="replyTitle" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>답변 내용</th>
+                  <td><textarea id="answerConts" name="answerConts" placeholder="답변을 입력하세요"></textarea></td>
+                </tr>
+                <tr>
+                  <td>
                     <button type="button" id="answerBtn">답글달기</button>
-
-                </td>
-            </tr>
-        </table>
-
-    </th:form>
-
-
-
-
-
-</body>
-<script type="application/javascript" th:inline="javascript">
-    $(function () {
+                  </td>
+                </tr>
+              </table>
+            </th:form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <th:block layout:fragment="script">
+    <script type="application/javascript" th:inline="javascript">
+      $(function () {
         var csrfToken = /*[[${_csrf.token}]]*/ null;
         var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
         $(document).ajaxSend(function (e, xhr, options) {
-            xhr.setRequestHeader(csrfHeader, csrfToken);
+          xhr.setRequestHeader(csrfHeader, csrfToken);
         });
-    });
-</script>
-
-<script type="text/javascript">
-
-    $("#updateBtn").click(function () {
+      });
+    </script>
+    <script type="text/javascript">
+      /*
+      <div th:if="${qnaDetail.userSeq} == ${userSeq}">
+        <button id="updateBtn">글수정</button>
+      </div>
+      qna 수정은 관리자만 가능하고 관리자 페이지에서만 수정 삭제 가능토록
+      $("#updateBtn").click(function () {
         $.ajax({
-            url: "/qna/updateAf",
-            type: 'post',
-            data: { qnaSeq: $("#qnaSeq").val(), title: $("#title").val(), conts: $("#conts").val() }, //컨트롤러로 보내주는 데이터
-            success: function (data) { // 컨트롤러에서 받는 펑션
-                alert(data);
-                window.location = "/qna";
-            },
-            error: function () {
-                alert('error');
-            }
-
+          url: "/qna/updateAf",
+          type: "post",
+          data: { qnaSeq: $("#qnaSeq").val(), title: $("#title").val(), conts: $("#conts").val() }, //컨트롤러로 보내주는 데이터
+          success: function (data) {
+            // 컨트롤러에서 받는 펑션
+            alert(data);
+            window.location = "/qna";
+          },
+          error: function () {
+            alert("error");
+          },
         });
-    });
-
-    $("#qnaList").click(function () {
-        window.location = "/qna";
-    })
-
-
-
-
-
-
-
-    //답변 입력 버튼
-
-    $(document).ready(function () {
-        $("#answer").click(function () {
-            $('#qnaReply').toggle();
-        });
-    });
-
-
-    //
-    // $(document).ready(function (){
-    //
-    //     $("#answerBtn").click(function (){
-    //         if($('#answerConts').val().trim() == ""){
-    //
-    //             alert("답변을 입력해주세요");
-    //             $('#answerConts').focus();
-    //         }
-    //         else{
-    //             $.ajax({
-    //                 url: "/qna/"
-    //             })
-    //
-    //
-    //         }
-    //     });
-    // });
-
-    $(document).ready(function () {
-
+      });
+    */
+      $(document).ready(function () {
+        /*
         $.ajax({
-            url: "/qna/replyList",
-            type: 'post',
-            data: { qnaSeq: $("#qnaSeq").val() },
-            success: function (list) {
-                console.log(list);
-                $.each(list, function (i, val) {
-                    let app =
-                        "<tr>"
-                        + "<td>" + val.title + "</td>"
-                        + "<td>" + val.cont + "</td>"
-                        + "<td>" + val.replyDate + "</td>"
-                        + "</tr>";
-
-                    $("#listReply").append(app);
-                })
-
-
-            },
-            error: function () {
-                alert('error');
-
-            }
+          url: "/qna/replyList",
+          type: "post",
+          data: { qnaSeq: $("#qnaSeq").val() },
+          success: function (list) {
+            console.log(list);
+            $.each(list, function (i, val) {
+              let app = "<tr>" + "<td>" + val.title + "</td>" + "<td>" + val.cont + "</td>" + "<td>" + val.replyDate + "</td>" + "</tr>";
+              $("#listReply").append(app);
+            });
+          },
+          error: function () {
+            alert("error");
+          },
         });
-    });
+        */
 
-    $(document).ready(function () {
-
-
+        // reply (only admin)
         $("#answerBtn").click(function () {
-            $.ajax({
-                url: "/qna/replyInsert",
-                type: 'post',
-                data: { qnaSeq: $("#qnaSeq").val(), userSeq: $("#userSeq").val(), title: $("#replyTitle").val(), cont: $("#answerConts").val() },
-                success: function (msg) {
-                    alert(msg);
-                },
-                error: function () {
-                    alert("error");
-                }
-            })
-
+          $.ajax({
+            url: "/qna/replyInsert",
+            type: "post",
+            data: { qnaSeq: $("#qnaSeq").val(), userSeq: $("#userSeq").val(), title: $("#replyTitle").val(), cont: $("#answerConts").val() },
+            success: function (msg) {
+              alert(msg);
+            },
+            error: function () {
+              alert("error");
+            },
+          });
         });
-    });
-
-</script>
-
+      });
+    </script>
+  </th:block>
 </html>

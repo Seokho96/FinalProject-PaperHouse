@@ -50,7 +50,7 @@
 <select id="selectWriteReview" parameterType="java.lang.Integer" resultType="com.bit.paperhouse.dto.UserReviewDto">
 	SELECT R.NICKNAME AS NICKNAME, R.CONT AS CONT, R.REVIEW_DATE AS REVIEWDATE 
 	FROM USER_REVIEW R INNER JOIN ARTICLE A ON R.ARTICLE_SEQ = A.ARTICLE_SEQ
-	WHERE WRITER_SEQ = #{writerSeq}
+	WHERE WRITER_SEQ = #{writerSeq} AND ROWNUM &lt;= 5
 </select>
 
 

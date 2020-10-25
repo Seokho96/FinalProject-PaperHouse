@@ -36,7 +36,7 @@ public class QnaReplyController {
         service.replyInsert(dto);
        qnaService.qnaStaus(qnaSeq);
 
-     String msg = "ok";
+     String msg = "새로고침을 하시면 답변이 보여요";
 
      return  msg;
 

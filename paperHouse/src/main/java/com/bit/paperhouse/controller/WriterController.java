@@ -74,12 +74,12 @@ public class WriterController {
 		List<ArticleDto> ArticleList = service.selectWriteArticle(writerSeq);
 		List<UserReviewDto> UserReviewList = service.selectWriteReview(writerSeq);
 		
+		System.out.println(UserReviewList.toString());
+		
+		
 		//이미지 불러오기
 		String profileUploadPath = "/static/upload/profile/";
 		String img = profileUploadPath + dto.getProfileFileSystem();
-		
-		//review 만들면 쓰기
-		//String reviewCount = service.getReviewAllSubCount(writerSeq); 
 		
 		System.out.println("writer: " + writerCount);
 		System.out.println("aricle: " + articleCount);

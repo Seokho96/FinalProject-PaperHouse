@@ -1,38 +1,25 @@
 package com.bit.paperhouse.util;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Base64.Decoder;
-import java.util.Base64.Encoder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
+import java.util.Base64.Decoder;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bit.paperhouse.dto.WriterDto;
-import com.bit.paperhouse.service.MypageService;
-
-import lombok.experimental.SuperBuilder;
 
 
 public class UtilEx {
@@ -152,6 +139,45 @@ public class UtilEx {
 		System.out.println("unFollow method End");
 		
 		return setFollowDB;
+	}
+	
+	public static String fileToString(MultipartFile novel) throws IOException {
+		
+		 	String fileString = new String();
+		    BufferedInputStream inputStream =  null;
+		    ByteArrayOutputStream byteOutStream = null;
+
+		    try {
+		        inputStream = new BufferedInputStream(novel.getInputStream());
+		        byteOutStream = new ByteArrayOutputStream();
+
+				int len = 0;
+				byte[] buf = new byte[1024];
+
+		        while ((len = inputStream.read(buf)) != -1) {
+		             byteOutStream.write(buf, 0, len);
+
+		        }
+
+		        byte[] fileArray = byteOutStream.toByteArray();
+		        fileString = new String(Base64.encodeBase64(fileArray),"UTF-8");
+
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    } finally {
+		    	inputStream.close();
+		        byteOutStream.close();
+		    }
+		return fileString;
+	}
+	
+	public static String decode(String cont) {
+
+		Decoder decoder = java.util.Base64.getDecoder(); 
+		byte[] decodedBytes = decoder.decode(cont);
+		String novel = new String(decodedBytes);
+		
+		return novel;
 	}
 	
 }

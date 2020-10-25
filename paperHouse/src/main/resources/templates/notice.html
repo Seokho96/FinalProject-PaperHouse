@@ -18,9 +18,9 @@
             <!-- listWrap -->
             <div class="listWrap">
               <div class="list clearfix" th:each="list : ${notice}" th:if="${list.del == 0}">
-                <a th:href="@{'notice/detail?i='}+${list.noticeSeq}">
+                <a href="#" th:onclick="'noticeDetail(\''+${list.noticeSeq} +'\'); return false;'">
                   <div class="title" th:text="${list.title}"></div>
-                  <div class="infos">
+                  <div class="infos">             
                     <span class="viewCount">
                       <span class="iconify" data-icon="ant-design:calendar-twotone" data-inline="false"></span>
                       <span th:text="${list.viewCount}"></span>
@@ -29,6 +29,15 @@
                       <span class="iconify" data-icon="carbon:view" data-inline="false"></span>
                       <span th:text="${list.uploadDate}"></span>
                     </span>
+                    <div th:id="arrow + ${list.noticeSeq}" align="right">
+                      <span class="iconify" data-icon="dashicons:arrow-down-alt2" data-inline="false"></span>
+                    </div>
+                     <div class="notice-body" th:id="notice-body+ ${list.noticeSeq}" style="display: none;">
+                    <div class="img-wrap">
+                  <img th:src="@{/static/upload/noticeFile/}+${list.fileSystem}" alt="" />
+                </div>
+                <div th:text="${list.cont}"></div>
+              </div>
                   </div>
                 </a>
               </div>
@@ -38,5 +47,32 @@
       </div>
     </div>
   </main>
-  <th:block layout:fragment="script"> </th:block>
+  <th:block layout:fragment="script">
+  <script>
+  noticeCookieCheck();
+  /* 펼치기 부분 오류나 페이지이동 하는게 나으면 이부분하고  onclick설정 되었있는 a태그에 onclcick만 없애주시면 됩니다~*/
+    function noticeDetail(seq){
+    	let arrow ="";
+    	if($("#notice-body"+seq).css("display") == "none"){
+    	 	$("#arrow"+seq).empty();
+    		arrow = "<span class='iconify' data-icon='dashicons:arrow-up-alt2' data-inline='false'></span>"   	
+    		$("#arrow"+seq).append(arrow); 
+    		$("#notice-body"+seq).css("display","block");
+    	}else if($("#notice-body"+seq).css("display") == "block"){
+    		$("#arrow"+seq).empty();
+    		arrow = "<span class='iconify' data-icon='dashicons:arrow-down-alt2' data-inline='false'></span>"
+    		$("#arrow"+seq).append(arrow);
+    		$("#notice-body"+seq).css("display","none");
+    	}
+    }
+  
+  // 공지사항 들어가면 쿠키 생성
+   function noticeCookieCheck(){
+  	  let date = new Date();
+  	  let today = date.getFullYear() + date.getMonth() + date.getDate();
+  	  $.cookie("re_noti",today, { expires: 7 });
+    }
+  </script>
+  
+   </th:block>
 </html>

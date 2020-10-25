@@ -75,13 +75,16 @@
                   </div>
                   <div class="grid-wrap right-down">
                     <div class="writer-recommend">
-                      <div class="recommender-id">"추천자 아이디"</div>
-                      <div class="recommender-comment">추천자 추천글내용</div>
+                      <div class="recommender-id" th:text="${review.nickName}"></div>
+                      <div class="recommender-comment" th:text="${review.cont}">추천자 추천글내용</div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            
+
+
             <!-- //today-writer -->
             <!-- monthly-recommend -->
             <div class="main-section monthly-recommend">
@@ -127,9 +130,14 @@
             <div class="main-section recommend-article">
               <div class="section-title">취향별 추천글</div>
               <ul class="section-tap-wrap clearfix">
-                <li class="tab active" data-name="소설">소설</li>
-                <li class="tab" data-name="에세이">에세이</li>
-                <li class="tab" data-name="시">시</li>
+              <th:bolck th:each="categorys, i:${articleCategorysList}">
+              <th:block th:if="${i.index == 0}">
+               <li class="tab active" th:data-name="${categorys}" th:text="${categorys}"></li>
+              </th:block>
+                <th:block th:unless="${i.index == 0}">
+               <li class="tab" th:data-name="${categorys}" th:text="${categorys}"></li>
+              </th:block>
+               </th:bolck>
               </ul>
               <div class="section-body">
                 <div class="article-wrap clearfix" id="articleWrap">
@@ -213,7 +221,9 @@
           });
         });
       }
-      
+
+
+   
       
       // article category
       function articleWrap(tab) {

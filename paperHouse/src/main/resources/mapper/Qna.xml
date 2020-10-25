@@ -98,7 +98,7 @@
 
 <insert id="writeQnaAf" parameterType="com.bit.paperhouse.dto.QnaDto">
     INSERT INTO QNA(USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM, REPLY, STATUS,  QDATE)
-    VALUES(#{userSeq}, QNA_SEQ.NEXTVAL, #{title}, #{conts}, 'null', 'null', 'null', 0, SYSDATE)
+    VALUES(#{userSeq}, QNA_SEQ.NEXTVAL, #{title}, #{conts}, #{fileOriginal}, #{fileSystem}, 'null', 0, SYSDATE)
 
 </insert>
 
