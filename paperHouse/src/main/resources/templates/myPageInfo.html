@@ -17,7 +17,7 @@
             <div class="subRow">
               <div class="subRow-name">닉네임<span>*</span></div>
               <div class="subRow-input clearfix">
-                <input type="text" id="nickname" name="nickname" th:value="${#authentication.principal.NICKNAME}" placeholder="닉네임" />
+                <input type="text" id="nickname" name="nickname" th:value="${nickname}" placeholder="닉네임" />
                 <button id="nicknamechk">중복확인</button>
                 <button id="updatebtn">회원 정보 변경</button>
               </div>
@@ -29,6 +29,8 @@
               <a class="subRow-link" href="/user/passwordReset">비밀번호 재설정하기</a>
             </div>
             <!-- // pasword row -->
+            <input type="button" class="goList" id="updatebtn" onclick="updatebtn()" value="수정하기">
+            <br>
             <a class="goList" href="/myPage">목록으로 돌아가기</a>
           </div>
         </div>
@@ -48,6 +50,7 @@
 
     <script type="text/javascript">
       let userSeq = "[[${userSeq}]]";
+      let userNickName = "[[${#authentication.principal.NICKNAME}]]";
 
       let name = $("#nickname").val();
       console.log(name);
@@ -64,12 +67,12 @@
             data: { nickname: $("#nickname").val() },
             success: function (msg) {
               if (msg == "find") {
-                swal("", "사용할 수 없는 ID입니다.", "error");
+                swal("", "이미 사용 중인 닉네임입니다.", "error");
                 // $("#nickselect").html("이 ID는 사용할 수 없습니다");
                 // $("#nickselect").css("color", "#ff0000");
                 $("#nickname").val();
               } else {
-                swal("", "사용할 수 있는 ID입니다.", "success");
+                swal("", "사용 할 수 있는 닉네임입니다.", "success");
                 $("#nickname").attr("readonly", "readonly");
                 // $("#nickselect").html("이 ID는 사용할 수 있습니다");
                 // $("#nickselect").css("color", "#0000ff");
@@ -82,19 +85,23 @@
         }
       });
 
-      $("#updatebtn").click(function () {
+ 	function updatebtn (){
         if ($("#nickname").val().trim() == "") {
           $("#nickname").val("");
           $("#nickname").focus();
           swal("", "닉네임을 작성해주세요.", "error");
-        } else if ($("#checkbox").is(":checked") == false) {
+        } else if ($("#nickname").val() == userNickName ) {
+          swal("", "현재 사용하고 있는 닉네임입니다.", "error");
+        } 
+       /*  else if ($("#checkbox").is(":checked") == false) {
           swal("", "개인 정보 수집에 동의해주세요.", "error");
-        } else {
+        }  */
+         else {
           $.ajax({
             url: "/mypage/updateNickName",
             type: "post",
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data: { nickname: $("#nickname").val(), userSeq: $("#userSeq").val() },
+            data: { "nickname": $("#nickname").val(), "userSeq": userSeq },
             success: function (msg) {
               if (msg == "ok") {
                 swal({
@@ -111,7 +118,7 @@
             },
           });
         }
-      });
+    }
     </script>
   </th:block>
 </html>

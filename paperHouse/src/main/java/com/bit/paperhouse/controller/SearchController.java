@@ -47,7 +47,7 @@ public class SearchController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getSearchWlist", method = RequestMethod.GET)
+	@RequestMapping(value = "/search/getSearchWlist", method = RequestMethod.GET)
 	public Map<String, Object> getSearchList(SearchDto searchDto) {
 		if(searchDto.getSearchSort() == null || searchDto.getSort() == null) {
 			searchDto.setSearchSort("WRITER_NAME");
@@ -66,7 +66,7 @@ public class SearchController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getSearchClist",method = RequestMethod.GET)
+	@RequestMapping(value = "/search/getSearchClist",method = RequestMethod.GET)
 	public Map<String, Object> getSearchCont(SearchDto searchDto){
 		if(searchDto.getSearchSort()==null || searchDto.getSort() ==null) {
 			searchDto.setSearchSort("VIEWCOUNT");
@@ -84,7 +84,7 @@ public class SearchController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getBestWriters",method = RequestMethod.GET)
+	@RequestMapping(value = "/search/getBestWriters",method = RequestMethod.GET)
 	public Map<String, Object> getBestWriters(SearchDto searchDto){
 		int np = searchDto.getWNowPage();
 		int start = np*VIEW_MORE_WRITER+1;

@@ -14,9 +14,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
+import javax.servlet.ServletContext;
+
 import java.util.Base64.Decoder;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bit.paperhouse.dto.WriterDto;
@@ -178,6 +182,19 @@ public class UtilEx {
 		String novel = new String(decodedBytes);
 		
 		return novel;
+	}
+	
+
+	public static MediaType getMediaTypeForFileName(ServletContext servletContext, String filename) {
+		
+		String mimeType = servletContext.getMimeType(filename);
+		
+		try {
+			MediaType mediaType = MediaType.parseMediaType(mimeType);
+			return mediaType;	//미디어 타입으로 넘겨준다
+		}catch (Exception e) {
+			return MediaType.APPLICATION_OCTET_STREAM;
+		}
 	}
 	
 }

@@ -7,6 +7,8 @@
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="layout/layout"
 >
+
+
   <!-- <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> -->
   <main class="myPageSub qna-detail main-common" layout:fragment="content">
     <div class="inner-top">1:1 문의</div>
@@ -22,6 +24,7 @@
                 <div class="date">
                   <span class="iconify" data-icon="ant-design:calendar-twotone" data-inline="false"></span>
                   <span class="text" th:text="${qnaDetail.qdate}"></span>
+
                 </div>
               </div>
               <div class="qna-body">
@@ -31,11 +34,15 @@
                 <div th:text="${qnaDetail.conts}"></div>
               </div>
               <div class="reply-wrap">
-                <div th:if="${reply} == null">답변 대기중입니다 !</div>
-                <div class="reply" th:each="reply : ${reply}">
-                  <div class="title" th:text="${reply.title}"></div>
-                  <div class="date" th:text="${reply.replyDate}"></div>
-                  <div class="cont" th:text="${reply.cont}"></div>
+                <div th:if="${reply.isEmpty()}" style="text-align: center;">
+                  답변 작성한 글이 없습니다
+                </div>
+                <div th:if="${not #lists.isEmpty(reply)}" th:each="row : ${reply}">
+                  <div class="reply">
+                    <div class="title" th:text="${row.title}"></div>
+                    <div class="date"  th:text="${row.replyDate}"></div>
+                    <div class="cont" th:text="${row.cont}"></div>
+                  </div>
                 </div>
               </div>
               <div class="qna-footer">
@@ -43,35 +50,38 @@
                 <!-- <a th:href="@{'delete?i='}+${notice.noticeSeq}" class="goList" sec:authorize="hasRole('ROLE_ADMIN')">글삭제</a> -->
               </div>
             </div>
-          </div>
-          <div sec:authorize="hasRole('ROLE_ADMIN')">
-            <th:form id="qnaReply" name="qnaReply" method="post" th:action="@{/qna/replyWrite}">
-              <table>
-                <tr>
-                  <th>작성자</th>
-                  <td th:text="${userSeq}" name="user" id="user"></td>
-                </tr>
-                <tr>
-                  <th>답변 제목</th>
-                  <td>
-                    <input type="text" id="replyTitle" name="replyTitle" />
-                  </td>
-                </tr>
-                <tr>
-                  <th>답변 내용</th>
-                  <td><textarea id="answerConts" name="answerConts" placeholder="답변을 입력하세요"></textarea></td>
-                </tr>
-                <tr>
-                  <td>
-                    <button type="button" id="answerBtn">답글달기</button>
-                  </td>
-                </tr>
-              </table>
-            </th:form>
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+	            <div id="adminTable">
+	            <th:form id="qnaReply" name="qnaReply">
+	              <table>
+	                <tr>
+	                  <th>작성자</th>
+	                  <td th:text="${userSeq}" name="user" id="user"></td>
+	                </tr>
+	                <tr>
+	                  <th>답변 제목 작성</th>
+	                  <td>
+	                    <input type="text" id="replyTitle" name="replyTitle" >
+	                  </td>
+	                </tr>
+	                <tr>
+	                  <th>답변 내용 작성 </th>
+	                  <td><textarea id="answerConts" name="answerConts" placeholder="답변을 입력하세요"></textarea></td>
+	                </tr>
+	                <tr>
+	                  <td>
+	                    <button type="button" id="answerBtn">답글달기</button>
+	                  </td>
+	                </tr>
+	              </table>
+	            </th:form>
+	            </div>
+	          </div>
           </div>
         </div>
       </div>
     </div>
+
   </main>
   <th:block layout:fragment="script">
     <script type="application/javascript" th:inline="javascript">
@@ -81,9 +91,55 @@
         $(document).ajaxSend(function (e, xhr, options) {
           xhr.setRequestHeader(csrfHeader, csrfToken);
         });
+
+        getReplyList();
       });
     </script>
     <script type="text/javascript">
+      function getReplyList() {
+        $.ajax({
+          url: "/qna/replyList",
+          type: "POST",
+          data: {
+            qnaSeq: $("#qnaSeq").val(),
+          },
+          success: function (list) {
+            $("#replyText").empty();
+            const size = list.length;
+            if(size != 0) {
+              let divElement = document.createElement('div');
+              for(let i=0; i<size; i++) {
+                const trElement = `
+                  <tr>
+                    <th>답변 제목</th>
+                    <td>${list[i].title}</td>
+                  </tr>
+                  <tr>
+                    <th>답변 내용</th>
+                    <td>${list[i].cont}</td>
+                  </tr>
+                    `;
+                $(divElement).append(trElement);
+              }
+              $("#replyText").append(divElement);
+              $("#adminTable").hide();
+            } else {
+              const element = `
+              <tr>
+                <td>답변 작성한 글이 없습니다</td>
+              </tr>`
+              $("#replyText").html(element);
+            }
+          }
+        });
+      }
+
+      if(userSeq == "50"){
+        $("#adminTable").show();
+
+      }else{
+
+      }
       /*
       <div th:if="${qnaDetail.userSeq} == ${userSeq}">
         <button id="updateBtn">글수정</button>
@@ -106,6 +162,7 @@
       });
     */
       $(document).ready(function () {
+     //   $("#replyText").hide();
         /*
         $.ajax({
           url: "/qna/replyList",
@@ -130,15 +187,35 @@
             url: "/qna/replyInsert",
             type: "post",
             data: { qnaSeq: $("#qnaSeq").val(), userSeq: $("#userSeq").val(), title: $("#replyTitle").val(), cont: $("#answerConts").val() },
-            success: function (msg) {
-              alert(msg);
+            success: function (list) {
+              $("#adminTable").hide();
+              getReplyList();
             },
             error: function () {
-              alert("error");
+              $(document).ready(function (){
+                $("#answerBtn").click(function (){
+
+                  if($("#replyTitle").val().trim()==""){
+
+                    alert("제목을 작성해주세요");
+                    $("#replyTitle").focus();
+                  }
+                  else if($("#answerConts").val().trim()==""){
+                        alert("내용을 작성해주세요");
+                        $("#answerConts").focus();
+                    {
+                    }
+
+                  }
+                })
+              })
+
             },
           });
         });
       });
+
+
     </script>
   </th:block>
 </html>

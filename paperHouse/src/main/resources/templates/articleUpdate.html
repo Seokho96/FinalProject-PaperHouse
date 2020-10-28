@@ -7,124 +7,130 @@
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="layout/layout"
 >
-  <head th:replace="fragments/config :: configFragment"></head>
- <div layout:fragment="content">
-
-<form th:action="@{/article/updateAf}" id="form" method="POST" enctype="multipart/form-data">
-<input type="hidden" class="apply" id="articleSeq" name="articleSeq" th:value="${param.articleSeq}"> 
-
-<br><br><br><br>
-
-<select id="categorys" name="categorys">
-	<option>소설</option>
-	<option>에세이</option>
-	<option>시</option>
-</select>
-
-<br><br>
-
-<input type="text" id="title" name="title" placeholder="제목을 작성해주세요." th:value="${list.title}">
-
-<br><br>
-
-<h3>책 표지</h3>
-<input type="file" id="bookcover" name="bookcover" onchange="validateimg(this)">
-
-<br><br>
-
-<h3>소설</h3>
-<input type="file" id="novel" name="novel"  accept=".txt">
-
-
-<br><br>
-
-<textarea id="cont" name="cont" rows="20" cols="50" placeholder="내용을 작성해주세요." readonly="readonly" th:text="${novel}"></textarea>
-
-<br><br>
-
-<input type="submit" id="submitbtn" value="수정하기">
-
-</form>
-
-<br><br>
-
-<button onclick="location.href = '/myPage'">목록으로 돌아가기</button>
-
-<script type="application/javascript" th:inline="javascript">
-  $(function () {
-    var csrfToken = /*[[${_csrf.token}]]*/ null;
-    var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
-    $(document).ajaxSend(function (e, xhr, options) {
-      xhr.setRequestHeader(csrfHeader, csrfToken);
-    });
-  });
-</script>
-<script layout:fragment="script">
-function validateimg(ctrl) { 
-    var fileUpload = ctrl;
-    var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(.jpg|.png|.gif)$");
-    if (regex.test(fileUpload.value.toLowerCase())) {
-        if (typeof (fileUpload.files) != "undefined") {
+  <main class="myPageSub article-write main-common" layout:fragment="content">
+    <div class="inner-top">글 수정하기</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="inner-wrap">
+            <div class="from-wrap">
+              <form th:action="@{/article/updateAf}" id="form" method="POST" enctype="multipart/form-data">
+                <input type="hidden" class="apply" id="articleSeq" name="articleSeq" th:value="${param.articleSeq}" />
+                <div class="form-row">
+                  <div class="row-title">카테고리</div>
+                  <div class="row-input clearfix">
+                    <div class="select-wrap">
+                      <select id="categorys" name="categorys">
+                        <option>소설</option>
+                        <option>에세이</option>
+                        <option>시</option>
+                      </select>
+                      <div class="arrow"><span class="iconify" data-icon="bi:chevron-down" data-inline="false"></span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="row-title">제목</div>
+                  <div class="row-input">
+                    <input type="text" id="title" name="title" placeholder="제목을 작성해주세요." />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="row-title">소설</div>
+                  <div class="row-input file clearfix">
+                    <div class="fileName">파일명</div>
+                    <label for="novel">
+                      파일선택
+                      <input type="file" id="novel" name="novel" accept=".txt" />
+                    </label>
+                  </div>
+                </div>
+                <!-- <textarea id="cont" name="cont" rows="20" cols="50" placeholder="내용을 작성해주세요." readonly="readonly" th:text="${novel}"></textarea> -->
+                <div class="btnWrap">
+                  <a class="btn" href="/myPage">목록으로 돌아가기</a>
+                  <input class="btn" type="submit" id="submitbtn" value="수정하기" />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <th:block layout:fragment="script">
+    <script type="application/javascript" th:inline="javascript">
+      $(function () {
+        var csrfToken = /*[[${_csrf.token}]]*/ null;
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+        $(document).ajaxSend(function (e, xhr, options) {
+          xhr.setRequestHeader(csrfHeader, csrfToken);
+        });
+      });
+    </script>
+    <script>
+      function validateimg(ctrl) {
+        var fileUpload = ctrl;
+        var regex = new RegExp("([가-힣a-zA-Z0-9\s_\\.\-:])+(.jpg|.png|.gif)$");
+        if (regex.test(fileUpload.value.toLowerCase())) {
+          if (typeof fileUpload.files != "undefined") {
             var reader = new FileReader();
             reader.readAsDataURL(fileUpload.files[0]);
             reader.onload = function (e) {
-                var image = new Image();
-                image.src = e.target.result;
-                image.onload = function () {
-                    var height = this.height;
-                    var width = this.width;
-                    if (height != 600 && width != 400) {
-                    	swal("","책 표지의 사이즈는 400 x 600px입니다.","error");
-                        return false;
-                    }else{
-                    	swal("good!","이미지가 정상적으로 업로드 되었습니다.","success");
-                        $("#profile-image").attr("src", e.target.result);
-                        return true;
-                    }
-                };
-            }
-        } else {
-        	swal("","이 브라우저는 HTML5를 지원하지 않습니다.","error");
+              var image = new Image();
+              image.src = e.target.result;
+              image.onload = function () {
+                var height = this.height;
+                var width = this.width;
+                if (width < 100 || height < 150) {
+                  swal("", "책 표지의 사이즈가 100 x 150px보다 작습니다.", "error");
+                  return false;
+                } else {
+                  swal("good!", "이미지가 정상적으로 업로드 되었습니다.", "success");
+                  $("#profile-image").attr("src", e.target.result);
+                  return true;
+                }
+              };
+            };
+          } else {
+            swal("", "이 브라우저는 HTML5를 지원하지 않습니다.", "error");
             return false;
+          }
+        } else {
+          swal("", "올바른 파일(jpg/.png/.gif)을 선택해주세요.", "error");
+          return false;
         }
-    } else {
-    	swal("","올바른 파일(jpg/.png/.gif)을 선택해주세요.","error");
-        return false;
-    }
-}
+      }
 
+      $(document).ready(function () {
+        $("#submitbtn").click(function (e) {
+          e.preventDefault();
 
-$(document).ready(function(){
-	
-	$("#submitbtn").click(function (e) { 
-		e.preventDefault();
-		
-		if($("#title").val() == ""){
-			$("#title").val("");
-			$("#title").focus();
-			 swal("","제목을 입력 해주세요.","error");
-			 return false;
-		} else if($("#file").val() == "") {
-			$("#file").val("");
-			$("#file").focus();
-			 swal("","책 표지를 업로드 해주세요.","error");
-			 return false;
-		} else if($("#novel").val() == "") {
-			$("#novel").val("");
-			$("#novel").focus();
-			 swal("","소설을 업로드 해주세요.","error");
-			 return false;
-		} else {
-			swal({
-			    title: "good!",
-			    text: "수정이 완료되었습니다!",
-			    type: "success"
-			}).then(function() {
-				$("#form").submit();
-			});
-		}
-	});
-});
-</script>
-</div>
+          if ($("#title").val() == "") {
+            $("#title").val("");
+            $("#title").focus();
+            swal("", "제목을 입력 해주세요.", "error");
+            return false;
+          } else if ($("#file").val() == "") {
+            $("#file").val("");
+            $("#file").focus();
+            swal("", "책 표지를 업로드 해주세요.", "error");
+            return false;
+          } else if ($("#novel").val() == "") {
+            $("#novel").val("");
+            $("#novel").focus();
+            swal("", "소설을 업로드 해주세요.", "error");
+            return false;
+          } else {
+            swal({
+              title: "good!",
+              text: "수정이 완료되었습니다!",
+              type: "success",
+            }).then(function () {
+              $("#form").submit();
+            });
+          }
+        });
+      });
+    </script>
+  </th:block>
 </html>

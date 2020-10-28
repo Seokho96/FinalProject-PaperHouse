@@ -7,7 +7,7 @@
 	FROM (SELECT ROW_NUMBER()OVER(ORDER BY WRITER_NAME ASC)AS RNUM, WRITER_SEQ, WRITER_NAME, INTRO, STATUS, HISTORY, PROFILE_FILE_SYSTEM,PUBLIC_RELATIONS 
 			FROM WRITER WHERE 1=1 
 		<if test="searchCategory != null and searchCategory != '' and searchCategory == 'writer' and searchWord != '' and searchWord != null">
-		AND WRITER_NAME LIKE '%'||#{searchWord}||'%'
+		AND WRITER_NAME LIKE '%'||#{searchWord}||'%' AND STATUS = 1
 		</if>)
 	
 	WHERE RNUM BETWEEN #{start} AND #{end}
@@ -19,7 +19,7 @@
 			FROM ARTICLE 
 			WHERE 1=1
 			<if test="searchCategory != null and searchCategory != '' and searchCategory == 'writer'">
-			AND WRITER_SEQ IN (SELECT WRITER_SEQ FROM WRITER WHERE WRITER_NAME LIKE '%'||#{searchWord}||'%') 
+			AND WRITER_SEQ IN (SELECT WRITER_SEQ FROM WRITER WHERE WRITER_NAME LIKE '%'||#{searchWord}||'%' AND STATUS = 1) 
 				<if test="categorySort != null and categorySort != ''">
 				AND CATEGORYS = #{categorySort}
 				</if>
@@ -41,7 +41,7 @@
 <select id="getBestWriter" parameterType="com.bit.paperhouse.dto.SearchDto" resultType="com.bit.paperhouse.dto.WriterDto">
 	SELECT WRITER_SEQ, WRITER_NAME, INTRO, STATUS, HISTORY, PROFILE_FILE_SYSTEM,PUBLIC_RELATIONS
 	FROM (SELECT ROW_NUMBER()OVER(ORDER BY u.CW DESC)AS RNUM,w.WRITER_SEQ, w.WRITER_NAME, w.INTRO, w.STATUS, w.HISTORY, w.PROFILE_FILE_SYSTEM,w.PUBLIC_RELATIONS 
-        FROM WRITER w , (SELECT DISTINCT COUNT(USER_SEQ)OVER(PARTITION BY WRITER_SEQ)AS CW, WRITER_SEQ FROM USER_SUBSCRIBE) u WHERE w.WRITER_SEQ = u.WRITER_SEQ)
+        FROM WRITER w , (SELECT DISTINCT COUNT(USER_SEQ)OVER(PARTITION BY WRITER_SEQ)AS CW, WRITER_SEQ FROM USER_SUBSCRIBE) u WHERE w.WRITER_SEQ = u.WRITER_SEQ AND w.STATUS = 1)
 	WHERE RNUM BETWEEN #{start} AND #{end}
 </select>
 

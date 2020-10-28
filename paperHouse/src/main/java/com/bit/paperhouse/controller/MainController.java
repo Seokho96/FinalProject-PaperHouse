@@ -8,6 +8,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +27,11 @@ public class MainController {
 	
 	  // 첫 페이지
     @GetMapping("/")
-    public String index() {
+    public String index( Model model ) {
     	System.out.println("index()");
 
+    	List<WriterDto> list = mainSvc.getWriterlist();
+    	model.addAttribute("writerList", list);
    
        return "/index";
     }
@@ -56,11 +59,13 @@ public class MainController {
         WriterDto dto = mainSvc.getTodayWriter();
         dto.setIntro('"'+dto.getIntro()+'"');     
         model.addAttribute("todayWriter", dto); 
+        System.out.println(dto.toString());
         // 오늘의 작가  댓글
-        UserReviewDto review = mainSvc.getTodayWriterRecommend(dto.getWriterSeq());
+        UserReviewDto review = mainSvc.getTodayWriterRecommend(dto.getArticleSeq());
+        if(review != null) {
         review.setCont("'"+ review.getCont() +"'");
         model.addAttribute("review", review);
-    
+        }
         return "/main";
     }
     
@@ -75,6 +80,7 @@ public class MainController {
     }
    
     // 새로운 공지사항 체크
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/newNoticeCheck")
     public @ResponseBody String newNoticeCheck() {
     	

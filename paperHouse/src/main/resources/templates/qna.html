@@ -80,10 +80,10 @@
           url: "/qna/search",
           type: "get",
           contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-          data: { pageNumber: pNumber, recordCountPerPage: 10, choice: $("#choice").val(), searchWord: $("#searchWord").val() },
+          data: { pageNumber: pNumber, recordCountPerPage: 10, choice: $("#choice").val(), searchWord: $("#searchWord").val()  },
           success: function (list) {
             $(".list_col").remove();
-            let status = "";
+            let status = 0;
             if (list.length > 0) {
               $.each(list, function (i, val) {
                 let app =
@@ -97,10 +97,12 @@
                   "<td class='date'>" +
                   val.qdate.split(" ", 2)[0] +
                   "</td>" +
-                  "<td class='status'>" +
-                  val.status +
-                  "</td>" +
-                  "</tr>";
+                  "<td class='status'>"
+                    if(val.status == "0"){
+                       app += "답변대기</td></tr>";
+                    }else{
+                      app += "답변완료</td></tr>";
+                    }
                 $("#list_table tbody").append(app);
               });
             }

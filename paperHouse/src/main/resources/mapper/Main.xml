@@ -12,11 +12,13 @@ ORDER BY UPLOAD_DATE DESC
 
 <!-- 오늘의 추천 작가 -->
 <select id="getTodayWriter" resultType="com.bit.paperhouse.dto.WriterDto">
-SELECT *
-FROM WRITER
-WHERE STATUS = 1
-AND ROWNUM = 1 
-ORDER BY WRITER_SEQ DESC
+SELECT DISTINCT * FROM(
+    SELECT w.*,  a.ARTICLE_SEQ FROM
+    (SELECT a.WRITER_SEQ , a.ARTICLE_SEQ from USER_REVIEW u, ARTICLE a where u.ARTICLE_SEQ= a.ARTICLE_SEQ ORDER BY u.REVIEW_DATE DESC) a
+    , WRITER w
+    WHERE a.WRITER_SEQ = w.WRITER_SEQ
+ )a
+  WHERE ROWNUM = 1
 </select>
 
 <!-- 이번 달 추천 작가 -->
@@ -30,10 +32,7 @@ ORDER BY WRITER_SEQ DESC
 <select id="getTodayWriterRecommend"  resultType="com.bit.paperhouse.dto.UserReviewDto">
    SELECT *
    FROM USER_REVIEW
-   WHERE ARTICLE_SEQ = (SELECT ARTICLE_SEQ
-                        FROM ARTICLE
-                        WHERE WRITER_SEQ=#{writerSeq}
-                        AND ROWNUM = 1)
+   WHERE ARTICLE_SEQ = #{articleSeq}
    AND ROWNUM = 1                     
 </select>
 

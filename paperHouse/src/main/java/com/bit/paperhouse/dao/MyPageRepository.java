@@ -12,11 +12,13 @@ import com.bit.paperhouse.dto.WriterDto;
 @Repository 
 public interface MyPageRepository {
 	
+	public UserDto userInfo(int userSeq);
     public List<WriterDto> getWriterNames(int userSeq);
     public String selectStatus(int userSeq);
     public String selectWriterSeq(int userSeq);
     public String getNickName(String nickname);
     public void updateNickName(UserDto dto);
+    
     
    
 }

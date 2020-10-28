@@ -5,6 +5,12 @@
 	
 <mapper namespace="com.bit.paperhouse.dao.MyPageRepository">
 
+<select id="userInfo" parameterType="java.lang.Integer" resultType="com.bit.paperhouse.dto.UserDto">
+SELECT *
+FROM MEMBER
+WHERE USER_SEQ= #{userSeq}
+</select>
+
 <select id="getWriterNames"  parameterType="java.lang.Integer" resultType="com.bit.paperhouse.dto.WriterDto">
 SELECT W.WRITER_NAME AS WRITERNAME,U.END_DATE AS ENDDATE
 FROM USER_SUBSCRIBE U INNER JOIN WRITER W ON U.USER_SEQ =W.USER_SEQ AND U.WRITER_SEQ=W.WRITER_SEQ
@@ -34,5 +40,7 @@ UPDATE MEMBER
 SET NICKNAME = #{nickname}
 WHERE USER_SEQ= #{userSeq}
 </select>
+
+
 
 </mapper>

@@ -73,8 +73,8 @@ public class QnaService {
         dao.qnaReplyUpdate(qnaSeq);
     }
 
-    public void qnaStaus(int qnaSeq){
-        dao.qnaStaus(qnaSeq);
+    public void qnaStatus(int qnaSeq){
+        dao.qnaStatus(qnaSeq);
 
     }
 }

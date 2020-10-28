@@ -72,10 +72,11 @@
                 <!-- //writer-PR -->
               </div>
               <div class="btnWrap">
-                <input class="btn" type="submit" id="submitbtn" value="작가신청하기" />
+                <input th:if="${status} == '0'" class="btn" type="submit" id="submitbtn" value="작가신청하기" />
                 <a class="btn goList" href="/myPage">목록으로 돌아가기</a>
               </div>
-              <p th:if="${status} == '1'">이미 신청하셨습니다!!</p>
+              <br>
+              <h3 th:if="${status} == '1'" style="text-align: center; color: red; ">이미 신청하셨습니다!!</h3>
             </form>
           </div>
         </div>
@@ -96,7 +97,7 @@
     <script type="text/javascript">
       function validateimg(ctrl) {
         var fileUpload = ctrl;
-        var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(.jpg|.png|.jpeg)$");
+        var regex = new RegExp("([가-힣a-zA-Z0-9\s_\\.\-:])+(.jpg|.png|.jpeg)$");
         if (regex.test(fileUpload.value)) {
           if (typeof fileUpload.files != "undefined") {
             var reader = new FileReader();
@@ -107,8 +108,9 @@
               image.onload = function () {
                 var height = this.height;
                 var width = this.width;
-                if (height <= 300 || width <= 300) {
-                  swal("", "프로필 사진의 사이즈는 300 x 300px 이상입니다.", "error");
+                if (height != 300 || width != 300) {
+                  swal("", "프로필 사진의 사이즈는 300 x 300px입니다.", "error");
+                  $("#profile-image").attr("src", "/static/profile/profiledefault.png");
                   return false;
                 } else {
                   // swal("good!", "이미지가 정상적으로 업로드 되었습니다.", "success");
@@ -129,6 +131,7 @@
           swal("", "올바른 파일(jpg/.png/.jpeg)을 선택해주세요.", "error");
           return false;
         }
+        swal("^-^", "프로필이 정상적으로 업로드 되었습니다.", "success")
       }
 
       function validatetxt(file) {

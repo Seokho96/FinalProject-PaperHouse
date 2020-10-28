@@ -4,11 +4,11 @@
                         <!-- 받는값                                    보내는 값       -->
 <select id="qnaList" resultType="com.bit.paperhouse.dto.QnaDto" parameterType="com.bit.paperhouse.dto.QnaDto">
     SELECT USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM,
-            REPLY , STATUS, QDATE
+             STATUS, QDATE
      FROM
      (SELECT ROW_NUMBER()OVER(ORDER BY QNA_SEQ DESC) AS RNUM,
                 USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM,
-                REPLY, STATUS, QDATE
+                 STATUS, QDATE
         FROM QNA
 
         WHERE 1=1
@@ -54,11 +54,11 @@
 
 <select id="qnaSearchList" parameterType="com.bit.paperhouse.dto.QnaDto" resultType="com.bit.paperhouse.dto.QnaDto" >
     SELECT USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM,
-            REPLY , STATUS, QDATE
+           STATUS, QDATE
     FROM
     (SELECT ROW_NUMBER()OVER(ORDER BY QNA_SEQ DESC) AS RNUM,
     USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM,
-    REPLY, STATUS, QDATE
+     STATUS, QDATE
     FROM QNA
     WHERE 1=1
 
@@ -97,8 +97,8 @@
 </select>
 
 <insert id="writeQnaAf" parameterType="com.bit.paperhouse.dto.QnaDto">
-    INSERT INTO QNA(USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM, REPLY, STATUS,  QDATE)
-    VALUES(#{userSeq}, QNA_SEQ.NEXTVAL, #{title}, #{conts}, #{fileOriginal}, #{fileSystem}, 'null', 0, SYSDATE)
+    INSERT INTO QNA(USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM,  STATUS,  QDATE)
+    VALUES(#{userSeq}, QNA_SEQ.NEXTVAL, #{title}, #{conts}, #{fileOriginal}, #{fileSystem},  0, SYSDATE)
 
 </insert>
 
@@ -119,11 +119,13 @@
 
 </update>
 
-<update id="qnaStaus" parameterType="int">
+<update id="qnaStatus" parameterType="int">
     UPDATE QNA
     SET STATUS= 1
     WHERE QNA_SEQ = #{qnaSeq}
 </update>
+
+
 
 
 
@@ -140,15 +142,15 @@
 
 <!--</update>-->
 
-<!--<insert id="qnaReplyInsert"  parameterType="com.bit.paperhouse.dto.QnaDto">-->
-<!--    INSERT INTO QNA(USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM, REPLY, STATUS,  QDATE)-->
-<!--    VALUES(#{userSeq}, QNA_SEQ.NEXTVAL, #{title}, #{conts}, 'null', 'null', 'null', 0, SYSDATE)-->
-<!--</insert>-->
+<insert id="qnaReplyInsert"  parameterType="com.bit.paperhouse.dto.QnaDto">
+    INSERT INTO QNA(USER_SEQ, QNA_SEQ, TITLE, CONTS, FILE_ORIGINAL, FILE_SYSTEM,  STATUS,  QDATE)
+    VALUES(#{userSeq}, QNA_SEQ.NEXTVAL, #{title}, #{conts}, #{fileOriginal}, #{fileSystem}, 0, SYSDATE)
+</insert>
 
-<!--<update id="qnaReplyUpdate" parameterType="com.bit.paperhouse.dto.QnaDto">-->
-<!--    UPDATE QNA-->
-<!--    SET    STATUS=1-->
-<!--    WHERE QNA_SEQ =?-->
-<!--</update>-->
+<update id="qnaReplyUpdate" parameterType="com.bit.paperhouse.dto.QnaDto">
+    UPDATE QNA
+    SET    STATUS=1
+    WHERE QNA_SEQ =?
+</update>
 
 </mapper>

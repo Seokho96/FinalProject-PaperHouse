@@ -40,8 +40,11 @@ public class MyPageController {
 	@GetMapping("/myPage")
 	public String mypage(Model model) {
 		CustomSecurityDetails user = (CustomSecurityDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String nickname = user.getNICKNAME();
 		int userSeq = user.getUSERSEQ();
+		
+		//nickname
+		UserDto list = service.userInfo(userSeq);
+		String nickname = list.getNickname();
 		
 		//DB NAME,DATE 조회
 		//List<WriterDto> getNamesAndDates = service.getWriterNames(userSeq);
@@ -52,7 +55,6 @@ public class MyPageController {
 		//독자,작가 구분
 		String status = service.selectStatus(userSeq);
 		String writer = service.selectWriterSeq(userSeq);
-		
 		
 		System.out.println("스테이터스: " + status);
 		System.out.println("라이터: " + writer);
@@ -79,7 +81,12 @@ public class MyPageController {
 		CustomSecurityDetails user = (CustomSecurityDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		int userSeq = user.getUSERSEQ();
 		
+		//nickname
+		UserDto list = service.userInfo(userSeq);
+		String nickname = list.getNickname();
+		
 		model.addAttribute("userSeq",userSeq);
+		model.addAttribute("nickname",nickname);
 		
         return "myPageInfo";
     }

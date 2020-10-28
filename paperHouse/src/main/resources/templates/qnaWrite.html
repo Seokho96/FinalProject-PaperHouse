@@ -1,118 +1,102 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html
+  lang="ko"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
+>
+  <main class="myPageSub qna-write main-common" layout:fragment="content">
+    <div class="inner-top">1:1문의 작성</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="inner-wrap">
+            <div class="qnaFormWrap">
+              <form name="qnaForm" id="qnaForm" method="post" th:action="@{'/qna/writeAf'}" enctype="multipart/form-data">
+                <div class="form-row">
+                  <div class="row-title">제목</div>
+                  <div class="row-input">
+                    <input type="text" name="title" size="60" placeholder="제목을 입력하세요" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="row-title">내용</div>
+                  <div class="row-input">
+                    <textarea rows="10" cols="50" name="conts" id="conts" placeholder="내용을 입력하세요"></textarea>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="row-title">첨부파일</div>
+                  <div class="row-input file clearfix">
+                    <div class="fileName">파일명</div>
+                    <label for="file">
+                      파일선택
+                      <input type="file" name="file" id="file" onchange="validateFile(this)" />
+                    </label>
+                  </div>
+                </div>
+                <div class="btnWrap">
+                  <button class="btn" type="button" id="returnBtn">돌아가기</button>
+                  <button class="btn" type="button" id="writeBtn">글작성</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<h2 align="center"> QNA 글작성</h2>
-<form name="qnaForm" id="qnaForm" method="post"  th:action="@{'/qna/writeAf'}" enctype="multipart/form-data">
-
-    <table class="list_table" style="width:85%;">
-        <colgroup>
-<!--            <col style="width:200px;" />-->
-            <col style="width:200px;"  />
-            <col style="width:auto;" />
-        </colgroup>
-
-        <tbody>
-<!--       <tr>-->
-<!--            <th>작성자</th>-->
-<!--            <td style="text-align: left">-->
-<!--                <input type="hidden" th:value="${user}"  name="title" size="60"/>-->
-<!--            </td>-->
-<!--        </tr>-->
-
-        <tr>
-            <th id="writeTitle">제목</th>
-            <td style="text-align: left">
-                <input type="text" name="title" size="60" placeholder="제목을 입력하세요"/>
-            </td>
-        </tr>
-        <tr>
-            <th id="writeConts">내용</th>
-            <td style="text-align: left">
-                <textarea  rows="10" cols="50" name="conts" id="conts" placeholder="내용을 입력하세요"></textarea>
-            </td>
-
-        </tr>
-        <tr>
-            <td colspan="2" style="height:50px; text-align:center;">
-               <button type="button" id="writeBtn">글작성</button>
-                <button type="button" id="returnBtn">돌아가기</button>
-            </td>
-        </tr>
-        <tr>
-            <th>첨부파일</th>
-            <td> <input type="file" name="file" onchange="validateFile(this)" accept="image/jpeg , image/png , image/jpg" /> </td>
-        </tr>
-
-        </tbody>
-
-    </table>
-
-</form>
-
-
-</body>
-
-<script type="application/javascript" th:inline="javascript">
-    $(function () {
+  <th:block layout:fragment="script">
+    <script type="application/javascript" th:inline="javascript">
+      $(function () {
         var csrfToken = /*[[${_csrf.token}]]*/ null;
         var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
         $(document).ajaxSend(function (e, xhr, options) {
-            xhr.setRequestHeader(csrfHeader, csrfToken);
+          xhr.setRequestHeader(csrfHeader, csrfToken);
         });
-    });
-</script>
-
-<th:block layout:fragment="script">
-<script type="text/javascript">
-    $(document).ready(function (){
-        $("#writeBtn").click(function (){
-
-            if($("#conts").val().trim() ==""){
-
-                alert("글 작성을 해주세요");
-                $("#conts").focus();
-            }
-            else{
-
-                $("#qnaForm").submit();
-            }
-        })
-    })
-    $("#returnBtn").click(function () {
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#writeBtn").click(function () {
+          if ($("#conts").val().trim() == "") {
+            alert("글 작성을 해주세요");
+            $("#conts").focus();
+          } else {
+            $("#qnaForm").submit();
+          }
+        });
+      });
+      $("#returnBtn").click(function () {
         window.location = "/qna";
-    })
+      });
 
-    function validateFile(file){
+      function validateFile(file) {
         pathpoint = file.value.lastIndexOf(".");
-        filepoint = file.value.substring(pathpoint + 1 , file.length);
+        filepoint = file.value.substring(pathpoint + 1, file.length);
         filetype = filepoint.toLowerCase();
-        if(filetype =="jpg"  || filetype == "gif" || filetype == "png" || filetype =="jpeg" || filetype == "bmp" ){
-            if(file.files[0] == null){
-                $("#qnaForm #writeTitle #writeConts").removeClass("active").text(file.files[0].name);
-            } else{
-                let FileSize = file.files[0].size / 1024 /1024;
-                if( FileSize > 2){
-                    swal("", "파일을 2MB 이내에 업로드 해주세요." , "error");
-                    $("#file").val("");
-                } else{
-                    $("#qnaForm #writeTitle #writeConts").addClass("active").text(file.files[0].name);
-                }
+        if (filetype == "jpg" || filetype == "gif" || filetype == "png" || filetype == "jpeg" || filetype == "bmp") {
+          if (file.files[0] == null) {
+            $(".myPageSub.qna-write .qnaFormWrap .form-row .row-input.file .fileName").removeClass("active").text(file.files[0].name);
+          } else {
+            let FileSize = file.files[0].size / 1024 / 1024;
+            if (FileSize > 2) {
+              swal("", "파일을 2MB 이내에 업로드 해주세요.", "error");
+              $("#file").val("");
+            } else {
+              $(".myPageSub.qna-write .qnaFormWrap .form-row .row-input.file .fileName").addClass("active").text(file.files[0].name);
+            }
+          }
+        } else {
+          swal("", "올바른 파일(jpg / .png / .jpeg)을 선택하세요.", "error");
+          parentObj = file.parentNode;
+          node = parentObj.replaceChild(file.cloneNode(true), file);
+          return false;
         }
-
-    }else{
-        swal("", "올바른 파일(jpg / .png / .jpeg)을 선택하세요.", "error");
-        parentObj = file.parentNode;
-        node = parentObj.replaceChild(file.cloneNode(true), file);
-        return false;
-     }
-    }
-</script>
-</th:block>
+      }
+    </script>
+  </th:block>
 </html>

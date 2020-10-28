@@ -16,24 +16,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bit.paperhouse.dto.ArticleDto;
+import com.bit.paperhouse.dto.UserDto;
 import com.bit.paperhouse.dto.WriterDto;
 import com.bit.paperhouse.model.CustomSecurityDetails;
 import com.bit.paperhouse.service.ArticleService;
+import com.bit.paperhouse.service.MypageService;
 import com.bit.paperhouse.service.UserFollowService;
 import com.bit.paperhouse.service.UserLikesService;
+import com.bit.paperhouse.service.UserReviewService;
 import com.bit.paperhouse.util.UtilEx;
 
 @Controller
 public class ArticleController {
 
-	@Autowired
 	ArticleService service;
-	
-	@Autowired
 	UserFollowService followService;
-	
-	@Autowired
 	UserLikesService likeService;
+	MypageService myPageService;
+	
+	public ArticleController(ArticleService service, UserFollowService followService, UserLikesService likeService, MypageService myPageService) {
+		// TODO Auto-generated constructor stub
+		this.service = service;
+		this.followService = followService;
+		this.likeService = likeService;
+		this.myPageService = myPageService;
+	}
 	
 	@PostMapping("/article/writeAf")
 	public String ariticleWriteAf(ArticleDto dto, 
@@ -62,13 +69,17 @@ public class ArticleController {
     }
 	
 	//작가 디테일
-	
 	@GetMapping("/article/detail")
 	public String articleDetail(Model model, @RequestParam("articleSeq") int articleSeq) {
 		//user session 정보
 		CustomSecurityDetails user = (CustomSecurityDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		int userSeq = user.getUSERSEQ();
-		String userNickName = user.getNICKNAME();
+		//String userNickName = user.getNICKNAME();
+		
+		
+		//nickname
+		UserDto userInfo = myPageService.userInfo(userSeq);
+		String userNickName = userInfo.getNickname();
 		
 		//detail list
 		ArticleDto list = service.getArticleDetail(articleSeq);

@@ -41,9 +41,9 @@
                   <th:block th:each="bestWriter:${bestWriters}">
                     <div class="writer">
                       <div class="writer-photo">
-                        <a href="#" onclick="writerDetail(${bestWriter.writerSeq})">
-                          <img src="/static/asset/mush.jpg" alt="" />
-                          <!-- <img th:src='@{static/upload/profile/bestWriter.profileFileSystem}' alt='' /> -->
+                        <a href="#" th:onclick="|javascript:writerDetail(${bestWriter.writerSeq})|">
+                          <!-- <img src="/static/asset/mush.jpg" alt="" /> -->
+                          <img th:src='@{static/upload/profile/}+${bestWriter.profileFileSystem}' alt='' />
                         </a>
                       </div>
                       <div class="writer-desc" th:text="${bestWriter.intro}"></div>
@@ -57,14 +57,14 @@
               </div>
               <div class="best-article">
                 <div class="article-title">종이의 집 베스트 글</div>
-                <div class="article-select"></div>
+                <div class="article-select"></div><br>
                 <div class="article-grid clearfix">
                   <th:block th:each="bestArticle:${bestArticles}">
                     <div class="article">
                       <div class="article-photo">
-                        <a href="#" onclick="writerDetail(${bestArticle.writerSeq})">
-                          <img src="/static/asset/a.jpg" alt="" />
-                          <!-- <img th:src='@{static/upload/cover/bestArticle.fileSystem}' alt='' /> -->
+                        <a href="#" th:onclick="|javascript:articleDetail(${bestArticle.articleSeq})|">
+                          <!-- <img src="/static/asset/a.jpg" alt="" /> -->
+                          <img th:src='@{static/upload/cover/}+${bestArticle.fileSystem}' alt='이미지 없음' />
                         </a>
                       </div>
                       <div class="article-name" th:text="${bestArticle.title}"></div>
@@ -166,7 +166,7 @@
       }
       function searchWriter(formData) {
         $.ajax({
-          url: "/getSearchWlist",
+          url: "/search/getSearchWlist",
           type: "get",
           dataType: "json",
           data: formData,
@@ -182,8 +182,8 @@
                 "<a href='#' onclick='writerDetail(" +
                 ser.writerSeq +
                 ")'>" +
-                "<img src='/static/asset/mush.jpg' alt='' /></a></div>" +
-                //<img th:src='@{static/upload/profile/bestWriter.profileFileSystem}' alt='' />
+                //"<img src='/static/asset/mush.jpg' alt='' /></a></div>" +
+                "<img src='static/upload/profile/"+ser.profileFileSystem+"' alt='' /></a></div>"+
                 "<div class='writer-desc'>" +
                 ser.intro +
                 "</div>" +
@@ -210,7 +210,7 @@
 
       function searchCont(formData) {
         $.ajax({
-          url: "/getSearchClist",
+          url: "/search/getSearchClist",
           type: "get",
           dataType: "json",
           data: formData,
@@ -223,11 +223,11 @@
               addlist +=
                 "<div class='article'>" +
                 "<div class='article-photo'>" +
-                "<a href='#' onclick='writerDetail(" +
-                ser.writerSeq +
+                "<a href='#' onclick='articleDetail(" +
+                ser.articleSeq +
                 ")'>" +
-                "<img src='/static/asset/a.jpg' alt='' /></a></div>" +
-                //<img th:src='@{static/upload/cover/bestArticle.fileSystem}' alt='' />
+                /* "<img src='/static/asset/a.jpg' alt='' /></a></div>" +*/ 
+                "<img src='static/upload/cover/"+ser.fileSystem+"' alt='이미지 없음' /></a></div>"+
                 "<div class='article-name'>" +
                 ser.title +
                 "</div>" +
@@ -260,7 +260,7 @@
       }
       function getBestWriters(formData) {
           $.ajax({
-            url: "/getBestWriters",
+            url: "/search/getBestWriters",
             type: "get",
             dataType: "json",
             data: formData,
@@ -276,7 +276,7 @@
                   "<a href='#' onclick='writerDetail(" +
                   ser.writerSeq +
                   ")'>" +
-                  "<img src='/static/asset/mush.jpg' alt='' /></a></div>" +
+                  "<img src='/static/upload/profile/"+ser.profileFileSystem+"' alt='' /></a></div>" +
                   //<img th:src='@{static/upload/profile/bestWriter.profileFileSystem}' alt='' />
                   "<div class='writer-desc'>" +
                   ser.intro +
@@ -328,6 +328,13 @@
               }
             }
       }
+      function writerDetail(writerSeq){
+    	  location.href = "/writer/detail?writerSeq="+writerSeq;
+      }
+      function articleDetail(articleSeq){
+    	  location.href = "/article/detail?articleSeq="+articleSeq;
+      }
+     
     
     </script>
   </th:block>

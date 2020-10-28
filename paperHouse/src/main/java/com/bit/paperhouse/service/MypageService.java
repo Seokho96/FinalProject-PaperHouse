@@ -15,6 +15,12 @@ public class MypageService {
 	@Autowired
 	MyPageRepository dao;
 	
+	
+	public UserDto userInfo(int userSeq){
+		UserDto list = dao.userInfo(userSeq);
+		return list;
+	}
+	
 	public List<WriterDto> getWriterNames(int userSeq) {
 		List<WriterDto> list = dao.getWriterNames(userSeq);
 		return list;

@@ -53,5 +53,11 @@
 	WHERE WRITER_SEQ = #{writerSeq} AND ROWNUM &lt;= 5
 </select>
 
+<select id="getSubCount" parameterType="com.bit.paperhouse.dto.WriterDto" resultType="String">
+	SELECT *
+	FROM USER_SUBSCRIBE
+	WHERE WRITER_SEQ = #{writerSeq} AND USER_SEQ=#{userSeq} AND STATUS =1
+</select>
+
 
 </mapper>

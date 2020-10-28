@@ -7,383 +7,375 @@
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="layout/layout"
 >
-<head th:replace="fragments/config :: configFragment">
-</head>
-
-
- <div layout:fragment="content">
-<input type="hidden" id="articleSeq" name="articleSeq" th:value="${articleSeq}">
-<input type="hidden" id="userSeq" name="userSeq" th:value="${userSeq}">
-<input type="hidden" id="writerSeq" name="writerSeq" th:value="${writerInfo.writerSeq}">
-
-
-<h3>책표지</h3>
-
-<br><br>
-
-<img th:src="${img}">
-
-<br><br>
-
-<div style="float:left;">작가이름 : </div>
-<input style="float:left;" type="text" id="categorys" name="categorys" readonly="readonly" th:value="${writerInfo.writerName}">
-
-
-<button th:if="${followChk} == '0'" style="float:left; margin-right: 10px" name="follows" id="follow">follower</button>
-
-<button th:if="${followChk} == '1'" style="float:left; margin-right: 10px" name="unfollow" id="unfollow">Unfollower</button>
-
-<button th:if="${likesChk} == '0'" style="float:left; margin-right: 10px" name="goodlike" id="goodlike">좋아요</button>
-
-<button th:if="${likesChk} == '1'" style="float:left; margin-right: 10px" name="unlike" id="unlike">좋아요 취소</button>
-
-
-<br><br>
-
-<div style="float:left;">카테고리 : </div>
-<input type="text" id="categorys" name="categorys" readonly="readonly" th:value="${list.categorys}">
-
-<br><br>
-
-<div style="float:left;">제목 : </div>
-<input type="text" id="title" name="title" readonly="readonly" th:value="${list.title}">
-
-<br><br>
-
-<div style="float:left;">조회수 : </div>
-<input type="text" id="viewCount" name="viewCount" readonly="readonly" th:value="${list.viewCount}">
-
-<br><br>
-
-<div style="float:left;">좋아요 수 : </div>
-<input type="text" id="likesInfo" name="likesInfo" readonly="readonly" th:value="${likesInfo}">
-
-<br><br>
-
-<div style="float:left;">작성일 : </div>
-<input type="text" id="uploadDate" name="uploadDate" readonly="readonly" th:value="${list.uploadDate}">
-
-<br><br>
-
-<h3>내용</h3>
-<textarea id="content" name="content" rows="20" cols="50" readonly="readonly" th:text="${novel}"></textarea>
-
-<br><br>
-
-<div th:if="${userSeq} == ${writerInfo.userSeq}">
-	<a th:href="@{'/article/update?articleSeq=' + ${articleSeq}}">
-	<button id="updatebtn" style="float:left; margin-right: 10px">수정</button>
-	</a>
-	<button id="deletebtn">삭제</button>
-</div>
-<div id="insertReview">
-	<input type="text" id="nickName" th:value="${userNickName}">
-	<br>
-	<textarea id="conts" rows="3" cols="50"></textarea>
-	<button type="submit" id="insertBtn">입력</button>
-</div>
-
-<!-- review  -->
-<table class="list_table" style="width: 85%" id="_list_table">
-<colgroup>
-	<col style="width:500px">
-	<col style="width:500px">
-</colgroup>
-<tbody>
-
-</tbody>
-</table>
-
-<br><br>
-
-<div class="container">
-	<nav aria-label="Page navigation">
-		<ul class="pagination" id="pagination"></ul>
-	</nav>
-</div>
-
-<br><br>
-
-<th:block layout:fragment="script">
-<script type="application/javascript" th:inline="javascript">
-        $(function() {
-            var csrfToken = /*[[${_csrf.token}]]*/ null;
-            var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
-            $(document).ajaxSend(function (e, xhr, options) {
-                xhr.setRequestHeader(csrfHeader, csrfToken);
-            });
+  <main class="articleDetail main-common" layout:fragment="content">
+    <div class="detail-top"><a href="/search">다른책 보러가기</a></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <input type="hidden" id="articleSeq" name="articleSeq" th:value="${articleSeq}" />
+          <input type="hidden" id="userSeq" name="userSeq" th:value="${userSeq}" />
+          <input type="hidden" id="writerSeq" name="writerSeq" th:value="${writerInfo.writerSeq}" />
+          <!-- articleInfo -->
+          <div class="articleInfo articleRow">
+            <div class="left">
+              <div class="imgWrap">
+                <img id="profile-image" th:src="${img}" />
+              </div>
+            </div>
+            <div class="right">
+              <div class="info01">
+                <div class="name-wrap info">
+                  <strong th:text="${list.title}"></strong>
+                </div>
+                <div class="writer-wrap info">
+                  <div class="title">작가</div>
+                  <div class="value" th:text="${writerInfo.writerName}"></div>
+                </div>
+                <div class="date-wrap info">
+                  <div class="title">작성일</div>
+                  <div class="value" th:text="${list.uploadDate}"></div>
+                </div>
+                <div class="follow-wrap info">
+                  <button class="btn" th:if="${followChk} == '0'" id="follow">follow</button>
+                  <button class="btn chk" th:if="${followChk} == '1'" id="unfollow">unfollow</button>
+                  <button class="btn" th:if="${likesChk} == '0'" id="goodlike">like</button>
+                  <button class="btn chk" th:if="${likesChk} == '1'" id="unlike">unlike</button>
+                </div>
+              </div>
+              <div class="info02 clearfix">
+                <div class="categorys info">
+                  <div class="title"><span class="iconify" data-icon="ic:outline-category" data-inline="false"></span>카테고리</div>
+                  <div class="value"><span th:text="${list.categorys}"></span></div>
+                </div>
+                <div class="views info">
+                  <div class="title"><span class="iconify" data-icon="carbon:view" data-inline="false"></span>조회수</div>
+                  <div class="value"><span th:text="${list.viewCount}"></span>회</div>
+                </div>
+                <div class="likes info">
+                  <div class="title"><span class="iconify" data-icon="ant-design:like-outlined" data-inline="false"></span>좋아요</div>
+                  <div class="value"><span th:text="${likesInfo}"></span>개</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- //articleInfo -->
+          <!-- articleCont -->
+          <div class="articleCont articleRow">
+            <div class="row-title">미리보기</div>
+            <div class="preview" th:text="${novel}"></div>
+            <br />
+            <div class="articleReview articleRow">
+              <div class="insertReview clearfix">
+                <div th:if="${userSeq} == ${writerInfo.userSeq}">
+                  <a th:href="@{'/article/update?articleSeq=' + ${articleSeq}}">
+                    <button class="insertReview clearfix" id="updatebtn" style="float: left; margin-right: 10px">수정</button>
+                  </a>
+                  <button class="insertReview clearfix" id="deletebtn">삭제</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- //articleCont -->
+          <!-- articleReview -->
+          <div class="articleReview articleRow">
+            <div class="row-title">리뷰</div>
+            <div id="insertReview" class="insertReview clearfix">
+              <input type="text" id="nickName" th:value="${userNickName}" readonly />
+              <textarea id="conts" rows="3" cols="50"></textarea>
+              <button type="submit" id="insertBtn">입력</button>
+            </div>
+            <div id="reviewWrap" class="reviewWrap">
+              <div class="review" th:each="list : ${UserReviewList}">
+                <div class="nickname" th:text="${list.nickName}"></div>
+                <div class="date" th:text="${list.reviewDate}"></div>
+                <div class="cont" th:text="${list.cont}"></div>
+              </div>
+            </div>
+          </div>
+          <!-- //articleReview -->
+          <!-- articleInfo -->
+          <div class="articleInfo"></div>
+          <!-- //articleInfo -->
+          <div class="container">
+            <nav aria-label="Page navigation">
+              <ul class="pagination" id="pagination"></ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <th:block layout:fragment="script">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.twbsPagination.min.js"></script>
+    <script type="application/javascript" th:inline="javascript">
+      $(function () {
+        var csrfToken = /*[[${_csrf.token}]]*/ null;
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+        $(document).ajaxSend(function (e, xhr, options) {
+          xhr.setRequestHeader(csrfHeader, csrfToken);
         });
-</script>
+      });
+    </script>
 
-<script type="text/javascript">
-$(document).ready(function(){
-	getReviewListData(0);
-	getReviewListCount();
-});
+    <script type="text/javascript">
+      $(document).ready(function () {
+        getReviewListData(0);
+        getReviewListCount();
+      });
 
-let userSeq=$("#userSeq").val();
-let writerSeq=$("#writerSeq").val();
+      let userSeq = $("#userSeq").val();
+      let writerSeq = $("#writerSeq").val();
 
+      $("#insertBtn").click(function () {
+        $.ajax({
+          url: "/review/insert",
+          type: "post",
+          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+          data: {
+            articleSeq: $("#articleSeq").val(),
+            nickName: $("#nickName").val(),
+            userSeq: $("#userSeq").val(),
+            cont: $("#conts").val(),
+          },
+          success: function (msg) {
+            if (msg == "ok") {
+              console.log("ok");
+            }
 
-$("#insertBtn").click(function () {
-		 $.ajax({
-	            url: "/review/insert",
-	            type: "post",
-	            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-	            data:{ 
-	            	articleSeq:$("#articleSeq").val(),
-	            	nickName:$("#nickName").val(), 
-	            	userSeq:$("#userSeq").val(), 
-	            	cont:$("#conts").val()
-	            },
-	            success: function (msg) {
-	              if (msg == "ok") {
-	            	 console.log('ok');
-	              }
-	              
-	              $("#conts").val('');
-	              getReviewListData( 0 );
-	  				
-	            },
-	            error: function () {
-	              alert("error");
-	            }
-	     });
-});
+            $("#conts").val("");
+            getReviewListData(0);
+          },
+          error: function () {
+            alert("error");
+          },
+        });
+      });
 
-function deleteReview(reviewSeq) {
-	
-	$.ajax({
-		 url: "/review/delete",
-        type: "post",
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        data:{ "reviewSeq":reviewSeq},
-        success: function (msg) {
-          if (msg == "ok") {
-        	  swal({
-				    title: "delete",
-				    text: "댓글 삭제 완료.",
-				    icon: "success"
-				});
-          }
-          $("#conts").val('');
-          getReviewListData( 0 );
-        },
-        error: function () {
-          alert("error");
+      function deleteReview(reviewSeq) {
+        $.ajax({
+          url: "/review/delete",
+          type: "post",
+          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+          data: { reviewSeq: reviewSeq },
+          success: function (msg) {
+            if (msg == "ok") {
+              swal({
+                title: "delete",
+                text: "댓글 삭제 완료.",
+                icon: "success",
+              });
+            }
+            $("#conts").val("");
+            getReviewListData(0);
+          },
+          error: function () {
+            alert("error");
+          },
+        });
+      }
+
+      function getReviewListData(pNumber) {
+        $.ajax({
+          url: "/review/list",
+          type: "post",
+          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+          data: { pageNumber: pNumber, recordCountPerPage: 10, articleSeq: $("#articleSeq").val() },
+          success: function (list) {
+            $("#reviewWrap").empty();
+            $.each(list, function (i, val) {
+              if (userSeq == "50") {
+                var str = "<td>" + "<button class='reviewDelete'  onclick='deleteReview(" + val.reviewSeq + ")' value='" + val.reviewSeq + "'>삭제</button>" + "</td></tr>";
+              } else {
+                var str = "</tr>";
+              }
+              let app =
+                "<div class='review'>" +
+                "<div class='nickname'>" +
+                val.nickName +
+                "</div>" +
+                "<div class='date'>" +
+                val.reviewDate +
+                "</div>" +
+                "<div class='cont'>" +
+                str +
+                "</div>" +
+                "<div>" +
+                val.cont +
+                "</div>" +
+                "</div>";
+              $("#reviewWrap").append(app);
+            });
+          },
+          error: function () {
+            alert("error1");
+          },
+        });
+      }
+
+      // 글의 총 수를 취득
+      function getReviewListCount() {
+        $.ajax({
+          url: "/review/count",
+          type: "post",
+          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+          data: { pageNumber: 0, recordCountPerPage: 10, articleSeq: $("#articleSeq").val() },
+          success: function (count) {
+            //alert("sucess");
+            //alert(count);
+            loadPage(count);
+          },
+          error: function () {
+            alert("error2");
+          },
+        });
+      }
+
+      // paging 처리
+      function loadPage(totalCount) {
+        let pageSize = 10;
+        let nowPage = 1;
+
+        let totalPages = totalCount / pageSize;
+        if (totalCount % pageSize > 0) {
+          totalPages++;
         }
- 	}); 
-}
 
+        $("#pagination").twbsPagination("destroy"); //	페이지 갱신
 
-function getReviewListData( pNumber ){
-	$.ajax({
-		url:"/review/list",
-		type:"post",
-		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		data:{"pageNumber":pNumber, "recordCountPerPage":10, "articleSeq":$("#articleSeq").val()},
-		success:function( list ){
- 		
-			
-			$("#_list_table tbody").empty();
-			
-			$.each(list, function(i, val){
-				if( userSeq == "50" ) {
-					var str = "<td>" + "<button class='reviewDelete'  onclick='deleteReview("+ val.reviewSeq +")' value='" +val.reviewSeq +"'>삭제</button>"+"</td></tr>";
-				} else { 
-					var str = "</tr>";
-				}
-				
-					let app = "<tr class='list_col'>"
-						+  "<tr><td id='ReviewnickName'>" + val.nickName + "</td><td>" + val.reviewDate +"</td>"
-						+  str
-						+  "<tr class='list_col' colspan='3'>" 
-						+ "<td id='ReviewCont" +val.reviewSeq +"'>" +  val.cont + "</td>"
-						+ "</tr>"; 
-								 
-					$("#_list_table tbody").append(app);
-			});
-			
-		},
-		error:function(){
-			alert("error1");
-		}
-	});
-}
+        $("#pagination").twbsPagination({
+          //	   startPage: 1,
+          totalPages: totalPages, // 전체 페이지 수
+          visiblePages: 10,
+          first: "",
+          prev: "",
+          next: "",
+          last: "",
+          initiateStartPageClick: false, // onPageClick 자동 실행하지 않는다.
+          onPageClick: function (event, page) {
+            nowPage = page;
+            //alert('nowPage: ' + nowPage);
+            getReviewListData(nowPage - 1);
+          },
+        });
+      }
 
+      $(document).ready(function () {
+        $("#follow").click(function () {
+          $.ajax({
+            url: "/article/follow",
+            type: "post",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: { userSeq: $("#userSeq").val(), follower: $("#writerSeq").val() },
+            success: function (msg) {
+              if (msg == "ok") {
+                swal({
+                  title: "^.^",
+                  text: "작가님을 팔로우 하였습니다.",
+                  icon: "success",
+                }).then(function () {
+                  history.go(0);
+                });
+              }
+            },
+            error: function () {
+              alert("error");
+            },
+          });
+        });
 
-// 글의 총 수를 취득
-function getReviewListCount(){
-	
-	$.ajax({
-		url:"/review/count",
-		type:"post",
-		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		data:{"pageNumber":0, "recordCountPerPage":10, "articleSeq":$("#articleSeq").val()},
-		success:function( count ){
-			//alert("sucess");
-			//alert(count);	
-			loadPage(count);
-		},
-		error:function(){
-			alert("error2");
-		}
-	});
-}
+        $("#unfollow").click(function () {
+          $.ajax({
+            url: "/article/unfollow",
+            type: "post",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: { userSeq: $("#userSeq").val(), follower: $("#writerSeq").val() },
+            success: function (msg) {
+              if (msg == "ok") {
+                swal({
+                  title: "T.T",
+                  text: "작가님을 언팔로우 하였습니다.",
+                  icon: "warning",
+                }).then(function () {
+                  history.go(0);
+                });
+              }
+            },
+            error: function () {
+              alert("error");
+            },
+          });
+        });
 
-// paging 처리
-function loadPage( totalCount ){
+        $("#goodlike").click(function () {
+          $.ajax({
+            url: "/article/goodlike",
+            type: "post",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: { articleSeq: $("#articleSeq").val(), userSeq: $("#userSeq").val() },
+            success: function (msg) {
+              if (msg == "ok") {
+                swal({
+                  title: "^.^",
+                  text: "좋아요.",
+                  icon: "success",
+                }).then(function () {
+                  history.go(0);
+                });
+              }
+            },
+            error: function () {
+              alert("error");
+            },
+          });
+        });
 
-	let pageSize = 10;
-	let nowPage = 1;
-	
-	let totalPages = totalCount / pageSize;
-	if(totalCount % pageSize > 0) {
-	   totalPages++;
-	}
-	
-	$("#pagination").twbsPagination('destroy');	//	페이지 갱신
-	
-	$("#pagination").twbsPagination({
-	//	   startPage: 1,
-		   totalPages: totalPages,	// 전체 페이지 수
-		   visiblePages: 10,
-		   first:'<span aria-hidden="true"><<</span>',
-		   prev:"이전",
-		   next:"다음",
-		   last:'<span aria-hidden="true">>></span>',
-		   initiateStartPageClick:false,				// onPageClick 자동 실행하지 않는다.
-		   onPageClick: function(event, page) {
-		      nowPage = page;
-		      //alert('nowPage: ' + nowPage);
-		      getReviewListData( nowPage - 1 );
-		   }
-	});
-} 
+        $("#unlike").click(function () {
+          $.ajax({
+            url: "/article/unlike",
+            type: "post",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: { articleSeq: $("#articleSeq").val(), userSeq: $("#userSeq").val() },
+            success: function (msg) {
+              if (msg == "ok") {
+                swal({
+                  title: "T.T",
+                  text: "좋아요를 취소하였습니다.",
+                  icon: "warning",
+                }).then(function () {
+                  history.go(0);
+                });
+              }
+            },
+            error: function () {
+              alert("error");
+            },
+          });
+        });
 
-$(document).ready(function(){
-$("#follow").click(function() {
-	$.ajax({
-		url:"/article/follow",
-		type:"post",
-		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		data:{ userSeq:$("#userSeq").val() , follower:$("#writerSeq").val()},
-		success:function( msg ){
-			if(msg == 'ok'){
-				swal({
-				    title: "^.^",
-				    text: "작가님을 팔로우 하였습니다.",
-				    icon: "success"
-				}).then(function() {
-					history.go(0);
-				});
-			}
-		},
-		error:function(){
-			alert("error");
-		}			
-	});
-});
-
-$("#unfollow").click(function() {
-	$.ajax({
-		url:"/article/unfollow",
-		type:"post",
-		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		data:{ userSeq:$("#userSeq").val() , follower:$("#writerSeq").val()},
-		success:function( msg ){
-			if(msg == 'ok'){
-				swal({
-				    title: "T.T",
-				    text: "작가님을 언팔로우 하였습니다.",
-				    icon: "warning"
-				}).then(function() {
-					history.go(0);
-				});
-			}
-		},
-		error:function(){
-			alert("error");
-		}			
-	});
-});
-
-$("#goodlike").click(function() {
-	$.ajax({
-		url:"/article/goodlike",
-		type:"post",
-		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		data:{ articleSeq:$("#articleSeq").val(), userSeq:$("#userSeq").val()},
-		success:function( msg ){
-			if(msg == 'ok'){
-				swal({
-				    title: "^.^",
-				    text: "좋아요.",
-				    icon: "success"
-				}).then(function() {
-					history.go(0);
-				});
-			}
-		},
-		error:function(){
-			alert("error");
-		}			
-	});
-});
-
-$("#unlike").click(function() {
-	$.ajax({
-		url:"/article/unlike",
-		type:"post",
-		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		data:{ articleSeq:$("#articleSeq").val(), userSeq:$("#userSeq").val()},
-		success:function( msg ){
-			if(msg == 'ok'){
-				swal({
-				    title: "T.T",
-				    text: "좋아요를 취소하였습니다.",
-				    icon: "warning"
-				}).then(function() {
-					history.go(0);
-				});
-			}
-		},
-		error:function(){
-			alert("error");
-		}			
-	});
-});
-
-	$("#deletebtn").click(function() {
-			$.ajax({
-				url:"/article/delete",
-				type:"post",
-				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-				data:{ articleSeq:$("#articleSeq").val() , follower:$("#writerSeq").val()},
-				success:function( msg ){
-					if(msg == 'ok'){
-						swal({
-						    title: "good!",
-						    text: "글 삭제가 완료되었습니다.",
-						    type: "success"
-						}).then(function() {
-						    window.location = "/myPage";
-						});
-					}
-				},
-				error:function(){
-					alert("error");
-				}			
-			});
-		});
-});
-
-
-
-</script>
-</th:block>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/static/js/jquery.twbsPagination.min.js"></script>
-</div>
+        $("#deletebtn").click(function () {
+          $.ajax({
+            url: "/article/delete",
+            type: "post",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: { articleSeq: $("#articleSeq").val(), follower: $("#writerSeq").val() },
+            success: function (msg) {
+              if (msg == "ok") {
+                swal({
+                  title: "good!",
+                  text: "글 삭제가 완료되었습니다.",
+                  type: "success",
+                }).then(function () {
+                  window.location = "/myPage";
+                });
+              }
+            },
+            error: function () {
+              alert("error");
+            },
+          });
+        });
+      });
+    </script>
+  </th:block>
 </html>

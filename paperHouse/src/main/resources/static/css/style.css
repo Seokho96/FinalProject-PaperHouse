@@ -25,6 +25,105 @@
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 0;
 }
+
+/* admin */
+/* =============================================================================
+   Responsive Table CSS
+   ========================================================================== */
+
+.dataTable {
+  display: block;
+  width: 100%;
+  margin: 1em 0;
+}
+.dataTable .download a {
+  padding: 3px 5px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  color: #333;
+  transition: all 0.25s ease;
+}
+.dataTable .download a:hover {
+  color: #fff;
+  background-color: #333;
+}
+.dataTable thead,
+.dataTable tbody,
+.dataTable thead tr,
+.dataTable th {
+  display: block;
+}
+
+.dataTable thead {
+  float: left;
+}
+
+.dataTable tbody {
+  width: auto;
+  position: relative;
+  overflow-x: auto;
+}
+
+.dataTable td,
+.dataTable th {
+  padding: 0.625em;
+  line-height: 1.5em;
+  border-bottom: 1px dashed #ccc;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.dataTable th {
+  text-align: left;
+  background: rgba(0, 0, 0, 0.14);
+  border-bottom: 1px dashed #aaa;
+}
+
+.dataTable tbody tr {
+  display: table-cell;
+}
+
+.dataTable tbody td {
+  display: block;
+}
+
+.dataTable tr:nth-child(odd) {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+@media screen and (min-width: 50em) {
+  .dataTable {
+    display: table;
+  }
+
+  .dataTable thead {
+    display: table-header-group;
+    float: none;
+  }
+
+  .dataTable tbody {
+    display: table-row-group;
+  }
+
+  .dataTable thead tr,
+  .dataTable tbody tr {
+    display: table-row;
+  }
+
+  .dataTable th,
+  .dataTable tbody td {
+    display: table-cell;
+  }
+
+  .dataTable td,
+  .dataTable th {
+    width: auto;
+  }
+}
+
+/* --admin-- */
+
 header.main-header .close {
   position: absolute;
   left: 16px;
@@ -888,6 +987,7 @@ footer .copyright {
   margin-bottom: 16px;
 }
 .search-page .result-wrap .base-result .best-writer .writer-grid .writer .writer-photo {
+  min-height: 234px;
 }
 .search-page .result-wrap .base-result .best-writer .writer-grid .writer .writer-photo img {
   width: 100%;
@@ -922,6 +1022,7 @@ footer .copyright {
 }
 .search-page .result-wrap .base-result .best-article .article-grid .article .article-photo img {
   width: 100%;
+  height: 235px;
   display: block;
   background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1), 0 0 2px rgba(0, 0, 0, 0.2);
@@ -1110,8 +1211,9 @@ footer .copyright {
   background-color: #f7f7f7;
   padding: 24px;
   border-radius: 32px;
-  font-size: 24px;
-  line-height: 34px;
+  font-size: 20px;
+  line-height: 30px;
+  word-break: keep-all;
 }
 .writerDetail .writerWorks {
 }
@@ -1184,6 +1286,375 @@ footer .copyright {
   font-weight: 700;
   text-align: center;
   width: 300px;
+}
+
+/* articleDetail */
+.articleDetail {
+}
+.articleDetail .detail-top {
+  text-align: center;
+  height: 40px;
+  background-color: #ffeb60;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+.articleDetail .detail-top a {
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.articleDetail .noResult {
+}
+.articleDetail .articleRow {
+  margin-bottom: 24px;
+}
+.articleDetail .articleRow .row-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+.articleDetail .dots-wrap {
+  margin-top: 24px;
+}
+.articleDetail .dots-wrap ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.articleDetail .dots-wrap ul li {
+  margin: 0 4px;
+  transition: all 0.25s ease;
+}
+.articleDetail .dots-wrap ul li button {
+  cursor: pointer;
+  background-color: #ccc;
+  font-size: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.articleDetail .dots-wrap ul li.slick-active button {
+  background-color: #333;
+}
+.articleDetail .articleInfo {
+  display: flex;
+}
+.articleDetail .articleInfo .left {
+  float: left;
+  width: 400px;
+  padding-right: 26px;
+}
+.articleDetail .articleInfo .left .imgWrap {
+  min-height: 374px;
+}
+.articleDetail .articleInfo .left .imgWrap img {
+  width: 100%;
+  box-shadow: 12px 8px 24px rgba(0, 0, 0, 0.2), 4px 8px 8px rgba(0, 0, 0, 0.1), 0 0 2px rgba(0, 0, 0, 0.24);
+}
+.articleDetail .articleInfo .right {
+  position: relative;
+  float: left;
+  width: calc(100% - 400px);
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 16px;
+}
+.articleDetail .articleInfo .right .info {
+  margin-bottom: 16px;
+}
+.articleDetail .articleInfo .right .info .title {
+  font-size: 18px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.articleDetail .articleInfo .right .info .value {
+  font-size: 16px;
+  padding-left: 10px;
+  color: #555;
+
+  line-height: 20px;
+  max-height: 140px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+}
+.articleDetail .articleInfo .right .info.name-wrap {
+  max-width: 75%;
+}
+.articleDetail .articleInfo .right .info.name-wrap strong {
+  font-size: 28px;
+}
+.articleDetail .articleInfo .right .info.name-wrap small {
+  color: #8b8b8b;
+}
+.articleDetail .articleInfo .right .info02 {
+  background: #fafaf6;
+  border-radius: 12px;
+  height: 88px;
+  margin-top: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.articleDetail .articleInfo .right .info02 .info {
+  position: relative;
+  float: left;
+  width: calc(100% / 3);
+  text-align: center;
+  margin-bottom: 0;
+}
+.articleDetail .articleInfo .right .info02 .info:before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 80%;
+  background-color: #dfdfdf;
+}
+.articleDetail .articleInfo .right .info02 .info:last-child:before {
+  display: none;
+}
+.articleDetail .articleInfo .right .info02 .info .title {
+  color: #8b8b8b;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.articleDetail .articleInfo .right .info02 .info .title svg {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 8px;
+}
+.articleDetail .articleInfo .right .info02 .info .value {
+  padding-left: 0;
+  color: #555;
+}
+.articleDetail .articleInfo .right .follow-wrap {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+}
+.articleDetail .articleInfo .right .follow-wrap .btn {
+  cursor: pointer;
+  background-color: transparent;
+  padding: 3px 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  line-height: 14px;
+  border: 1px solid #0095f6;
+  color: #0095f6;
+  transition: all 0.25s ease;
+}
+.articleDetail .articleInfo .right .follow-wrap .btn:hover,
+.articleDetail .articleInfo .right .follow-wrap .btn.chk {
+  background-color: #0095f6;
+  color: #fff;
+}
+.articleDetail .articleInfo .right .follow-wrap .btn:first-child {
+  margin-right: 10px;
+}
+.articleDetail .articleCont {
+}
+
+.articleDetail .articleCont .preview {
+  border: 1px solid #ccc;
+  padding: 24px;
+  font-size: 20px;
+  line-height: 30px;
+  word-break: keep-all;
+}
+.articleDetail .articleReview {
+}
+.articleDetail .articleReview .insertReview {
+  margin-bottom: 24px;
+}
+.articleDetail .articleReview .insertReview input {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+.articleDetail .articleReview .insertReview textarea {
+  font-family: "Noto Sans KR";
+  resize: none;
+  float: left;
+  width: calc(100% - 100px);
+
+  border: 1px solid #dfdfdf;
+  border-radius: 12px;
+  padding: 8px;
+  height: 40px;
+}
+.articleDetail .articleReview .insertReview button {
+  float: left;
+  width: 80px;
+  margin-left: 20px;
+
+  cursor: pointer;
+  font-family: "Noto Sans KR";
+  padding: 11px 12px;
+  border-radius: 2px;
+  background: #ffeb60;
+  font-size: 14px;
+  color: #333;
+  height: 40px;
+  text-align: center;
+  font-weight: 700;
+}
+.articleDetail .articleReview .reviewWrap {
+}
+.articleDetail .articleReview .reviewWrap .review {
+  margin-bottom: 16px;
+  padding: 12px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1), 0 0 2px rgba(0, 0, 0, 0.2);
+}
+.articleDetail .articleReview .reviewWrap .review:last-child {
+  margin-bottom: 0;
+}
+.articleDetail .articleReview .reviewWrap .review .nickname {
+  color: #555;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.articleDetail .articleReview .reviewWrap .review .date {
+  font-size: 12px;
+  color: #a5a5a5;
+  margin-bottom: 8px;
+}
+.articleDetail .articleReview .reviewWrap .review .cont {
+  color: #555;
+  font-size: 20px;
+}
+.articleDetail .pagination {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.articleDetail .pagination li {
+  padding: 0 8px;
+}
+.articleDetail .pagination li a {
+  color: #ccc;
+}
+.articleDetail .pagination li.active a {
+  color: #333;
+}
+
+/* article-write */
+.article-write {
+}
+
+.article-write .form-row {
+  margin-bottom: 16px;
+}
+.article-write .form-row .row-title {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.article-write .form-row .row-input {
+}
+.article-write .form-row .row-input input[type="text"] {
+  font-family: "Noto Sans KR";
+  color: #333;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 100%;
+  padding: 11px 12px;
+}
+.article-write .form-row .row-input.file {
+}
+.article-write .form-row .row-input.file .fileName {
+  float: left;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: calc(100% - 96px);
+  padding: 11px 12px;
+  margin-right: 16px;
+  transition: all 0.25s ease;
+}
+.article-write .form-row .row-input.file .fileName.active {
+  color: #333;
+}
+.article-write .form-row .row-input.file label {
+  cursor: pointer;
+  display: block;
+  position: relative;
+  float: left;
+  width: 80px;
+  padding: 11px 12px;
+  border-radius: 2px;
+  background: #ffeb60;
+  font-size: 14px;
+  color: #333;
+  height: 40px;
+  text-align: center;
+  font-weight: 700;
+}
+.article-write .form-row .row-input.file label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.article-write .form-row .row-input textarea {
+  font-family: "Noto Sans KR";
+  color: #333;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 100%;
+  padding: 11px 12px;
+  resize: none;
+  min-height: 350px;
+}
+.article-write .form-row .select-wrap {
+  float: left;
+  position: relative;
+  border: 1px solid #676767;
+  border-radius: 4px;
+  margin-right: 13px;
+}
+.article-write .form-row .select-wrap select {
+  display: block;
+  padding: 4px 12px;
+  font-size: 14px;
+  width: 85px;
+  border: 0;
+  background-color: transparent;
+  appearance: none;
+}
+.article-write .form-row .select-wrap .arrow {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  font-size: 14px;
+  z-index: -1;
 }
 
 /* myLibrary */
@@ -1731,6 +2202,7 @@ footer .copyright {
   padding: 0 12px;
 }
 .myPageSub.qna .searchWrap button {
+  cursor: pointer;
   margin-left: 15px;
   float: left;
   width: 85px;
@@ -1873,6 +2345,86 @@ footer .copyright {
   font-size: 20px;
 }
 
+/* qna-write */
+.myPageSub.qna-write {
+}
+.myPageSub.qna-write .qnaFormWrap {
+}
+.myPageSub.qna-write .qnaFormWrap .form-row {
+  margin-bottom: 16px;
+}
+.myPageSub.qna-write .qnaFormWrap .form-row .row-title {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.myPageSub.qna-write .qnaFormWrap .form-row .row-input {
+}
+.myPageSub.qna-write .qnaFormWrap .form-row .row-input input[type="text"] {
+  font-family: "Noto Sans KR";
+  color: #333;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 100%;
+  padding: 11px 12px;
+}
+.myPageSub.qna-write .qnaFormWrap .form-row .row-input.file {
+}
+.myPageSub.qna-write .qnaFormWrap .form-row .row-input.file .fileName {
+  float: left;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: calc(100% - 96px);
+  padding: 11px 12px;
+  margin-right: 16px;
+  transition: all 0.25s ease;
+}
+.myPageSub.qna-write .qnaFormWrap .form-row .row-input.file .fileName.active {
+  color: #333;
+}
+.myPageSub.qna-write .qnaFormWrap .form-row .row-input.file label {
+  cursor: pointer;
+  display: block;
+  position: relative;
+  float: left;
+  width: 80px;
+  padding: 11px 12px;
+  border-radius: 2px;
+  background: #ffeb60;
+  font-size: 14px;
+  color: #333;
+  height: 40px;
+  text-align: center;
+  font-weight: 700;
+}
+.myPageSub.qna-write .qnaFormWrap .form-row .row-input.file label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.myPageSub.qna-write .qnaFormWrap .form-row .row-input textarea {
+  font-family: "Noto Sans KR";
+  color: #333;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 100%;
+  padding: 11px 12px;
+  resize: none;
+  min-height: 350px;
+}
+
 /* notice */
 .myPageSub.notice {
 }
@@ -1916,6 +2468,19 @@ footer .copyright {
 }
 .myPageSub.notice .listWrap .list .viewCount {
   padding-right: 8px;
+}
+.myPageSub.notice .listWrap .list .notice-body {
+}
+.myPageSub.notice .listWrap .list .notice-body .img-wrap {
+}
+.myPageSub.notice .listWrap .list .notice-body .img-wrap img {
+  width: 100%;
+}
+.myPageSub.notice .listWrap .list .notice-body .cont {
+	margin-top: 16px;
+    font-size: 16px;
+    line-height: 20px;
+    word-break: keep-all;
 }
 /* notice-detail */
 .myPageSub.notice-detail {
@@ -2246,6 +2811,31 @@ footer .copyright {
     float: none;
     width: 100%;
   }
+  .articleDetail .articleInfo {
+    display: block;
+  }
+  .articleDetail .articleInfo .left {
+    float: none;
+    width: 100%;
+    padding-right: 0;
+  }
+  .articleDetail .articleInfo .left .imgWrap {
+    min-height: 290px;
+  }
+  .articleDetail .articleInfo .right {
+    display: block;
+    float: none;
+    width: 100%;
+  }
+  .articleDetail .articleInfo .right .info.name-wrap {
+    max-width: 100%;
+  }
+  .articleDetail .articleInfo .right .follow-wrap {
+    position: static;
+  }
+  .search-page .result-wrap .base-result .best-writer .writer-grid .writer .writer-photo {
+    min-height: 184px;
+  }
 }
 @media all and (max-width: 600px) {
   .mobileScroll {
@@ -2274,5 +2864,8 @@ footer .copyright {
   }
   .search-page .result-wrap .base-result .best-article .article-grid .article {
     width: calc(100% / 3);
+  }
+  .search-page .result-wrap .base-result .best-writer .writer-grid .writer .writer-photo {
+    min-height: 197px;
   }
 }

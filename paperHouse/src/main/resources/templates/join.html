@@ -85,7 +85,7 @@
         }  else{
           $.ajax({
             type: "GET",
-            url: "/emailCheck",
+            url: "/email/emailCheck",
             data: { email: email, "email":$("#email").val(), "pwd":$("#pwd").val() },
             success: function (str) {
               if (str == "ALREADY") {

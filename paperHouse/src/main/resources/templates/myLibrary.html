@@ -33,7 +33,9 @@
             <th:block th:each='sub:${listSubscribe}'>
               <div class="list">
                 <div class="writerImg">
-                  <img alt='writerImg' th:src='#{sub.file_system}' />
+                <a href="#" th:onclick="|javascript:writerDetail(${sub.writerSeq})|">
+                  <img th:src='@{static/upload/profile/}+${sub.profileFileSystem}' alt='' />
+                 </a>
                 </div>
                 <div class="writerName" th:text='${sub.writerName}'></div>
                 <div class="endSubDate" th:text='|구독 만료일: ${sub.endDate}|'></div>
@@ -48,7 +50,9 @@
             <th:block th:each='fol:${listFollow}'>
               <div class="list">
                 <div class="writerImg">
-                  <img alt='writerImg' th:src='#{fol.file_system}'>
+                <a href="#" th:onclick="|javascript:writerDetail(${fol.writerSeq})|">
+                  <img th:src='@{static/upload/profile/}+${fol.profileFileSystem}' alt='' />
+                  </a>
                 </div>
                 <div class="writerName" th:text='${fol.writerName}'></div>
                 <div class="writerIntro" th:text='${fol.intro}'></div>
@@ -79,6 +83,9 @@
         $("#followWriterList").show();
       });
     });
+    function writerDetail(writerSeq){
+  	  location.href = "/writer/detail?writerSeq="+writerSeq;
+    }
   </script>
 </th:block>
 

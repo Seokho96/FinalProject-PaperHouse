@@ -21,5 +21,6 @@ public interface WriterRepository {
 	public int getReviewAllCount(int writerSeq);
 	public List<ArticleDto> selectWriteArticle(int writerSeq);
 	public List<UserReviewDto> selectWriteReview(int writerSeq);
+	public String getSubCount(WriterDto dto);
 	
 }

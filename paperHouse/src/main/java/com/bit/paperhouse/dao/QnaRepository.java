@@ -33,6 +33,7 @@ public interface QnaRepository {
 
     boolean qnaReplyUpdate(int qnaSeq);
 
-    void qnaStaus(int qnaSeq);
+    void qnaStatus(int qnaSeq);
+
 
 }

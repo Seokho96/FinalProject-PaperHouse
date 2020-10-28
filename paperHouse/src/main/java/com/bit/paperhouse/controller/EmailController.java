@@ -44,7 +44,7 @@ public class EmailController {
 	
 	// 회원가입 이메일 인증
 	@ResponseBody
-	@RequestMapping(value="/emailCheck", method=RequestMethod.GET)
+	@RequestMapping(value="/email/emailCheck", method=RequestMethod.GET)
     public String sendEmailAction (@RequestParam Map<String, Object> paramMap, ModelMap model, ModelAndView mv, String email, String pwd) throws Exception {
 		
        // String USERNAME = (String) paramMap.get("username");
@@ -110,7 +110,7 @@ public class EmailController {
 	
 	// 비밀번호 재설정
 	@ResponseBody
-	@RequestMapping(value="/resetPwd", method=RequestMethod.GET)
+	@RequestMapping(value="/email/resetPwd", method=RequestMethod.GET)
     public String resetPassword (@RequestParam Map<String, Object> paramMap, ModelMap model, ModelAndView mv) throws Exception {
 		
        // String USERNAME = (String) paramMap.get("username");

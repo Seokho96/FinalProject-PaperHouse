@@ -59,6 +59,10 @@ public class WriterService {
 		return list;
 	}
 	
+	public String getSubCount(WriterDto dto) {
+		String count = dao.getSubCount(dto);
+		return count;
+	}
 	
 	
 	

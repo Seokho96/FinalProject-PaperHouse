@@ -27,6 +27,7 @@ public class WriterDto implements Serializable {
 	private String publicRelations;
 	private int status;
 	private String wdate;
+	private int articleSeq;
 	
 	//user subscribe dto 대신 writerDto 사용
 	private String startDate;

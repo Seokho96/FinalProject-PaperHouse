@@ -1,112 +1,159 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<head th:replace="fragments/config :: configFragment"></head>
-</head>
-<body>
-<div align="center">
-<h1>작가 등록 신청 리스트</h1>
-<table border="1">
-<col width="200px"><col width="200px"><col width="200px"><col width="50px">
-<tr>
-	<th>작가 이름</th><th>작가 소개</th><th>작가 이력</th><th><input type="checkbox" id="checkb"></th>
-</tr>
-<th:block th:each="writer:${alist}">
-	<tr>
-		<td th:text='${writer.writerName}'></td><td th:text='${writer.intro}'></td><td>${writer.history}들어갈 자리</td><td><input type="checkbox" name='ck' th:value='${writer.writerSeq}'></td>
-	</tr>
+<html
+  lang="ko"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout/layout"
+>
+  <main class="myPageSub main-common" layout:fragment="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <table class="dataTable">
+            <thead>
+              <tr>
+                <th>작가 이름</th>
+                <th>작가 소개</th>
+                <th>작가 이력</th>
+                <th>
+                  <input type="checkbox" id="checkb" />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <th:block th:each="writer:${alist}">
+                <tr>
+                  <td th:text="${writer.writerName}"></td>
+                  <td th:text="${writer.intro}"></td>
+                  <td class="download">
+                    <a th:href="@{/admin/download?fileName={fileSystem}&orignalFile={fileOriginal}(fileSystem=${writer.fileSystem},fileOriginal=${writer.fileOriginal})}">포트폴리오 다운로드</a>
+                  </td>
+                  <td>
+                    <input type="checkbox" name="ck" th:value="${writer.writerSeq}" />
+                  </td>
+                </tr>
+              </th:block>
+            </tbody>
+          </table>
+          <div class="btnWrap">
+            <button class="btn" type="button" id="applyBtn">작가 등록</button>
+            <button class="btn" type="button" id="rejectBtn">신청 거절</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-</th:block>
+  <th:block layout:fragment="script">
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#checkb").click(function () {
+          if ($("#checkb").is(":checked")) {
+            $("input[type=checkbox]").prop("checked", true);
+          } else {
+            $("input[type=checkbox]").prop("checked", false);
+          }
+        });
 
+        $("#applyBtn").click(function () {
+          var checkRow = "";
+          $("input[name=ck]:checked").each(function () {
+            checkRow = checkRow + $(this).val() + ",";
+          });
+          checkRow = checkRow.substring(0, checkRow.lastIndexOf(","));
+          if (checkRow == "") {
+            alert("등록할 대상을 선택하세요.");
+            return false;
+          } else {
+            if (confirm("정보를 등록 하시겠습니까?")) {
+              $.ajax({
+                url: "/admin/applyWriter",
+                type: "get",
+                data: { checklist: checkRow },
+                success: function (data) {
+                  if (data > 0) {
+                    alert("등록 되었습니다");
+                    location.href = "/admin/writerApplyList";
+                  } else {
+                    alert("등록 실패");
+                  }
+                },
+                error: function () {
+                  alert("error");
+                },
+              });
+            }
+          }
+        });
 
-</table>
+        $("#rejectBtn").click(function () {
+          var checkRow = "";
+          $("input[name=ck]:checked").each(function () {
+            checkRow = checkRow + $(this).val() + ",";
+          });
+          checkRow = checkRow.substring(0, checkRow.lastIndexOf(","));
+          if (checkRow == "") {
+            alert("거절할 대상을 선택하세요.");
+            return false;
+          } else {
+            if (confirm("등록을 거절 하시겠습니까?")) {
+              $.ajax({
+                url: "/admin/rejectWriter",
+                type: "get",
+                data: { checklist: checkRow },
+                success: function (data) {
+                  if (data > 0) {
+                    alert("거절 되었습니다");
+                    location.href = "/admin/writerApplyList";
+                  } else {
+                    alert("거절 실패");
+                  }
+                },
+                error: function () {
+                  alert("error");
+                },
+              });
+            }
+          }
+        });
+      });
 
-<button type="button" id="applyBtn">작가 등록</button>
-<button type="button" id="rejectBtn">신청 거절</button>
-</div>
-</body>
+      function download(fileSystem) {
+        location.href = "/download?fileName=" + fileSystem;
+      }
 
-<th:block layout:fragment="script">
-<script type="text/javascript">
+      var smallBreak = 800; // Your small screen breakpoint in pixels
+      var columns = $(".dataTable tr").length;
+      var rows = $(".dataTable th").length;
 
-$(document).ready(function(){
-	$("#checkb").click(function(){
-		if( $("#checkb").is(':checked') ){
-	        $("input[type=checkbox]").prop("checked", true);
-	      }else{
-	        $("input[type=checkbox]").prop("checked", false);
-	      }
-	});
-	
-	$("#applyBtn").click(function(){
-		var checkRow = "";
-		  $( "input[name=ck]:checked" ).each (function (){
-		    checkRow = checkRow + $(this).val()+"," ;
-		  });
-		  checkRow = checkRow.substring(0,checkRow.lastIndexOf( ","));
-		  if(checkRow == ''){
-			    alert("등록할 대상을 선택하세요.");
-			    return false;
-		  }else{
-			  if(confirm("정보를 등록 하시겠습니까?")){
-				  $.ajax({
-					 url:'/applyWriter',
-					 type:'get',
-					 data:{checklist:checkRow},
-					 success:function(data){
-						 if(data>0){
-							 alert("등록 되었습니다");
-							 location.href="/writerApplyList";
-						 }
-						 else{
-							 alert("등록 실패");
-						 }
-					 },
-					 error:function(){
-						 alert('error');
-					 }
-				  });
-			  }
-		  }
-	});
-	
-	$("#rejectBtn").click(function(){
-		var checkRow = "";
-		  $( "input[name=ck]:checked" ).each (function (){
-		    checkRow = checkRow + $(this).val()+"," ;
-		  });
-		  checkRow = checkRow.substring(0,checkRow.lastIndexOf( ","));
-		  if(checkRow == ''){
-			    alert("거절할 대상을 선택하세요.");
-			    return false;
-		  }else{
-			  if(confirm("등록을 거절 하시겠습니까?")){
-				  $.ajax({
-					 url:'/rejectWriter',
-					 type:'get',
-					 data:{checklist:checkRow},
-					 success:function(data){
-						 if(data>0){
-							 alert("거절 되었습니다");
-							 location.href="/writerApplyList";
-						 }
-						 else{
-							 alert("거절 실패");
-						 }
-					 },
-					 error:function(){
-						 alert('error');
-					 }
-				  });
-			  }
-		  }
-	});
-});
-</script>
-</th:block>
+      $(document).ready(shapeTable());
+      $(window).resize(function () {
+        shapeTable();
+      });
 
+      function shapeTable() {
+        if ($(window).width() < smallBreak) {
+          for (i = 0; i < rows; i++) {
+            var maxHeight = $(".dataTable th:nth-child(" + i + ")").outerHeight();
+            for (j = 0; j < columns; j++) {
+              if ($(".dataTable tr:nth-child(" + j + ") td:nth-child(" + i + ")").outerHeight() > maxHeight) {
+                maxHeight = $(".dataTable tr:nth-child(" + j + ") td:nth-child(" + i + ")").outerHeight();
+              }
+              if ($(".dataTable tr:nth-child(" + j + ") td:nth-child(" + i + ")").prop("scrollHeight") > $(".dataTable tr:nth-child(" + j + ") td:nth-child(" + i + ")").outerHeight()) {
+                maxHeight = $(".dataTable tr:nth-child(" + j + ") td:nth-child(" + i + ")").prop("scrollHeight");
+              }
+            }
+            for (j = 0; j < columns; j++) {
+              $(".dataTable tr:nth-child(" + j + ") td:nth-child(" + i + ")").css("height", maxHeight);
+              $(".dataTable th:nth-child(" + i + ")").css("height", maxHeight);
+            }
+          }
+        } else {
+          $(".dataTable td, .dataTable th").removeAttr("style");
+        }
+      }
+    </script>
+  </th:block>
 </html>

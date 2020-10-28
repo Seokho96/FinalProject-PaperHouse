@@ -6,9 +6,9 @@ import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
@@ -44,9 +44,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//http.csrf().disable();
 	   
 		http.authorizeRequests()
-			.antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
-			.antMatchers("/**")
-			.permitAll()
+			.antMatchers("/notice/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/main/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/qna/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/article/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/writer/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/review/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/myLibrary/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/myPage/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/search/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")			
+			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+			.antMatchers("/user/**").permitAll()
+			.antMatchers("/email/**").permitAll()
+			.antMatchers("/user/**/**").permitAll()
+			.antMatchers("/user/**/**/**").permitAll()
+			.antMatchers("/").permitAll()
 		.and()
 			.formLogin()
 	        .loginPage("/user/login")
@@ -69,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        .loginPage("/user/login") 
 		    .userInfoEndpoint()
 		    .userService(principalOauth2UserService);  //구글 로그인 된 뒤 후처리가 필요함  Tip.코드x (엑세스토큰+사용자프로필정보 O)
-		
+		http.exceptionHandling().accessDeniedPage("/");
 		http.sessionManagement()
 		    .invalidSessionUrl("/")
 		    .maximumSessions(1)
@@ -79,6 +91,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 	}
 	
+	
+	
+
+
+
+	 @Override
+	 public void configure(WebSecurity webSecurity) throws Exception {
+		 
+	  webSecurity.ignoring().antMatchers("/static/**", "/css/**", "/fonts/**", "/js/**", "/less/**", "/scss/**", "/images/**", "/webjars/**"); 
+	 }
+
+
+
 
 
 
